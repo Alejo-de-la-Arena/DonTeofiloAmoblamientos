@@ -1,0 +1,57 @@
+/* ---------- testimonials ---------- */
+.testimonials{background:var(--bg-alt);border-top:1px solid var(--border);padding:clamp(64px,8vw,110px) 0}
+.testimonials-container{max-width:1300px;margin:0 auto;padding:0 clamp(24px,5vw,72px)}
+
+.testimonials-viewport{overflow:hidden}
+.testimonials-track{
+  display:flex;gap:20px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  padding:8px clamp(24px,5vw,72px) 28px;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+}
+.testimonials-track::-webkit-scrollbar{display:none}
+
+.testimonial-card{
+  position:relative;
+  flex:0 0 auto;
+  width:min(84vw,340px);
+  scroll-snap-align:center;
+  background:#fff;
+  border-radius:14px;
+  padding:30px 26px 24px;
+  overflow:hidden;
+  box-shadow:0 20px 50px -34px rgba(80,60,40,.35);
+}
+.testimonial-card-mark{
+  position:relative;display:block;
+  font-family:'Newsreader',serif;font-style:italic;font-weight:600;
+  font-size:52px;line-height:1;color:var(--accent);opacity:.4;
+  margin-bottom:2px;
+}
+.testimonial-card-quote{
+  position:relative;
+  font-family:'Newsreader',serif;font-style:italic;font-weight:500;
+  font-size:17px;line-height:1.5;color:var(--ink-soft);
+  margin:0 0 20px;
+  min-height:5.6em;
+}
+.testimonial-card-footer{position:relative;padding-top:14px;border-top:1px solid var(--border-2)}
+.testimonial-card-stars{color:var(--accent);font-size:12px;letter-spacing:3px;margin-bottom:6px}
+.testimonial-card-name{font-weight:600;font-size:14.5px;color:var(--ink)}
+.testimonial-card-project{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-2);margin-top:3px}
+
+.testimonials-controls{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:8px}
+.t-arrow{width:40px;height:40px;border-radius:50%;border:1px solid var(--border-2);background:#fff;cursor:pointer;color:var(--ink-soft);display:flex;align-items:center;justify-content:center;transition:all .3s ease}
+.t-arrow:hover{border-color:var(--accent);background:var(--accent);color:#fff}
+.t-dots{display:flex;align-items:center;gap:8px}
+.t-dot{width:8px;height:8px;border-radius:5px;border:none;cursor:pointer;padding:0;background:var(--border-2);transition:all .3s ease}
+.t-dot.active{background:var(--accent);width:22px}
+
+.google-reviews{margin-top:28px;text-align:center;font-size:13px;color:var(--muted-2);letter-spacing:.04em}
+.stars-inline{color:var(--accent)}
+
+@media (max-width:640px){
+  .testimonials-controls .t-arrow{display:none}
+}

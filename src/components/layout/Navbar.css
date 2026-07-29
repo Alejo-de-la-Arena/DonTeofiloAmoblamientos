@@ -1,0 +1,71 @@
+/* ---------- nav ---------- */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:24px clamp(24px,5vw,72px);
+  background:transparent;
+  transition:padding .3s ease,background .3s ease,box-shadow .3s ease;
+}
+.nav.solid{
+  padding:16px clamp(24px,5vw,72px);
+  background:rgba(250,250,248,.94);
+  backdrop-filter:blur(10px);
+  box-shadow:0 1px 0 rgba(0,0,0,.06);
+}
+.nav-brand{display:flex;flex-direction:column;line-height:1;color:#fff}
+.nav.solid .nav-brand{color:var(--ink-soft)}
+.nav-brand-name{font-family:'Newsreader',serif;font-weight:700;font-size:20px;letter-spacing:.22em;white-space:nowrap}
+.nav-brand-sub{font-size:9.5px;letter-spacing:.42em;margin-top:5px;font-weight:500;color:rgba(255,255,255,.72)}
+.nav.solid .nav-brand-sub{color:var(--muted-2)}
+.nav-links{display:flex;align-items:center;gap:38px}
+.nav-link{
+  font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.92);font-weight:500;padding:4px 0;
+  border-bottom:1px solid transparent;transition:color .2s ease,border-color .2s ease;
+}
+.nav.solid .nav-link{color:var(--ink-soft)}
+.nav-link:hover,.nav-link.active{border-bottom-color:var(--accent);color:var(--accent)}
+
+/* ---------- mobile burger (independent from .nav's stacking context on purpose,
+   so it can stay above .nav-mobile even though .nav itself sits below it) ---------- */
+.nav-burger-wrap{
+  display:none;
+  position:fixed;top:0;left:0;right:0;z-index:250;
+  justify-content:flex-end;
+  padding:24px clamp(24px,5vw,72px);
+  pointer-events:none;
+  transition:padding .3s ease;
+}
+.nav-burger-wrap.solid{padding:16px clamp(24px,5vw,72px)}
+.nav-burger{
+  position:relative;width:24px;height:16px;
+  background:none;border:none;cursor:pointer;padding:0;
+  pointer-events:auto;
+}
+.nav-burger span{
+  position:absolute;left:0;width:24px;height:2px;background:#fff;
+  transition:transform .3s ease,opacity .2s ease,top .3s ease,background .2s ease;
+}
+.nav-burger span:nth-child(1){top:0}
+.nav-burger span:nth-child(2){top:7px}
+.nav-burger span:nth-child(3){top:14px}
+.nav-burger-wrap.solid .nav-burger span{background:var(--ink-soft)}
+.nav-burger.open span{background:var(--ink)}
+.nav-burger.open span:nth-child(1){top:7px;transform:rotate(45deg)}
+.nav-burger.open span:nth-child(2){opacity:0}
+.nav-burger.open span:nth-child(3){top:7px;transform:rotate(-45deg)}
+
+.nav-mobile{
+  position:fixed;top:0;right:-80%;bottom:0;width:80%;z-index:200;
+  height:100vh;height:100dvh;
+  background:var(--bg);padding:100px 32px 32px;display:flex;flex-direction:column;gap:22px;
+  transition:right .35s ease;
+}
+.nav-mobile.open{right:0}
+.nav-mobile-link{color:var(--ink);font-size:16px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;transition:color .2s ease}
+.nav-mobile-link:hover,.nav-mobile-link.active{color:var(--accent)}
+
+@media (max-width:980px){
+  .nav-links{display:none}
+  .nav-burger-wrap{display:flex}
+}

@@ -1,0 +1,15 @@
+.catalog-main{
+  max-width:1300px;
+  margin:0 auto;
+  padding:48px clamp(20px,5vw,72px) 120px;
+  min-height:50vh;
+}
+
+.catalog-status{
+  text-align:center;
+  font-size:16px;
+  color:var(--muted);
+  padding:80px 20px;
+}
+.catalog-status--error{color:var(--danger);}
+

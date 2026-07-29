@@ -1,0 +1,27 @@
+.proy-hero{position:relative;height:82vh;min-height:560px;overflow:hidden;background:var(--ink)}
+.proy-hero-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(120% 110% at 65% 25%,rgba(255,244,228,.42),transparent 55%),linear-gradient(125deg,#c3ab88,#8a6f4c 55%,#4c3c28);
+}
+.proy-hero-grain{
+  position:absolute;inset:0;opacity:.08;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+.proy-hero-scrim{
+  position:absolute;inset:0;
+  background:linear-gradient(0deg,rgba(20,17,13,.68) 0%,rgba(20,17,13,.1) 45%,rgba(20,17,13,.25) 100%);
+}
+.proy-hero-content{
+  position:absolute;left:clamp(20px,5vw,72px);right:clamp(20px,5vw,72px);bottom:clamp(48px,7vw,88px);
+}
+.proy-hero-inner{max-width:1300px;margin:0 auto}
+.proy-hero-title{
+  font-family:'Newsreader',serif;font-weight:600;color:#fff;font-size:clamp(52px,9vw,120px);
+  line-height:.9;margin:0 0 26px;letter-spacing:-.02em;
+}
+.proy-hero-meta{display:flex;align-items:center;gap:20px}
+.proy-hero-count{
+  font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.85);
+  white-space:nowrap;font-weight:500;
+}
+.proy-hero-line{flex:1;height:1px;background:rgba(255,255,255,.4)}

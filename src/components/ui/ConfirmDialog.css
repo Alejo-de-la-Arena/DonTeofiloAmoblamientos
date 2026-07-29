@@ -1,0 +1,21 @@
+.confirm-backdrop{
+  position:fixed;inset:0;z-index:200;background:rgba(26,26,26,.5);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.confirm-card{
+  width:100%;max-width:400px;background:#fff;border-radius:8px;padding:28px;
+  box-shadow:0 30px 70px -30px rgba(0,0,0,.4);
+}
+.confirm-title{font-family:'Newsreader',serif;font-weight:600;font-size:20px;margin:0 0 10px}
+.confirm-message{font-size:14px;color:var(--muted);line-height:1.55;margin:0 0 24px}
+.confirm-actions{display:flex;justify-content:flex-end;gap:10px}
+.confirm-btn{
+  font-size:13px;font-weight:600;padding:10px 18px;border-radius:44px;cursor:pointer;
+  transition:all .2s ease;border:1px solid var(--border-2);background:none;color:var(--ink-soft);
+}
+.confirm-btn--cancel:hover{border-color:var(--muted-2)}
+.confirm-btn--confirm{background:var(--accent);border-color:var(--accent);color:#fff}
+.confirm-btn--confirm:hover{background:var(--accent-dark)}
+.confirm-btn--confirm.danger{background:var(--danger);border-color:var(--danger)}
+.confirm-btn--confirm.danger:hover{background:var(--danger-dark)}
+.confirm-btn:disabled{opacity:.6;cursor:not-allowed}

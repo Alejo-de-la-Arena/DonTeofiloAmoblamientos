@@ -1,0 +1,22 @@
+/* ---------- instagram ---------- */
+.instagram{background:var(--ink)}
+.instagram-head{max-width:1100px;margin:0 auto;padding:clamp(40px,5vw,60px) clamp(24px,5vw,48px) 0;text-align:center;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.instagram-head a{color:var(--accent)}
+.instagram-head a:hover{color:#d79b82}
+.instagram-grid{display:grid;grid-template-columns:repeat(6,1fr);margin-top:32px}
+.ig-tile{position:relative;aspect-ratio:1;overflow:hidden;background:#2a2a2a;display:block}
+.ig-tile::before{content:"";position:absolute;inset:0}
+.ig-tile--1::before{background:linear-gradient(135deg,#d9c8ab,#a88c66)}
+.ig-tile--2::before{background:linear-gradient(140deg,#cdc4b5,#948a76)}
+.ig-tile--3::before{background:linear-gradient(130deg,#e0cfbc,#b0906f)}
+.ig-tile--4::before{background:linear-gradient(125deg,#c2a884,#8c6f4d)}
+.ig-tile--5::before{background:linear-gradient(150deg,#d6c9b6,#a08a6e)}
+.ig-tile--6::before{background:linear-gradient(135deg,#cbb391,#8f7550)}
+.ig-icon{position:absolute;inset:0;background:rgba(26,26,26,0);display:flex;align-items:center;justify-content:center;transition:background .4s ease}
+.ig-icon svg{opacity:0;transition:opacity .4s ease}
+.ig-tile:hover .ig-icon{background:rgba(26,26,26,.5)}
+.ig-tile:hover .ig-icon svg{opacity:1}
+
+@media (max-width:640px){
+  .instagram-grid{grid-template-columns:repeat(3,1fr)}
+}

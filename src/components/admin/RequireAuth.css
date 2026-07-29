@@ -1,0 +1,7 @@
+.admin-boot{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg-alt)}
+.admin-boot-spinner{
+  width:32px;height:32px;border-radius:50%;
+  border:3px solid var(--border-2);border-top-color:var(--accent);
+  animation:admin-spin .7s linear infinite;
+}
+@keyframes admin-spin{to{transform:rotate(360deg)}}

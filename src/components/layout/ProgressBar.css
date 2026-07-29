@@ -1,0 +1,5 @@
+/* ---------- progress bar ---------- */
+.progress-bar{
+  position:fixed;top:0;left:0;height:3px;z-index:120;
+  background:var(--accent);width:0%;transition:width .1s linear;
+}

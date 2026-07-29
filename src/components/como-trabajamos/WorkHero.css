@@ -1,0 +1,19 @@
+.work-hero{padding:150px clamp(20px,5vw,72px) 0}
+.work-hero-inner{max-width:1300px;margin:0 auto}
+.work-hero-mosaic{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.work-hero-tile{aspect-ratio:1;background-size:cover;background-position:center;border-radius:2px}
+.work-hero-tile--offset{margin-top:26px}
+.work-hero-copy{max-width:720px;margin:48px 0 0}
+.work-hero-title{
+  font-family:'Newsreader',serif;font-weight:600;font-size:clamp(42px,6.5vw,80px);line-height:.98;
+  margin:0 0 20px;letter-spacing:-.02em;
+}
+.work-hero-lead{
+  font-family:'Newsreader',serif;font-style:italic;font-weight:500;font-size:clamp(18px,2.2vw,26px);
+  color:var(--muted);line-height:1.4;margin:0;
+}
+
+@media (max-width:640px){
+  .work-hero{padding-top:120px}
+  .work-hero-mosaic{grid-template-columns:repeat(2,1fr)}
+}

@@ -1,0 +1,41 @@
+.admin-form-page h1{font-family:'Newsreader',serif;font-weight:600;font-size:24px;margin:0 0 20px}
+.admin-form{
+  background:#fff;border:1px solid var(--border);border-radius:8px;padding:28px;max-width:760px;
+  display:flex;flex-direction:column;gap:20px;
+}
+
+.admin-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.admin-field{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
+.admin-field input,.admin-field select,.admin-field textarea{
+  border:1px solid var(--border-2);border-radius:6px;padding:9px 12px;font-family:'DM Sans',sans-serif;
+  font-size:14px;color:var(--ink);outline:none;transition:border-color .2s ease;background:#fff;
+}
+.admin-field input:focus,.admin-field select:focus,.admin-field textarea:focus{border-color:var(--accent)}
+.admin-field textarea{resize:vertical}
+.admin-field-error{color:var(--danger);font-size:12px;font-style:normal}
+
+.admin-checkbox{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink-soft);cursor:pointer}
+.admin-checkbox input{width:16px;height:16px;accent-color:var(--accent)}
+
+.admin-form-section{display:flex;flex-direction:column;gap:10px;padding-top:6px;border-top:1px solid var(--border-3)}
+.admin-form-section-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);font-weight:600}
+
+.admin-publish-row{padding:14px;background:var(--bg-alt);border-radius:6px}
+.admin-checkbox--publish{font-weight:600;color:var(--ink)}
+
+.admin-form-actions{display:flex;justify-content:flex-end;gap:12px;padding-top:6px;border-top:1px solid var(--border-3)}
+.admin-btn-ghost{
+  background:none;border:1px solid var(--border-2);color:var(--muted);font-size:13px;font-weight:600;
+  padding:10px 20px;border-radius:44px;cursor:pointer;
+}
+.admin-btn-ghost:hover{border-color:var(--muted-2)}
+.admin-btn-primary{
+  background:var(--accent);color:#fff;border:none;font-size:13px;font-weight:600;padding:10px 22px;
+  border-radius:44px;cursor:pointer;transition:background .2s ease;
+}
+.admin-btn-primary:hover:not(:disabled){background:var(--accent-dark)}
+.admin-btn-primary:disabled{opacity:.6;cursor:not-allowed}
+
+@media (max-width:640px){
+  .admin-form-grid{grid-template-columns:1fr}
+}

@@ -1,0 +1,21 @@
+.work-materials{background:var(--bg-alt);border-top:1px solid var(--border);padding:clamp(70px,9vw,120px) 0}
+.work-materials-head{max-width:1300px;margin:0 auto;padding:0 clamp(20px,5vw,72px)}
+.work-materials-head-inner{max-width:560px;margin-bottom:44px}
+
+.work-materials-scroll{
+  overflow-x:auto;padding:6px clamp(20px,5vw,72px) 22px;
+  scrollbar-width:thin;scrollbar-color:var(--accent) #EDE8E1;
+}
+.work-materials-scroll::-webkit-scrollbar{height:6px}
+.work-materials-scroll::-webkit-scrollbar-track{background:#EDE8E1}
+.work-materials-scroll::-webkit-scrollbar-thumb{background:var(--accent);border-radius:6px}
+
+.work-materials-track{display:flex;gap:20px;max-width:1300px;margin:0 auto;width:max-content}
+.work-material-card{
+  position:relative;width:300px;aspect-ratio:3/4;border-radius:4px;overflow:hidden;
+  background-size:cover;background-position:center;flex:none;
+}
+.work-material-scrim{position:absolute;inset:0;background:linear-gradient(0deg,rgba(26,26,26,.5),transparent 55%)}
+.work-material-copy{position:absolute;left:20px;bottom:18px;right:20px}
+.work-material-name{font-family:'Newsreader',serif;font-weight:600;font-size:23px;color:#fff}
+.work-material-note{font-size:13px;color:rgba(255,255,255,.8);font-weight:300;margin-top:4px}

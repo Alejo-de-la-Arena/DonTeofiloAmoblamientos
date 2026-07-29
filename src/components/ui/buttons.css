@@ -1,0 +1,26 @@
+.btn-primary{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--accent);color:#fff;
+  font-size:14px;font-weight:600;letter-spacing:.04em;padding:16px 30px;border-radius:44px;
+  transition:transform .3s ease,box-shadow .3s ease,background .3s ease;
+  box-shadow:0 10px 30px rgba(0,0,0,.22);
+}
+.btn-primary:hover{transform:scale(1.03);background:var(--accent-dark);box-shadow:0 14px 38px rgba(0,0,0,.3);color:#fff}
+.btn-primary--sm{padding:12px 20px;font-size:13px;box-shadow:none}
+.btn-outline{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;color:#fff;font-size:14px;font-weight:500;
+  letter-spacing:.04em;padding:16px 30px;border-radius:44px;border:1px solid rgba(255,255,255,.5);
+  transition:all .3s ease;
+}
+.btn-outline:hover{background:rgba(255,255,255,.12);border-color:#fff;color:#fff}
+.btn-pill{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--accent);color:#fff;
+  font-size:12.5px;letter-spacing:.06em;font-weight:600;padding:11px 20px;border-radius:40px;
+  transition:transform .3s ease,background .3s ease;
+}
+.btn-pill:hover{transform:scale(1.04);background:var(--accent-dark);color:#fff}
+.btn-whatsapp{
+  display:inline-flex;align-items:center;justify-content:center;gap:12px;background:var(--whatsapp);color:#0b2c17;
+  font-size:16px;font-weight:700;letter-spacing:.02em;padding:19px 38px;border-radius:50px;
+  animation:dtPulse 2.6s infinite;transition:transform .3s ease;
+}
+.btn-whatsapp:hover{transform:scale(1.04);color:#0b2c17}
