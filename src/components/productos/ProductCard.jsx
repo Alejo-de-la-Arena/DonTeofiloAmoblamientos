@@ -28,15 +28,15 @@ export default function ProductCard({ product, index, onOpen }) {
           className="catalog-card-img"
           style={cover ? { backgroundImage: `url(${cover})` } : undefined}
         />
-        {product.destacado && (
-          <>
-            <div className="catalog-card-scrim" />
-            <div className="catalog-card-overlay">
-              <div className="catalog-card-overlay-cat">{product.categoria}</div>
-              <div className="catalog-card-overlay-name">{product.nombre}</div>
-            </div>
-          </>
-        )}
+        <div className="catalog-card-scrim" />
+        <div className="catalog-card-overlay">
+          <div className="catalog-card-overlay-cat">{product.categoria}</div>
+          <div className="catalog-card-overlay-name">{product.nombre}</div>
+          <span className="catalog-card-overlay-cta">
+            Ver detalle <span aria-hidden="true">→</span>
+          </span>
+        </div>
+        {product.destacado && <div className="catalog-card-badge">Destacado</div>}
         {product.material && <div className="catalog-card-tag">{product.material}</div>}
       </div>
       {!product.destacado && (

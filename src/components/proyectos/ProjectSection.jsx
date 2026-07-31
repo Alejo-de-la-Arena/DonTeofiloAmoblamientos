@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import BeforeAfterSlider from '../home/BeforeAfterSlider';
@@ -25,31 +24,9 @@ function ProjectFacts({ project }) {
 
 export default function ProjectSection({ project, index }) {
   const isLeft = index % 2 === 0;
-  const numRef = useRef(null);
 
   const [imgRef, imgVisible] = useScrollReveal(0);
   const [txtRef, txtVisible] = useScrollReveal(150);
-
-  useEffect(() => {
-    let raf = null;
-    function onScroll() {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = null;
-        const el = numRef.current;
-        if (!el) return;
-        const r = el.getBoundingClientRect();
-        const offset = (r.top - window.innerHeight / 2) * -0.12;
-        el.style.transform = `translateY(${offset}px)`;
-      });
-    }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
 
   return (
     <section className={`proy-section${isLeft ? '' : ' proy-section--alt'}`}>
@@ -67,12 +44,6 @@ export default function ProjectSection({ project, index }) {
         </div>
 
         <div className="proy-text-wrap">
-          <span
-            ref={numRef}
-            className={`proy-num${isLeft ? ' proy-num--right' : ' proy-num--left'}`}
-          >
-            {project.num}
-          </span>
           <div ref={txtRef} data-reveal className={`proy-text${txtVisible ? ' is-visible' : ''}`}>
             <span className="proy-cat">{project.categoria}</span>
             <h2 className="proy-title">{project.titulo}</h2>

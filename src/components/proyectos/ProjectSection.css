@@ -11,14 +11,6 @@
 .proy-section-inner.reverse .proy-media{order:2}
 .proy-section-inner.reverse .proy-text-wrap{order:1}
 
-.proy-num{
-  position:absolute;top:-40px;
-  font-family:'Newsreader',serif;font-weight:600;font-size:clamp(120px,15vw,220px);line-height:.7;
-  color:rgba(196,131,106,.1);pointer-events:none;z-index:0;will-change:transform;
-}
-.proy-num--right{right:0}
-.proy-num--left{left:0}
-
 .proy-text{position:relative;z-index:1;max-width:440px}
 .proy-cat{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:600}
 .proy-title{font-family:'Newsreader',serif;font-weight:600;font-size:clamp(28px,3.4vw,42px);line-height:1.08;margin:14px 0 0}
@@ -42,5 +34,4 @@
   .proy-section-inner.reverse{grid-template-columns:1fr}
   .proy-media,.proy-section-inner.reverse .proy-media{order:1}
   .proy-text-wrap,.proy-section-inner.reverse .proy-text-wrap{order:2}
-  .proy-num{display:none}
 }

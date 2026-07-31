@@ -15,4 +15,8 @@
 @media (max-width:760px){
   .catalog-hero{padding-top:120px}
   .catalog-hero-grid{grid-template-columns:1fr;gap:20px}
+  .catalog-hero-watermark{
+    left:50%;bottom:auto;top:96px;transform:translateX(-50%);
+    font-size:min(48vw,270px);line-height:.7;opacity:.06;letter-spacing:-.01em;
+  }
 }

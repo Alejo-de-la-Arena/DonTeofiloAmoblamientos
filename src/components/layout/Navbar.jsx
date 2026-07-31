@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import BtnPill from '../ui/BtnPill';
 import { WHATSAPP_URL } from '../../config/contact';
@@ -22,10 +22,25 @@ function mobileNavLinkClass({ isActive }) {
 
 export default function Navbar({ isSolid }) {
   const [isOpen, setIsOpen] = useState(false);
+  const navRef = useRef(null);
+
+  // Expone la altura real del header como variable CSS — la usan elementos como el
+  // drawer de filtros de /productos para arrancar justo debajo, sin un valor fijo a mano.
+  useEffect(() => {
+    const el = navRef.current;
+    if (!el) return;
+    const setHeaderHeight = () => {
+      document.documentElement.style.setProperty('--header-h', `${el.offsetHeight}px`);
+    };
+    setHeaderHeight();
+    const observer = new ResizeObserver(setHeaderHeight);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <>
-      <nav className={`nav${isSolid ? ' solid' : ''}`}>
+      <nav ref={navRef} className={`nav${isSolid ? ' solid' : ''}`}>
         <Link to="/" className="nav-brand">
           <span className="nav-brand-name">DON TEÓFILO</span>
           <span className="nav-brand-sub">AMOBLAMIENTOS</span>

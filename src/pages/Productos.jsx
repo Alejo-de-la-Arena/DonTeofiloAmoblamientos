@@ -89,19 +89,21 @@ export default function Productos() {
         hasFilters={hasFilters}
         onClearAll={clearAll}
       />
-      <main className="catalog-main">
-        {loading && <p className="catalog-status">Cargando catálogo…</p>}
-        {!loading && loadError && <p className="catalog-status catalog-status--error">{loadError}</p>}
-        {!loading && !loadError && productos.length === 0 && (
-          <p className="catalog-status">Todavía no hay productos cargados. ¡Volvé pronto!</p>
-        )}
-        {!loading && !loadError && productos.length > 0 && filtered.length > 0 && (
-          <ProductGrid products={filtered} onOpen={setDetailId} />
-        )}
-        {!loading && !loadError && productos.length > 0 && filtered.length === 0 && (
-          <ProductEmptyState />
-        )}
-      </main>
+      <div className="catalog-main-wrap">
+        <main className="catalog-main">
+          {loading && <p className="catalog-status">Cargando catálogo…</p>}
+          {!loading && loadError && <p className="catalog-status catalog-status--error">{loadError}</p>}
+          {!loading && !loadError && productos.length === 0 && (
+            <p className="catalog-status">Todavía no hay productos cargados. ¡Volvé pronto!</p>
+          )}
+          {!loading && !loadError && productos.length > 0 && filtered.length > 0 && (
+            <ProductGrid products={filtered} onOpen={setDetailId} />
+          )}
+          {!loading && !loadError && productos.length > 0 && filtered.length === 0 && (
+            <ProductEmptyState />
+          )}
+        </main>
+      </div>
       <ProductDetailPanel product={detailProduct} onClose={() => setDetailId(null)} />
     </>
   );

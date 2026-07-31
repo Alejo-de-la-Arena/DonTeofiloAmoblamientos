@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import MobileFilterDrawer from './MobileFilterDrawer';
 import './ProductFilterBar.css';
 
 export default function ProductFilterBar({
@@ -18,6 +19,7 @@ export default function ProductFilterBar({
   onClearAll,
 }) {
   const [stuck, setStuck] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const sentinelRef = useRef(null);
 
   useEffect(() => {
@@ -35,6 +37,18 @@ export default function ProductFilterBar({
     <>
       <div ref={sentinelRef} className="catalog-filter-sentinel" />
       <div className={`catalog-filter-bar${stuck ? ' stuck' : ''}`}>
+        <button
+          type="button"
+          className="catalog-filter-trigger"
+          onClick={() => setDrawerOpen(true)}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round">
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+          </svg>
+          Filtrar
+          {hasFilters && <span className="catalog-filter-trigger-dot" />}
+        </button>
+
         <div className="catalog-filter-inner">
           <div className="catalog-filter-row">
             <div className="catalog-filter-pills">
@@ -110,6 +124,25 @@ export default function ProductFilterBar({
           </div>
         </div>
       </div>
+
+      <MobileFilterDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        categories={categories}
+        activeCategory={activeCategory}
+        onCategoryChange={onCategoryChange}
+        materials={materials}
+        activeMaterial={activeMaterial}
+        onMaterialChange={onMaterialChange}
+        maxPrice={maxPrice}
+        maxPriceLabel={maxPriceLabel}
+        onMaxPriceChange={onMaxPriceChange}
+        search={search}
+        onSearchChange={onSearchChange}
+        count={count}
+        hasFilters={hasFilters}
+        onClearAll={onClearAll}
+      />
     </>
   );
 }

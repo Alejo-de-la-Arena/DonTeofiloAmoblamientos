@@ -55,3 +55,9 @@
 @media (max-width:640px){
   .testimonials-controls .t-arrow{display:none}
 }
+
+/* desktop: las 3 reviews entran completas sin scroll, quedan centradas y sin controles de navegación */
+@media (min-width:641px){
+  .testimonials-track{justify-content:center}
+  .testimonials-controls{display:none}
+}

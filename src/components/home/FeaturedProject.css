@@ -6,34 +6,33 @@
 .featured-grid {
   display: grid;
   grid-template-columns: 1.5fr 1fr;
+  grid-template-areas: "slider header" "slider facts";
+  align-content: center;
   min-height: 620px
 }
 
 /* base .ba-* rules live in BeforeAfterSlider.css — acá solo el tamaño específico de Home */
 .featured-grid .ba-slider {
+  grid-area: slider;
   min-height: 420px
 }
 
-.featured-copy {
+/* header y facts-link comparten el mismo fondo/padding lateral y quedan pegados
+   (sin padding-bottom/top entre ellos) para verse como una sola card continua en desktop */
+.featured-header {
+  grid-area: header;
   position: relative;
   background: var(--bg-alt);
-  padding: clamp(48px, 6vw, 84px) clamp(32px, 4vw, 64px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  padding: clamp(48px, 6vw, 84px) clamp(32px, 4vw, 64px) 0;
   overflow: hidden
 }
 
-.featured-num {
-  position: absolute;
-  right: -10px;
-  top: -24px;
-  font-family: 'Newsreader', serif;
-  font-weight: 600;
-  font-size: 200px;
-  color: rgba(196, 131, 106, .09);
-  line-height: 1;
-  pointer-events: none
+.featured-facts-link {
+  grid-area: facts;
+  position: relative;
+  background: var(--bg-alt);
+  padding: 0 clamp(32px, 4vw, 64px) clamp(48px, 6vw, 84px);
+  overflow: hidden
 }
 
 .featured-title {
@@ -89,10 +88,33 @@
 
 @media (max-width:980px) {
   .featured-grid {
-    grid-template-columns: 1fr
+    grid-template-columns: 1fr;
+    grid-template-areas: "header" "slider" "facts";
+    align-content: normal
   }
 
   .featured-grid .ba-slider {
     min-height: 360px
+  }
+
+  /* el slider ahora separa header y facts: cada uno recupera su padding completo
+     para verse como su propia card (mismo fondo/spacing/tipografía que en desktop) */
+  .featured-header {
+    padding-bottom: clamp(48px, 6vw, 84px)
+  }
+
+  .featured-facts-link {
+    padding-top: clamp(48px, 6vw, 84px)
+  }
+}
+
+@media (max-width:640px) {
+  .featured-header {
+    text-align: center
+  }
+
+  .featured-desc {
+    margin-left: auto;
+    margin-right: auto
   }
 }

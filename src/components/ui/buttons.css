@@ -24,3 +24,4 @@
   animation:dtPulse 2.6s infinite;transition:transform .3s ease;
 }
 .btn-whatsapp:hover{transform:scale(1.04);color:#0b2c17}
+.btn-whatsapp--compact{padding:12px 22px;font-size:14px;gap:10px}

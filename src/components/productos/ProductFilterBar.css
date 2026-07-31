@@ -57,6 +57,22 @@
   text-decoration:underline;text-underline-offset:3px;
 }
 
+.catalog-filter-trigger{
+  display:none;align-items:center;gap:9px;
+  margin:14px clamp(20px,5vw,72px);
+  padding:11px 18px;border-radius:40px;border:1px solid var(--border-2);background:transparent;
+  color:var(--ink-soft);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;letter-spacing:.02em;
+  cursor:pointer;position:relative;
+}
+.catalog-filter-trigger-dot{
+  position:absolute;top:8px;right:11px;width:7px;height:7px;border-radius:50%;background:var(--accent);
+}
+
+@media (max-width:760px){
+  .catalog-filter-inner{display:none}
+  .catalog-filter-trigger{display:inline-flex}
+}
+
 @media (max-width:640px){
   .catalog-filter-bar{top:56px}
   .catalog-search{width:140px}

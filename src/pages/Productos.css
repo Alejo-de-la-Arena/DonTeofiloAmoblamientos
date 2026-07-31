@@ -1,4 +1,17 @@
+/* Dirección visual: fondo cálido (--bg-alt) detrás del catálogo en vez de blanco puro,
+   para que las tarjetas de producto lean como objetos sobre una superficie. */
+.catalog-main-wrap{
+  position:relative;
+  background:var(--bg-alt);
+  border-top:1px solid var(--border-3);
+}
+.catalog-main-wrap::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(80% 50% at 12% 0%,rgba(196,131,106,.09),transparent 60%);
+}
+
 .catalog-main{
+  position:relative;
   max-width:1300px;
   margin:0 auto;
   padding:48px clamp(20px,5vw,72px) 120px;

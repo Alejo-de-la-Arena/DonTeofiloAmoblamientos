@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import BtnPrimary from '../ui/BtnPrimary';
 import BtnOutline from '../ui/BtnOutline';
-import heroCocina from '../../assets/images/inicio/hero/dtf-cocina-hero.png';
-import heroVestidor from '../../assets/images/inicio/hero/dtf-vestidor-hero.png';
-import heroBanio from '../../assets/images/inicio/hero/dtf-banio-hero.png';
-import heroPuerta from '../../assets/images/inicio/hero/dtf-puerta-hero.png';
+import cocinaDesktop from '../../assets/images/inicio/hero/dtf-cocina-hero-desktop.png';
+import cocinaMobile from '../../assets/images/inicio/hero/dtf-cocina-hero-mobile.png';
+import placardDesktop from '../../assets/images/inicio/hero/dtf-placard-hero-desktop.png';
+import placardMobile from '../../assets/images/inicio/hero/dtf-placard-hero-mobile.png';
+import banioDesktop from '../../assets/images/inicio/hero/dtf-banio-hero-desktop.png';
+import banioMobile from '../../assets/images/inicio/hero/dtf-banio-hero-mobile.png';
+import puertaDesktop from '../../assets/images/inicio/hero/dtf-puerta-hero-desktop.png';
+import puertaMobile from '../../assets/images/inicio/hero/dtf-puerta-hero-mobile.png';
 import './HeroSlider.css';
 
 const SLIDES_TEXT = [
@@ -14,7 +18,12 @@ const SLIDES_TEXT = [
   'Carpintería de autor',
 ];
 
-const SLIDE_IMAGES = [heroCocina, heroVestidor, heroBanio, heroPuerta];
+const SLIDE_IMAGES = [
+  { desktop: cocinaDesktop, mobile: cocinaMobile },
+  { desktop: placardDesktop, mobile: placardMobile },
+  { desktop: banioDesktop, mobile: banioMobile },
+  { desktop: puertaDesktop, mobile: puertaMobile },
+];
 
 const DUR = 6500;
 
@@ -57,8 +66,18 @@ export default function HeroSlider() {
           <div
             key={idx}
             className={`hero-slide hero-slide--${idx}${idx === active ? ' active' : ''}`}
-            style={{ '--slide-img': `url(${SLIDE_IMAGES[idx]})` }}
-          />
+          >
+            <picture>
+              <source media="(max-width: 640px)" srcSet={SLIDE_IMAGES[idx].mobile} />
+              <img
+                className="hero-slide-img"
+                src={SLIDE_IMAGES[idx].desktop}
+                alt={SLIDES_TEXT[idx]}
+                loading="eager"
+                fetchPriority={idx === 0 ? 'high' : 'auto'}
+              />
+            </picture>
+          </div>
         ))}
       </div>
       <div className="hero-scrim-x"></div>

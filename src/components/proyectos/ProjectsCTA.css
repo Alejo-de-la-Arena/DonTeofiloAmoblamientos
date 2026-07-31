@@ -1,14 +1,11 @@
-.proy-cta{padding:clamp(70px,9vw,120px) clamp(20px,5vw,72px)}
-.proy-cta-box{
-  max-width:760px;margin:0 auto;border:1px solid var(--border-2);padding:clamp(40px,6vw,72px);
-  text-align:center;position:relative;background:var(--bg-alt);
+.proy-cta{
+  background:var(--bg-alt);
+  padding:clamp(70px,9vw,120px) clamp(20px,5vw,72px);
+  text-align:center;
 }
-.proy-cta-eyebrow{
-  position:absolute;top:14px;left:50%;transform:translateX(-50%);
-  font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted-2);
-}
+.proy-cta-mark{display:block;width:46px;height:1px;background:var(--accent);margin:0 auto 26px}
 .proy-cta-title{
   font-family:'Newsreader',serif;font-style:italic;font-weight:500;font-size:clamp(28px,4vw,44px);
-  line-height:1.2;margin:14px 0 22px;
+  line-height:1.2;margin:0 auto 18px;max-width:560px;
 }
-.proy-cta-text{font-size:16px;font-weight:300;color:var(--muted);line-height:1.6;margin:0 auto 30px;max-width:440px}
+.proy-cta-text{font-size:16px;font-weight:300;color:var(--muted);line-height:1.6;margin:0 auto 34px;max-width:400px}
