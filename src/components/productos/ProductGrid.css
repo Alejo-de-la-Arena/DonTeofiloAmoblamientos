@@ -1,10 +1,13 @@
 .catalog-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-  grid-auto-rows:10px;
-  gap:0 28px;
+  grid-template-columns:repeat(3,1fr);
+  gap:36px 28px;
+}
+
+@media (max-width:900px){
+  .catalog-grid{grid-template-columns:repeat(2,1fr);gap:28px 22px}
 }
 
 @media (max-width:560px){
-  .catalog-card--featured{grid-column:span 1}
+  .catalog-grid{grid-template-columns:1fr;gap:24px}
 }

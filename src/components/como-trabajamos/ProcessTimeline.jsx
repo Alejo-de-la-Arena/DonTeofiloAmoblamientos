@@ -1,5 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
+import img01 from '../../assets/images/como-trabajamos/01-nos-contactas.png';
+import img02 from '../../assets/images/como-trabajamos/02-diseniamos-juntos.png';
+import img03 from '../../assets/images/como-trabajamos/03-fabricamos.png';
+import img04 from '../../assets/images/como-trabajamos/04-instalamos.png';
 import './ProcessTimeline.css';
 
 const STEPS = [
@@ -12,7 +16,8 @@ const STEPS = [
       'Charla para entender qué buscás y tu presupuesto',
       'Coordinamos una visita si hace falta',
     ],
-    seed: 'dtf-paso-1',
+    img: img01,
+    alt: 'Cliente conversando con el equipo de Don Teófilo para definir un mueble a medida',
   },
   {
     n: '02',
@@ -23,7 +28,8 @@ const STEPS = [
       'Propuesta de diseño con render o croquis',
       'Presupuesto detallado y elección de materiales',
     ],
-    seed: 'dtf-paso-2',
+    img: img02,
+    alt: 'Relevamiento y diseño de un mueble a medida en el espacio del cliente',
   },
   {
     n: '03',
@@ -34,7 +40,8 @@ const STEPS = [
       'Control de calidad en cada módulo',
       'Herrajes y terminaciones premium',
     ],
-    seed: 'dtf-paso-3',
+    img: img03,
+    alt: 'Carpintero fabricando un mueble a medida en el taller de Don Teófilo',
   },
   {
     n: '04',
@@ -45,13 +52,13 @@ const STEPS = [
       'Ajustes finos y limpieza final',
       'Entrega y garantía por escrito',
     ],
-    seed: 'dtf-paso-4',
+    img: img04,
+    alt: 'Instalación final de un mueble a medida en la casa del cliente',
   },
 ];
 
-function StepRow({ step, index, isLast }) {
+function StepRow({ step, isFirst, isLast }) {
   const [ref, isVisible] = useScrollReveal(0);
-  const isEven = index % 2 === 0;
 
   return (
     <div
@@ -59,8 +66,10 @@ function StepRow({ step, index, isLast }) {
       data-reveal
       className={`work-step${isLast ? ' work-step--last' : ''}${isVisible ? ' is-visible' : ''}`}
     >
-      <div className="work-step-marker">{step.n}</div>
-      <div className={`work-step-grid${isEven ? '' : ' work-step-grid--reverse'}`}>
+      {/* Tick + leader: la escala "mide" este punto y lo conecta con su anotación, misma lógica
+          de llamada de detalle que el callout del hero, en versión horizontal y sin el círculo. */}
+      <span className="work-step-callout" aria-hidden="true" />
+      <div className="work-step-grid">
         <div className="work-step-text">
           <span className="work-step-label">Paso {step.n}</span>
           <h3 className="work-step-title">{step.title}</h3>
@@ -74,10 +83,9 @@ function StepRow({ step, index, isLast }) {
             ))}
           </ul>
         </div>
-        <div
-          className="work-step-img"
-          style={{ backgroundImage: `url(https://picsum.photos/seed/${step.seed}/700/560)` }}
-        />
+        <div className="work-step-frame">
+          <img src={step.img} alt={step.alt} loading={isFirst ? 'eager' : 'lazy'} />
+        </div>
       </div>
     </div>
   );
@@ -86,27 +94,58 @@ function StepRow({ step, index, isLast }) {
 export default function ProcessTimeline() {
   const timelineRef = useRef(null);
   const lineRef = useRef(null);
+  const ticksActiveRef = useRef(null);
 
   useEffect(() => {
+    const tl = timelineRef.current;
+    if (!tl) return;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) {
+      if (lineRef.current) lineRef.current.style.strokeDashoffset = '0';
+      if (ticksActiveRef.current) ticksActiveRef.current.style.height = '100%';
+      return;
+    }
+
     let raf = null;
+    let listening = false;
+
     function onScroll() {
       if (raf) return;
       raf = requestAnimationFrame(() => {
         raf = null;
-        const tl = timelineRef.current;
         const line = lineRef.current;
-        if (!tl || !line) return;
+        const ticks = ticksActiveRef.current;
+        if (!line || !ticks) return;
         const r = tl.getBoundingClientRect();
         const vh = window.innerHeight;
         const total = r.height + vh * 0.5;
         const prog = Math.max(0, Math.min(1, (vh * 0.75 - r.top) / total));
         line.style.strokeDashoffset = String(1 - prog);
+        ticks.style.height = `${prog * 100}%`;
       });
     }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+
+    // El listener de scroll solo vive mientras la sección está cerca del viewport — evita
+    // recalcular el progreso en cada scroll del resto de la página, no solo mientras se ve esto.
+    const sectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !listening) {
+          listening = true;
+          window.addEventListener('scroll', onScroll, { passive: true });
+          onScroll();
+        } else if (!entry.isIntersecting && listening) {
+          listening = false;
+          window.removeEventListener('scroll', onScroll);
+        }
+      },
+      { rootMargin: '200px 0px' }
+    );
+    sectionObserver.observe(tl);
+
     return () => {
-      window.removeEventListener('scroll', onScroll);
+      sectionObserver.disconnect();
+      if (listening) window.removeEventListener('scroll', onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);
@@ -114,8 +153,10 @@ export default function ProcessTimeline() {
   return (
     <section className="work-timeline-section">
       <div ref={timelineRef} className="work-timeline">
+        <div className="work-timeline-ticks" aria-hidden="true" />
+        <div ref={ticksActiveRef} className="work-timeline-ticks-active" aria-hidden="true" />
         <svg viewBox="0 0 4 1000" preserveAspectRatio="none" className="work-timeline-svg">
-          <line x1="2" y1="0" x2="2" y2="1000" stroke="#E8E4DF" strokeWidth="4" />
+          <line x1="2" y1="0" x2="2" y2="1000" stroke="#E8E4DF" strokeWidth="1.5" />
           <line
             ref={lineRef}
             x1="2"
@@ -123,14 +164,14 @@ export default function ProcessTimeline() {
             x2="2"
             y2="1000"
             stroke="#C4836A"
-            strokeWidth="4"
+            strokeWidth="1.5"
             pathLength="1"
             strokeDasharray="1"
             strokeDashoffset="1"
           />
         </svg>
         {STEPS.map((step, i) => (
-          <StepRow key={step.n} step={step} index={i} isLast={i === STEPS.length - 1} />
+          <StepRow key={step.n} step={step} isFirst={i === 0} isLast={i === STEPS.length - 1} />
         ))}
       </div>
     </section>

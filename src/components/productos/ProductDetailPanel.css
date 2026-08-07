@@ -30,7 +30,7 @@
 
 .catalog-panel-body{padding:26px 32px 40px}
 .catalog-panel-cat{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);font-weight:600}
-.catalog-panel-name{font-family:'Newsreader',serif;font-weight:600;font-size:30px;line-height:1.1;margin:10px 0 6px}
+.catalog-panel-name{font-family:'Newsreader',serif;font-weight:600;font-size:30px;line-height:1.1;margin:10px 0 12px}
 .catalog-panel-price{color:var(--accent);font-weight:600;font-size:20px;margin-bottom:20px}
 .catalog-panel-desc{font-size:15px;line-height:1.65;color:#5f5a52;font-weight:300;margin:0 0 28px}
 

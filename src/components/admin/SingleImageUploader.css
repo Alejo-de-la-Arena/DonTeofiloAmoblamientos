@@ -1,0 +1,24 @@
+.single-img-uploader{display:flex;flex-direction:column;gap:8px}
+.single-img-uploader-label{font-size:12px;font-weight:600;color:var(--muted)}
+
+.single-img-uploader-drop{
+  position:relative;aspect-ratio:4/3;border-radius:8px;overflow:hidden;cursor:pointer;
+  border:2px dashed var(--border-2);background:var(--bg-alt);transition:border-color .2s ease;
+  display:flex;align-items:center;justify-content:center;
+}
+.single-img-uploader-drop:hover{border-color:var(--accent)}
+.single-img-uploader-drop p{margin:0;padding:0 16px;text-align:center;font-size:13px;color:var(--muted)}
+
+.single-img-uploader-preview{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.single-img-uploader-status{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:rgba(26,26,26,.55);color:#fff;font-size:12.5px;font-weight:600;
+}
+.single-img-uploader-replace{
+  position:absolute;left:0;right:0;bottom:0;padding:6px;text-align:center;
+  background:rgba(26,26,26,.65);color:#fff;font-size:11px;font-weight:600;
+  opacity:0;transition:opacity .2s ease;
+}
+.single-img-uploader-drop:hover .single-img-uploader-replace{opacity:1}
+
+.single-img-uploader-error{font-size:12.5px;color:var(--danger);margin:0}

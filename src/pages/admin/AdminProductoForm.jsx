@@ -6,6 +6,8 @@ import {
   fetchProductoById,
   updateProducto,
   uploadProductoImagen,
+  deleteProductoImagen,
+  reorderProductoImagenes,
 } from '../../lib/productosApi';
 import { CATEGORIAS, MATERIALES } from '../../data/productCategories';
 import './AdminProductoForm.css';
@@ -216,9 +218,12 @@ export default function AdminProductoForm() {
         <div className="admin-form-section">
           <span className="admin-form-section-label">Imágenes</span>
           <ImageUploader
-            productoId={isEdit ? id : null}
+            parentId={isEdit ? id : null}
             initialImages={initialImages}
             onStagedFilesChange={setStagedFiles}
+            uploadFn={uploadProductoImagen}
+            deleteFn={deleteProductoImagen}
+            reorderFn={reorderProductoImagenes}
           />
         </div>
 

@@ -1,337 +1,445 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Don Teófilo Amoblamientos — Carpintería a medida</title>
-<meta name="description" content="Proyectos integrales de carpintería a medida. Cocinas, placards, vanitorys, aberturas y más. Desde 2011 en Buenos Aires y Tandil.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Don Teófilo Amoblamientos — Carpintería a medida</title>
+  <meta name="description"
+    content="Proyectos integrales de carpintería a medida. Cocinas, placards, vanitorys, aberturas y más. Desde 2011 en Buenos Aires y Tandil.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
-<div class="progress-bar" id="progressBar"></div>
+  <div class="progress-bar" id="progressBar"></div>
 
-<nav class="nav" id="nav">
-  <a href="#top" class="nav-brand">
-    <span class="nav-brand-name">DON TEÓFILO</span>
-    <span class="nav-brand-sub">AMOBLAMIENTOS</span>
+  <nav class="nav" id="nav">
+    <a href="#top" class="nav-brand">
+      <span class="nav-brand-name">DON TEÓFILO</span>
+      <span class="nav-brand-sub">AMOBLAMIENTOS</span>
+    </a>
+    <div class="nav-links">
+      <a href="#top" class="nav-link">Inicio</a>
+      <a href="#productos" class="nav-link">Productos</a>
+      <a href="#proyectos" class="nav-link">Proyectos</a>
+      <a href="#proceso" class="nav-link">Cómo Trabajamos</a>
+      <a href="#contacto" class="nav-link">Contacto</a>
+      <a href="https://wa.me/5491155551234" target="_blank" rel="noopener" class="btn-pill">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M17.5 14.4c-.3-.15-1.7-.84-1.96-.93-.26-.1-.45-.15-.64.14-.19.29-.74.93-.9 1.12-.17.19-.33.21-.62.07-.29-.15-1.22-.45-2.32-1.43-.86-.77-1.44-1.71-1.6-2-.17-.29-.02-.45.12-.6.13-.13.29-.33.43-.5.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.15-.64-1.55-.88-2.12-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-1 .98-1 2.38s1.02 2.76 1.17 2.95c.14.19 2.01 3.07 4.87 4.31.68.29 1.21.47 1.62.6.68.22 1.3.19 1.79.11.55-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34z" />
+          <path
+            d="M12 2C6.5 2 2 6.5 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.05-1.35A9.94 9.94 0 0 0 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.7 0-3.28-.5-4.6-1.36l-.33-.2-2.98.79.8-2.92-.22-.34A8.13 8.13 0 0 1 3.8 12c0-4.52 3.68-8.2 8.2-8.2s8.2 3.68 8.2 8.2-3.68 8.2-8.2 8.2z" />
+        </svg>
+        Contactanos
+      </a>
+    </div>
+    <button class="nav-burger" id="navBurger" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="nav-mobile" id="navMobile">
+    <a href="#top" class="nav-mobile-link">Inicio</a>
+    <a href="#productos" class="nav-mobile-link">Productos</a>
+    <a href="#proyectos" class="nav-mobile-link">Proyectos</a>
+    <a href="#proceso" class="nav-mobile-link">Cómo Trabajamos</a>
+    <a href="#contacto" class="nav-mobile-link">Contacto</a>
+  </div>
+
+  <section id="top" class="hero">
+    <div class="hero-slides" id="heroSlides">
+      <div class="hero-slide hero-slide--0 active"></div>
+      <div class="hero-slide hero-slide--1"></div>
+      <div class="hero-slide hero-slide--2"></div>
+      <div class="hero-slide hero-slide--3"></div>
+    </div>
+    <div class="hero-scrim-x"></div>
+    <div class="hero-scrim-y"></div>
+
+    <div class="hero-content">
+      <div class="hero-inner">
+        <div class="hero-eyebrow">
+          <span class="hero-eyebrow-line"></span>
+          <span>Desde 2011 — Buenos Aires &amp; Tandil</span>
+        </div>
+        <h1 class="hero-title" id="heroTitle">Cocinas que inspiran</h1>
+        <p class="hero-sub">Proyectos integrales de carpintería a medida. Cocinas, placards, vanitorys, aberturas y más.
+        </p>
+        <div class="hero-ctas">
+          <a href="#productos" class="btn-primary">Ver Productos</a>
+          <a href="#proyectos" class="btn-outline">Conocé nuestro trabajo</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-progress" id="heroProgress">
+      <button class="hero-progress-seg" data-slide="0" aria-label="Slide 1">
+        <div class="hero-progress-fill" data-fill="0"></div>
+      </button>
+      <button class="hero-progress-seg" data-slide="1" aria-label="Slide 2">
+        <div class="hero-progress-fill" data-fill="1"></div>
+      </button>
+      <button class="hero-progress-seg" data-slide="2" aria-label="Slide 3">
+        <div class="hero-progress-fill" data-fill="2"></div>
+      </button>
+      <button class="hero-progress-seg" data-slide="3" aria-label="Slide 4">
+        <div class="hero-progress-fill" data-fill="3"></div>
+      </button>
+    </div>
+
+    <div class="hero-scroll-hint">
+      <span>Descubrí más</span>
+      <svg width="16" height="30" viewBox="0 0 16 30" fill="none">
+        <path d="M8 1v24M2 19l6 6 6-6" stroke="rgba(255,255,255,.8)" stroke-width="1.3" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="stats-grid">
+      <div class="stat" data-reveal>
+        <div class="stat-num" data-count="13" data-prefix="+">0</div>
+        <div class="stat-label">años de experiencia</div>
+      </div>
+      <div class="stat" data-reveal data-reveal-delay="100">
+        <div class="stat-num" data-count="500" data-prefix="+">0</div>
+        <div class="stat-label">proyectos realizados</div>
+      </div>
+      <div class="stat" data-reveal data-reveal-delay="200">
+        <div class="stat-num" data-count="2">0</div>
+        <div class="stat-label">sedes: BsAs &amp; Tandil</div>
+      </div>
+      <div class="stat stat--text" data-reveal data-reveal-delay="300">
+        <div class="stat-phrase">Y donde nos<br>necesites</div>
+        <div class="stat-label">llegamos a vos</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="productos" class="products">
+    <div class="section-head" data-reveal>
+      <div class="section-eyebrow">
+        <span class="section-eyebrow-line"></span>
+        <span>Nuestros servicios</span>
+      </div>
+      <h2 class="section-title">Lo que mejor hacemos</h2>
+      <p class="section-lead">Cada proyecto es único, cada espacio merece lo mejor.</p>
+    </div>
+
+    <div class="products-grid">
+      <article class="product-card" data-reveal>
+        <div class="product-img product-img--1"></div>
+        <h3>Cocinas a medida</h3>
+        <p>Diseñamos y fabricamos cocinas completas adaptadas a tu espacio y estilo de vida. Materiales premium,
+          terminaciones impecables.</p>
+        <span class="product-link">Ver más →</span>
+      </article>
+      <article class="product-card" data-reveal data-reveal-delay="90">
+        <div class="product-img product-img--2"></div>
+        <h3>Placards e interiores</h3>
+        <p>Soluciones de guardado inteligentes. Diseño interior funcional con la calidez de la madera.</p>
+        <span class="product-link">Ver más →</span>
+      </article>
+      <article class="product-card" data-reveal data-reveal-delay="180">
+        <div class="product-img product-img--3"></div>
+        <h3>Vanitorys</h3>
+        <p>Muebles de baño que combinan diseño y resistencia. Cada pieza pensada para durar.</p>
+        <span class="product-link">Ver más →</span>
+      </article>
+      <article class="product-card" data-reveal>
+        <div class="product-img product-img--4"></div>
+        <h3>Aberturas</h3>
+        <p>Puertas, ventanas y aberturas en madera maciza. Aislación, seguridad y estética.</p>
+        <span class="product-link">Ver más →</span>
+      </article>
+      <article class="product-card" data-reveal data-reveal-delay="90">
+        <div class="product-img product-img--5"></div>
+        <h3>Alacenas y vestidores</h3>
+        <p>Espacios de guardado diseñados al centímetro para aprovechar cada rincón.</p>
+        <span class="product-link">Ver más →</span>
+      </article>
+      <article class="product-card" data-reveal data-reveal-delay="180">
+        <div class="product-img product-img--6"></div>
+        <h3>Diseño integral</h3>
+        <p>Te acompañamos desde la idea hasta la instalación. Proyecto completo llave en mano.</p>
+        <span class="product-link">Ver más →</span>
+      </article>
+    </div>
+  </section>
+
+  <section id="proyectos" class="featured">
+    <div class="featured-grid">
+      <div class="ba-slider" id="baSlider">
+        <div class="ba-after"></div>
+        <div class="ba-tag ba-tag--after">Después</div>
+        <div class="ba-before-wrap" id="baBeforeWrap">
+          <div class="ba-before"></div>
+          <div class="ba-tag ba-tag--before">Antes</div>
+        </div>
+        <div class="ba-handle" id="baHandle">
+          <div class="ba-handle-btn">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="featured-copy">
+        <span class="featured-num">01</span>
+        <div data-reveal>
+          <span class="section-eyebrow-solo">Proyecto destacado</span>
+          <h2 class="featured-title">Cocina completa<br>— Palermo, Buenos Aires</h2>
+          <p class="featured-desc">Renovación integral de cocina en departamento. Muebles bajo y sobre mesada en
+            melamina roble, mesada de cuarzo, alacena esquinera con herrajes de cierre suave.</p>
+          <div class="featured-facts">
+            <div>
+              <div class="featured-fact-label">Duración</div>
+              <div class="featured-fact-val">3 semanas</div>
+            </div>
+            <div>
+              <div class="featured-fact-label">Ubicación</div>
+              <div class="featured-fact-val">Palermo, CABA</div>
+            </div>
+          </div>
+          <a href="#proyectos" class="link-arrow">Ver todos los proyectos →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="proceso" class="process">
+    <div class="section-head" data-reveal>
+      <div class="section-eyebrow">
+        <span class="section-eyebrow-line"></span>
+        <span>El proceso</span>
+      </div>
+      <h2 class="section-title">Cómo trabajamos</h2>
+      <p class="section-lead">Un proceso simple, transparente y sin sorpresas.</p>
+    </div>
+
+    <div class="process-grid">
+      <div class="process-step" data-reveal>
+        <span class="process-num">01</span>
+        <div class="process-icon">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M21 15.5v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 1 2.7 2 2 0 0 1 3 .5h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7 8a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z" />
+          </svg>
+        </div>
+        <h3>Nos contactás</h3>
+        <p>Contanos tu idea por WhatsApp o completá el formulario. Te respondemos en menos de 24hs.</p>
+      </div>
+      <div class="process-step process-step--bordered" data-reveal data-reveal-delay="120">
+        <span class="process-num">02</span>
+        <div class="process-icon">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 12l10-10 10 10-10 10z" />
+            <path d="M6 12h2M10 8v2M14 12h2M12 14v2" opacity=".7" />
+          </svg>
+        </div>
+        <h3>Diseñamos juntos</h3>
+        <p>Visitamos tu espacio, tomamos medidas y te presentamos un diseño a medida con presupuesto detallado.</p>
+      </div>
+      <div class="process-step process-step--bordered" data-reveal data-reveal-delay="240">
+        <span class="process-num">03</span>
+        <div class="process-icon">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 7h13l5 5-5 5H3z" />
+            <path d="M3 7v10M7 7v10M11 7v10" opacity=".6" />
+          </svg>
+        </div>
+        <h3>Fabricamos</h3>
+        <p>Nuestro taller produce cada pieza con materiales seleccionados y control de calidad en cada etapa.</p>
+      </div>
+      <div class="process-step process-step--bordered" data-reveal data-reveal-delay="360">
+        <span class="process-num">04</span>
+        <div class="process-icon">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21V10l9-7 9 7v11z" />
+            <path d="M9 21v-6h6v6" opacity=".7" />
+          </svg>
+        </div>
+        <h3>Instalamos</h3>
+        <p>Instalación profesional, limpieza y entrega. Tu espacio listo para disfrutar.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <div class="testimonials-inner" data-reveal>
+      <h2 class="section-title testimonials-title">Lo que dicen nuestros clientes</h2>
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-quote" id="tQuote">"Transformaron nuestra cocina por completo. El nivel de detalle y la
+        calidad de la madera superaron lo que imaginábamos."</p>
+      <div class="testimonial-name" id="tName">María Fernanda G.</div>
+      <div class="testimonial-project" id="tProject">Cocina completa — Palermo, CABA</div>
+      <div class="testimonial-controls">
+        <button class="t-arrow" id="tPrev" aria-label="Anterior">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+        <div class="t-dots" id="tDots">
+          <button class="t-dot active" data-t="0" aria-label="Testimonio 1"></button>
+          <button class="t-dot" data-t="1" aria-label="Testimonio 2"></button>
+          <button class="t-dot" data-t="2" aria-label="Testimonio 3"></button>
+        </div>
+        <button class="t-arrow" id="tNext" aria-label="Siguiente">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+      </div>
+      <div class="google-reviews">Google Reviews <span class="stars-inline">★★★★★</span> · 4,9 / 5</div>
+    </div>
+  </section>
+
+  <section id="contacto" class="cta">
+    <div class="cta-bg"></div>
+    <div class="cta-scrim"></div>
+    <div class="cta-inner" data-reveal>
+      <h2 class="cta-title">¿Tenés un proyecto en mente?</h2>
+      <p class="cta-sub">Contanos tu idea y te ayudamos a hacerla realidad. Presupuesto sin compromiso.</p>
+      <a href="https://wa.me/5491155551234" target="_blank" rel="noopener" class="btn-whatsapp">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M17.5 14.4c-.3-.15-1.7-.84-1.96-.93-.26-.1-.45-.15-.64.14-.19.29-.74.93-.9 1.12-.17.19-.33.21-.62.07-.29-.15-1.22-.45-2.32-1.43-.86-.77-1.44-1.71-1.6-2-.17-.29-.02-.45.12-.6.13-.13.29-.33.43-.5.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.15-.64-1.55-.88-2.12-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-1 .98-1 2.38s1.02 2.76 1.17 2.95c.14.19 2.01 3.07 4.87 4.31.68.29 1.21.47 1.62.6.68.22 1.3.19 1.79.11.55-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34z" />
+          <path
+            d="M12 2C6.5 2 2 6.5 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.05-1.35A9.94 9.94 0 0 0 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.7 0-3.28-.5-4.6-1.36l-.33-.2-2.98.79.8-2.92-.22-.34A8.13 8.13 0 0 1 3.8 12c0-4.52 3.68-8.2 8.2-8.2s8.2 3.68 8.2 8.2-3.68 8.2-8.2 8.2z" />
+        </svg>
+        Escribinos por WhatsApp
+      </a>
+      <div class="cta-alt"><a href="#contacto-form">O completá el formulario de contacto →</a></div>
+    </div>
+  </section>
+
+  <section class="instagram">
+    <div class="instagram-head">
+      <span>Seguinos en Instagram · <a href="https://instagram.com/donteofiloamoblamientos" target="_blank"
+          rel="noopener">@donteofiloamoblamientos</a></span>
+    </div>
+    <div class="instagram-grid">
+      <a href="#" class="ig-tile ig-tile--1"><span class="ig-icon"><svg width="26" height="26" viewBox="0 0 24 24"
+            fill="none" stroke="#fff" stroke-width="1.6">
+            <rect x="2" y="2" width="20" height="20" rx="5" />
+            <circle cx="12" cy="12" r="4.5" />
+            <circle cx="17.5" cy="6.5" r="1" fill="#fff" />
+          </svg></span></a>
+      <a href="#" class="ig-tile ig-tile--2"><span class="ig-icon"><svg width="26" height="26" viewBox="0 0 24 24"
+            fill="none" stroke="#fff" stroke-width="1.6">
+            <rect x="2" y="2" width="20" height="20" rx="5" />
+            <circle cx="12" cy="12" r="4.5" />
+            <circle cx="17.5" cy="6.5" r="1" fill="#fff" />
+          </svg></span></a>
+      <a href="#" class="ig-tile ig-tile--3"><span class="ig-icon"><svg width="26" height="26" viewBox="0 0 24 24"
+            fill="none" stroke="#fff" stroke-width="1.6">
+            <rect x="2" y="2" width="20" height="20" rx="5" />
+            <circle cx="12" cy="12" r="4.5" />
+            <circle cx="17.5" cy="6.5" r="1" fill="#fff" />
+          </svg></span></a>
+      <a href="#" class="ig-tile ig-tile--4"><span class="ig-icon"><svg width="26" height="26" viewBox="0 0 24 24"
+            fill="none" stroke="#fff" stroke-width="1.6">
+            <rect x="2" y="2" width="20" height="20" rx="5" />
+            <circle cx="12" cy="12" r="4.5" />
+            <circle cx="17.5" cy="6.5" r="1" fill="#fff" />
+          </svg></span></a>
+      <a href="#" class="ig-tile ig-tile--5"><span class="ig-icon"><svg width="26" height="26" viewBox="0 0 24 24"
+            fill="none" stroke="#fff" stroke-width="1.6">
+            <rect x="2" y="2" width="20" height="20" rx="5" />
+            <circle cx="12" cy="12" r="4.5" />
+            <circle cx="17.5" cy="6.5" r="1" fill="#fff" />
+          </svg></span></a>
+      <a href="#" class="ig-tile ig-tile--6"><span class="ig-icon"><svg width="26" height="26" viewBox="0 0 24 24"
+            fill="none" stroke="#fff" stroke-width="1.6">
+            <rect x="2" y="2" width="20" height="20" rx="5" />
+            <circle cx="12" cy="12" r="4.5" />
+            <circle cx="17.5" cy="6.5" r="1" fill="#fff" />
+          </svg></span></a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">DON TEÓFILO</div>
+        <p class="footer-tagline">Carpintería a medida desde 2011.</p>
+        <div class="footer-social">
+          <a href="https://instagram.com/donteofiloamoblamientos" target="_blank" rel="noopener"
+            class="footer-social-btn footer-social-btn--ig" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <rect x="2" y="2" width="20" height="20" rx="5" />
+              <circle cx="12" cy="12" r="4.5" />
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
+            </svg>
+          </a>
+          <a href="https://wa.me/5491155551234" target="_blank" rel="noopener"
+            class="footer-social-btn footer-social-btn--wa" aria-label="WhatsApp">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 2C6.5 2 2 6.5 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.05-1.35A9.94 9.94 0 0 0 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.7 0-3.28-.5-4.6-1.36l-.33-.2-2.98.79.8-2.92-.22-.34A8.13 8.13 0 0 1 3.8 12c0-4.52 3.68-8.2 8.2-8.2s8.2 3.68 8.2 8.2-3.68 8.2-8.2 8.2zm4.5-6.4c-.25-.12-1.47-.72-1.7-.8-.23-.09-.4-.13-.56.12-.16.25-.63.8-.78.96-.14.17-.29.19-.53.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.09-.16.04-.31-.02-.43-.06-.13-.56-1.34-.76-1.83-.2-.48-.4-.42-.55-.42h-.48c-.16 0-.43.06-.65.31-.23.25-.86.85-.86 2.06s.88 2.39 1 2.55c.13.17 1.74 2.66 4.22 3.73.59.25 1.05.4 1.41.52.59.19 1.13.16 1.56.1.47-.07 1.47-.6 1.68-1.18.2-.58.2-1.07.14-1.18-.06-.1-.22-.16-.47-.28z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Navegación</div>
+        <div class="footer-links">
+          <a href="#top">Inicio</a>
+          <a href="#productos">Productos</a>
+          <a href="#proyectos">Proyectos</a>
+          <a href="#proceso">Cómo Trabajamos</a>
+          <a href="#contacto">Contacto</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Contacto</div>
+        <div class="footer-contact">
+          <div>WhatsApp<br><span class="footer-contact-strong">+54 9 11 5555-1234</span></div>
+          <div>hola@donteofilo.com.ar</div>
+          <!-- <div><span class="footer-contact-city">Buenos Aires</span><br>Av. Corrientes 1234, CABA</div>
+        <div><span class="footer-contact-city">Tandil</span><br>Av. España 567, Tandil</div> -->
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Horarios</div>
+        <div class="footer-hours">Lun a Vie · 9 a 18h<br>Sáb · 9 a 13h</div>
+        <a href="#contacto" class="btn-primary btn-primary--sm">Pedí tu presupuesto</a>
+      </div>
+    </div>
+    <div class="footer-bottom-wrap">
+      <div class="footer-bottom">
+        <span>© 2026 Don Teófilo Amoblamientos. Todos los derechos reservados.</span>
+        <span>Diseño y desarrollo por ADLA</span>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/5491155551234" target="_blank" rel="noopener" class="whatsapp-float"
+    aria-label="Escribinos por WhatsApp">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+      <path
+        d="M17.5 14.4c-.3-.15-1.7-.84-1.96-.93-.26-.1-.45-.15-.64.14-.19.29-.74.93-.9 1.12-.17.19-.33.21-.62.07-.29-.15-1.22-.45-2.32-1.43-.86-.77-1.44-1.71-1.6-2-.17-.29-.02-.45.12-.6.13-.13.29-.33.43-.5.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.15-.64-1.55-.88-2.12-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-1 .98-1 2.38s1.02 2.76 1.17 2.95c.14.19 2.01 3.07 4.87 4.31.68.29 1.21.47 1.62.6.68.22 1.3.19 1.79.11.55-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34z" />
+      <path
+        d="M12 2C6.5 2 2 6.5 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.05-1.35A9.94 9.94 0 0 0 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.7 0-3.28-.5-4.6-1.36l-.33-.2-2.98.79.8-2.92-.22-.34A8.13 8.13 0 0 1 3.8 12c0-4.52 3.68-8.2 8.2-8.2s8.2 3.68 8.2 8.2-3.68 8.2-8.2 8.2z" />
+    </svg>
   </a>
-  <div class="nav-links">
-    <a href="#top" class="nav-link">Inicio</a>
-    <a href="#productos" class="nav-link">Productos</a>
-    <a href="#proyectos" class="nav-link">Proyectos</a>
-    <a href="#proceso" class="nav-link">Cómo Trabajamos</a>
-    <a href="#contacto" class="nav-link">Contacto</a>
-    <a href="https://wa.me/5491155551234" target="_blank" rel="noopener" class="btn-pill">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.7-.84-1.96-.93-.26-.1-.45-.15-.64.14-.19.29-.74.93-.9 1.12-.17.19-.33.21-.62.07-.29-.15-1.22-.45-2.32-1.43-.86-.77-1.44-1.71-1.6-2-.17-.29-.02-.45.12-.6.13-.13.29-.33.43-.5.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.15-.64-1.55-.88-2.12-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-1 .98-1 2.38s1.02 2.76 1.17 2.95c.14.19 2.01 3.07 4.87 4.31.68.29 1.21.47 1.62.6.68.22 1.3.19 1.79.11.55-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.05-1.35A9.94 9.94 0 0 0 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.7 0-3.28-.5-4.6-1.36l-.33-.2-2.98.79.8-2.92-.22-.34A8.13 8.13 0 0 1 3.8 12c0-4.52 3.68-8.2 8.2-8.2s8.2 3.68 8.2 8.2-3.68 8.2-8.2 8.2z"/></svg>
-      Contactanos
-    </a>
-  </div>
-  <button class="nav-burger" id="navBurger" aria-label="Abrir menú" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
 
-<div class="nav-mobile" id="navMobile">
-  <a href="#top" class="nav-mobile-link">Inicio</a>
-  <a href="#productos" class="nav-mobile-link">Productos</a>
-  <a href="#proyectos" class="nav-mobile-link">Proyectos</a>
-  <a href="#proceso" class="nav-mobile-link">Cómo Trabajamos</a>
-  <a href="#contacto" class="nav-mobile-link">Contacto</a>
-</div>
-
-<section id="top" class="hero">
-  <div class="hero-slides" id="heroSlides">
-    <div class="hero-slide hero-slide--0 active"></div>
-    <div class="hero-slide hero-slide--1"></div>
-    <div class="hero-slide hero-slide--2"></div>
-    <div class="hero-slide hero-slide--3"></div>
-  </div>
-  <div class="hero-scrim-x"></div>
-  <div class="hero-scrim-y"></div>
-
-  <div class="hero-content">
-    <div class="hero-inner">
-      <div class="hero-eyebrow">
-        <span class="hero-eyebrow-line"></span>
-        <span>Desde 2011 — Buenos Aires &amp; Tandil</span>
-      </div>
-      <h1 class="hero-title" id="heroTitle">Cocinas que inspiran</h1>
-      <p class="hero-sub">Proyectos integrales de carpintería a medida. Cocinas, placards, vanitorys, aberturas y más.</p>
-      <div class="hero-ctas">
-        <a href="#productos" class="btn-primary">Ver Productos</a>
-        <a href="#proyectos" class="btn-outline">Conocé nuestro trabajo</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="hero-progress" id="heroProgress">
-    <button class="hero-progress-seg" data-slide="0" aria-label="Slide 1"><div class="hero-progress-fill" data-fill="0"></div></button>
-    <button class="hero-progress-seg" data-slide="1" aria-label="Slide 2"><div class="hero-progress-fill" data-fill="1"></div></button>
-    <button class="hero-progress-seg" data-slide="2" aria-label="Slide 3"><div class="hero-progress-fill" data-fill="2"></div></button>
-    <button class="hero-progress-seg" data-slide="3" aria-label="Slide 4"><div class="hero-progress-fill" data-fill="3"></div></button>
-  </div>
-
-  <div class="hero-scroll-hint">
-    <span>Descubrí más</span>
-    <svg width="16" height="30" viewBox="0 0 16 30" fill="none"><path d="M8 1v24M2 19l6 6 6-6" stroke="rgba(255,255,255,.8)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </div>
-</section>
-
-<section class="stats">
-  <div class="stats-grid">
-    <div class="stat" data-reveal>
-      <div class="stat-num" data-count="13" data-prefix="+">0</div>
-      <div class="stat-label">años de experiencia</div>
-    </div>
-    <div class="stat" data-reveal data-reveal-delay="100">
-      <div class="stat-num" data-count="500" data-prefix="+">0</div>
-      <div class="stat-label">proyectos realizados</div>
-    </div>
-    <div class="stat" data-reveal data-reveal-delay="200">
-      <div class="stat-num" data-count="2">0</div>
-      <div class="stat-label">sedes: BsAs &amp; Tandil</div>
-    </div>
-    <div class="stat stat--text" data-reveal data-reveal-delay="300">
-      <div class="stat-phrase">Y donde nos<br>necesites</div>
-      <div class="stat-label">llegamos a vos</div>
-    </div>
-  </div>
-</section>
-
-<section id="productos" class="products">
-  <div class="section-head" data-reveal>
-    <div class="section-eyebrow">
-      <span class="section-eyebrow-line"></span>
-      <span>Nuestros servicios</span>
-    </div>
-    <h2 class="section-title">Lo que mejor hacemos</h2>
-    <p class="section-lead">Cada proyecto es único, cada espacio merece lo mejor.</p>
-  </div>
-
-  <div class="products-grid">
-    <article class="product-card" data-reveal>
-      <div class="product-img product-img--1"></div>
-      <h3>Cocinas a medida</h3>
-      <p>Diseñamos y fabricamos cocinas completas adaptadas a tu espacio y estilo de vida. Materiales premium, terminaciones impecables.</p>
-      <span class="product-link">Ver más →</span>
-    </article>
-    <article class="product-card" data-reveal data-reveal-delay="90">
-      <div class="product-img product-img--2"></div>
-      <h3>Placards e interiores</h3>
-      <p>Soluciones de guardado inteligentes. Diseño interior funcional con la calidez de la madera.</p>
-      <span class="product-link">Ver más →</span>
-    </article>
-    <article class="product-card" data-reveal data-reveal-delay="180">
-      <div class="product-img product-img--3"></div>
-      <h3>Vanitorys</h3>
-      <p>Muebles de baño que combinan diseño y resistencia. Cada pieza pensada para durar.</p>
-      <span class="product-link">Ver más →</span>
-    </article>
-    <article class="product-card" data-reveal>
-      <div class="product-img product-img--4"></div>
-      <h3>Aberturas</h3>
-      <p>Puertas, ventanas y aberturas en madera maciza. Aislación, seguridad y estética.</p>
-      <span class="product-link">Ver más →</span>
-    </article>
-    <article class="product-card" data-reveal data-reveal-delay="90">
-      <div class="product-img product-img--5"></div>
-      <h3>Alacenas y vestidores</h3>
-      <p>Espacios de guardado diseñados al centímetro para aprovechar cada rincón.</p>
-      <span class="product-link">Ver más →</span>
-    </article>
-    <article class="product-card" data-reveal data-reveal-delay="180">
-      <div class="product-img product-img--6"></div>
-      <h3>Diseño integral</h3>
-      <p>Te acompañamos desde la idea hasta la instalación. Proyecto completo llave en mano.</p>
-      <span class="product-link">Ver más →</span>
-    </article>
-  </div>
-</section>
-
-<section id="proyectos" class="featured">
-  <div class="featured-grid">
-    <div class="ba-slider" id="baSlider">
-      <div class="ba-after"></div>
-      <div class="ba-tag ba-tag--after">Después</div>
-      <div class="ba-before-wrap" id="baBeforeWrap">
-        <div class="ba-before"></div>
-        <div class="ba-tag ba-tag--before">Antes</div>
-      </div>
-      <div class="ba-handle" id="baHandle">
-        <div class="ba-handle-btn">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg>
-        </div>
-      </div>
-    </div>
-    <div class="featured-copy">
-      <span class="featured-num">01</span>
-      <div data-reveal>
-        <span class="section-eyebrow-solo">Proyecto destacado</span>
-        <h2 class="featured-title">Cocina completa<br>— Palermo, Buenos Aires</h2>
-        <p class="featured-desc">Renovación integral de cocina en departamento. Muebles bajo y sobre mesada en melamina roble, mesada de cuarzo, alacena esquinera con herrajes de cierre suave.</p>
-        <div class="featured-facts">
-          <div><div class="featured-fact-label">Duración</div><div class="featured-fact-val">3 semanas</div></div>
-          <div><div class="featured-fact-label">Ubicación</div><div class="featured-fact-val">Palermo, CABA</div></div>
-        </div>
-        <a href="#proyectos" class="link-arrow">Ver todos los proyectos →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="proceso" class="process">
-  <div class="section-head" data-reveal>
-    <div class="section-eyebrow">
-      <span class="section-eyebrow-line"></span>
-      <span>El proceso</span>
-    </div>
-    <h2 class="section-title">Cómo trabajamos</h2>
-    <p class="section-lead">Un proceso simple, transparente y sin sorpresas.</p>
-  </div>
-
-  <div class="process-grid">
-    <div class="process-step" data-reveal>
-      <span class="process-num">01</span>
-      <div class="process-icon">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15.5v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 1 2.7 2 2 0 0 1 3 .5h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7 8a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg>
-      </div>
-      <h3>Nos contactás</h3>
-      <p>Contanos tu idea por WhatsApp o completá el formulario. Te respondemos en menos de 24hs.</p>
-    </div>
-    <div class="process-step process-step--bordered" data-reveal data-reveal-delay="120">
-      <span class="process-num">02</span>
-      <div class="process-icon">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l10-10 10 10-10 10z"/><path d="M6 12h2M10 8v2M14 12h2M12 14v2" opacity=".7"/></svg>
-      </div>
-      <h3>Diseñamos juntos</h3>
-      <p>Visitamos tu espacio, tomamos medidas y te presentamos un diseño a medida con presupuesto detallado.</p>
-    </div>
-    <div class="process-step process-step--bordered" data-reveal data-reveal-delay="240">
-      <span class="process-num">03</span>
-      <div class="process-icon">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h13l5 5-5 5H3z"/><path d="M3 7v10M7 7v10M11 7v10" opacity=".6"/></svg>
-      </div>
-      <h3>Fabricamos</h3>
-      <p>Nuestro taller produce cada pieza con materiales seleccionados y control de calidad en cada etapa.</p>
-    </div>
-    <div class="process-step process-step--bordered" data-reveal data-reveal-delay="360">
-      <span class="process-num">04</span>
-      <div class="process-icon">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V10l9-7 9 7v11z"/><path d="M9 21v-6h6v6" opacity=".7"/></svg>
-      </div>
-      <h3>Instalamos</h3>
-      <p>Instalación profesional, limpieza y entrega. Tu espacio listo para disfrutar.</p>
-    </div>
-  </div>
-</section>
-
-<section class="testimonials">
-  <div class="testimonials-inner" data-reveal>
-    <h2 class="section-title testimonials-title">Lo que dicen nuestros clientes</h2>
-    <div class="stars">★★★★★</div>
-    <p class="testimonial-quote" id="tQuote">"Transformaron nuestra cocina por completo. El nivel de detalle y la calidad de la madera superaron lo que imaginábamos."</p>
-    <div class="testimonial-name" id="tName">María Fernanda G.</div>
-    <div class="testimonial-project" id="tProject">Cocina completa — Palermo, CABA</div>
-    <div class="testimonial-controls">
-      <button class="t-arrow" id="tPrev" aria-label="Anterior">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <div class="t-dots" id="tDots">
-        <button class="t-dot active" data-t="0" aria-label="Testimonio 1"></button>
-        <button class="t-dot" data-t="1" aria-label="Testimonio 2"></button>
-        <button class="t-dot" data-t="2" aria-label="Testimonio 3"></button>
-      </div>
-      <button class="t-arrow" id="tNext" aria-label="Siguiente">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-      </button>
-    </div>
-    <div class="google-reviews">Google Reviews <span class="stars-inline">★★★★★</span> · 4,9 / 5</div>
-  </div>
-</section>
-
-<section id="contacto" class="cta">
-  <div class="cta-bg"></div>
-  <div class="cta-scrim"></div>
-  <div class="cta-inner" data-reveal>
-    <h2 class="cta-title">¿Tenés un proyecto en mente?</h2>
-    <p class="cta-sub">Contanos tu idea y te ayudamos a hacerla realidad. Presupuesto sin compromiso.</p>
-    <a href="https://wa.me/5491155551234" target="_blank" rel="noopener" class="btn-whatsapp">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.7-.84-1.96-.93-.26-.1-.45-.15-.64.14-.19.29-.74.93-.9 1.12-.17.19-.33.21-.62.07-.29-.15-1.22-.45-2.32-1.43-.86-.77-1.44-1.71-1.6-2-.17-.29-.02-.45.12-.6.13-.13.29-.33.43-.5.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.15-.64-1.55-.88-2.12-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-1 .98-1 2.38s1.02 2.76 1.17 2.95c.14.19 2.01 3.07 4.87 4.31.68.29 1.21.47 1.62.6.68.22 1.3.19 1.79.11.55-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.05-1.35A9.94 9.94 0 0 0 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.7 0-3.28-.5-4.6-1.36l-.33-.2-2.98.79.8-2.92-.22-.34A8.13 8.13 0 0 1 3.8 12c0-4.52 3.68-8.2 8.2-8.2s8.2 3.68 8.2 8.2-3.68 8.2-8.2 8.2z"/></svg>
-      Escribinos por WhatsApp
-    </a>
-    <div class="cta-alt"><a href="#contacto-form">O completá el formulario de contacto →</a></div>
-  </div>
-</section>
-
-<section class="instagram">
-  <div class="instagram-head">
-    <span>Seguinos en Instagram · <a href="https://instagram.com/donteofiloamoblamientos" target="_blank" rel="noopener">@donteofiloamoblamientos</a></span>
-  </div>
-  <div class="instagram-grid">
-    <a href="#" class="ig-tile ig-tile--1"><span class="ig-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#fff"/></svg></span></a>
-    <a href="#" class="ig-tile ig-tile--2"><span class="ig-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#fff"/></svg></span></a>
-    <a href="#" class="ig-tile ig-tile--3"><span class="ig-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#fff"/></svg></span></a>
-    <a href="#" class="ig-tile ig-tile--4"><span class="ig-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#fff"/></svg></span></a>
-    <a href="#" class="ig-tile ig-tile--5"><span class="ig-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#fff"/></svg></span></a>
-    <a href="#" class="ig-tile ig-tile--6"><span class="ig-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#fff"/></svg></span></a>
-  </div>
-</section>
-
-<footer class="footer">
-  <div class="footer-grid">
-    <div>
-      <div class="footer-brand">DON TEÓFILO</div>
-      <p class="footer-tagline">Carpintería a medida desde 2011.</p>
-      <div class="footer-social">
-        <a href="https://instagram.com/donteofiloamoblamientos" target="_blank" rel="noopener" class="footer-social-btn footer-social-btn--ig" aria-label="Instagram">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
-        </a>
-        <a href="https://wa.me/5491155551234" target="_blank" rel="noopener" class="footer-social-btn footer-social-btn--wa" aria-label="WhatsApp">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.05-1.35A9.94 9.94 0 0 0 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.7 0-3.28-.5-4.6-1.36l-.33-.2-2.98.79.8-2.92-.22-.34A8.13 8.13 0 0 1 3.8 12c0-4.52 3.68-8.2 8.2-8.2s8.2 3.68 8.2 8.2-3.68 8.2-8.2 8.2zm4.5-6.4c-.25-.12-1.47-.72-1.7-.8-.23-.09-.4-.13-.56.12-.16.25-.63.8-.78.96-.14.17-.29.19-.53.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.09-.16.04-.31-.02-.43-.06-.13-.56-1.34-.76-1.83-.2-.48-.4-.42-.55-.42h-.48c-.16 0-.43.06-.65.31-.23.25-.86.85-.86 2.06s.88 2.39 1 2.55c.13.17 1.74 2.66 4.22 3.73.59.25 1.05.4 1.41.52.59.19 1.13.16 1.56.1.47-.07 1.47-.6 1.68-1.18.2-.58.2-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/></svg>
-        </a>
-      </div>
-    </div>
-    <div>
-      <div class="footer-heading">Navegación</div>
-      <div class="footer-links">
-        <a href="#top">Inicio</a>
-        <a href="#productos">Productos</a>
-        <a href="#proyectos">Proyectos</a>
-        <a href="#proceso">Cómo Trabajamos</a>
-        <a href="#contacto">Contacto</a>
-      </div>
-    </div>
-    <div>
-      <div class="footer-heading">Contacto</div>
-      <div class="footer-contact">
-        <div>WhatsApp<br><span class="footer-contact-strong">+54 9 11 5555-1234</span></div>
-        <div>hola@donteofilo.com.ar</div>
-        <div><span class="footer-contact-city">Buenos Aires</span><br>Av. Corrientes 1234, CABA</div>
-        <div><span class="footer-contact-city">Tandil</span><br>Av. España 567, Tandil</div>
-      </div>
-    </div>
-    <div>
-      <div class="footer-heading">Horarios</div>
-      <div class="footer-hours">Lun a Vie · 9 a 18h<br>Sáb · 9 a 13h</div>
-      <a href="#contacto" class="btn-primary btn-primary--sm">Pedí tu presupuesto</a>
-    </div>
-  </div>
-  <div class="footer-bottom-wrap">
-    <div class="footer-bottom">
-      <span>© 2026 Don Teófilo Amoblamientos. Todos los derechos reservados.</span>
-      <span>Diseño y desarrollo por ADLA</span>
-    </div>
-  </div>
-</footer>
-
-<a href="https://wa.me/5491155551234" target="_blank" rel="noopener" class="whatsapp-float" aria-label="Escribinos por WhatsApp">
-  <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.7-.84-1.96-.93-.26-.1-.45-.15-.64.14-.19.29-.74.93-.9 1.12-.17.19-.33.21-.62.07-.29-.15-1.22-.45-2.32-1.43-.86-.77-1.44-1.71-1.6-2-.17-.29-.02-.45.12-.6.13-.13.29-.33.43-.5.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.15-.64-1.55-.88-2.12-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-1 .98-1 2.38s1.02 2.76 1.17 2.95c.14.19 2.01 3.07 4.87 4.31.68.29 1.21.47 1.62.6.68.22 1.3.19 1.79.11.55-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.05-1.35A9.94 9.94 0 0 0 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.7 0-3.28-.5-4.6-1.36l-.33-.2-2.98.79.8-2.92-.22-.34A8.13 8.13 0 0 1 3.8 12c0-4.52 3.68-8.2 8.2-8.2s8.2 3.68 8.2 8.2-3.68 8.2-8.2 8.2z"/></svg>
-</a>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,51 @@
+.proy-card{
+  display:flex;flex-direction:column;background:#fff;border-radius:22px;overflow:hidden;
+  box-shadow:0 14px 34px -24px rgba(26,26,26,.28);
+  transition:box-shadow .4s cubic-bezier(.22,.61,.36,1),transform .4s cubic-bezier(.22,.61,.36,1);
+}
+.proy-card:hover{box-shadow:0 30px 56px -22px rgba(26,26,26,.32);transform:translateY(-4px)}
+
+.proy-card-media{position:relative;display:block;overflow:hidden;background:var(--bg-alt)}
+.proy-card-media img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .6s cubic-bezier(.22,.61,.36,1);
+}
+.proy-card:hover .proy-card-media img{transform:scale(1.06)}
+
+.proy-card-info{padding:24px 26px 26px;display:flex;flex-direction:column;gap:8px;flex:1}
+.proy-card-cat{
+  align-self:flex-start;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;
+  color:var(--accent);background:rgba(196,131,106,.12);padding:5px 12px;border-radius:30px;margin-bottom:4px;
+}
+.proy-card-title{font-family:'Newsreader',serif;font-weight:600;margin:0;line-height:1.12}
+.proy-card-blurb{
+  font-size:14.5px;line-height:1.55;color:var(--muted);font-weight:300;margin:0;
+  display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;
+}
+.proy-card-link{
+  margin-top:auto;padding-top:10px;display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--accent);
+}
+.proy-card-link span{transition:transform .25s ease}
+.proy-card:hover .proy-card-link span{transform:translateX(3px)}
+
+/* tamaño grande — los primeros 3, grid destacado */
+.proy-card--lg .proy-card-media{aspect-ratio:16/10}
+.proy-card--lg .proy-card-title{font-size:clamp(21px,2.3vw,28px)}
+.proy-card--lg .proy-card-blurb{-webkit-line-clamp:2;font-size:15px}
+
+.proy-card--wide .proy-card-media{aspect-ratio:21/9}
+.proy-card--wide .proy-card-title{font-size:clamp(25px,2.9vw,36px)}
+.proy-card--wide .proy-card-info{padding:28px 32px 32px}
+.proy-card--wide .proy-card-blurb{-webkit-line-clamp:2;font-size:16px;max-width:640px}
+
+/* tamaño chico — el resto, detrás de "Ver más proyectos" */
+.proy-card--sm .proy-card-media{aspect-ratio:4/3}
+.proy-card--sm .proy-card-title{font-size:18px}
+.proy-card--sm .proy-card-blurb{-webkit-line-clamp:2;font-size:13.5px}
+.proy-card--sm .proy-card-info{padding:18px 18px 20px}
+
+@media (max-width:640px){
+  .proy-card--wide .proy-card-media{aspect-ratio:4/3}
+  .proy-card--wide .proy-card-info{padding:22px 20px 24px}
+}

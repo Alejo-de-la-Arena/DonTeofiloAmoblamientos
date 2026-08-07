@@ -70,9 +70,14 @@ export default function Productos() {
     setSearch('');
   }
 
+  function handleHeroCategorySelect(categoria) {
+    setCategoria(categoria);
+    document.getElementById('catalogo')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   return (
     <>
-      <ProductosHero />
+      <ProductosHero onCategorySelect={handleHeroCategorySelect} />
       <ProductFilterBar
         categories={['Todos', ...CATEGORIAS]}
         activeCategory={categoria}
@@ -89,7 +94,7 @@ export default function Productos() {
         hasFilters={hasFilters}
         onClearAll={clearAll}
       />
-      <div className="catalog-main-wrap">
+      <div id="catalogo" className="catalog-main-wrap">
         <main className="catalog-main">
           {loading && <p className="catalog-status">Cargando catálogo…</p>}
           {!loading && loadError && <p className="catalog-status catalog-status--error">{loadError}</p>}

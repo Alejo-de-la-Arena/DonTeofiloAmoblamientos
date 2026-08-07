@@ -5,7 +5,6 @@
   position:absolute;inset:0;background-size:cover;background-position:center;
   will-change:transform,opacity;
 }
-.proy-hero-frame--before{filter:grayscale(.5) brightness(.85)}
 .proy-hero-grain{
   position:absolute;inset:0;opacity:.08;mix-blend-mode:overlay;pointer-events:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
@@ -18,9 +17,34 @@
   position:absolute;left:clamp(20px,5vw,72px);right:clamp(20px,5vw,72px);bottom:clamp(48px,7vw,88px);
 }
 .proy-hero-inner{max-width:1300px;margin:0 auto}
+.proy-hero-title-row{display:flex;align-items:baseline;flex-wrap:wrap;column-gap:18px;row-gap:6px;margin-bottom:26px}
 .proy-hero-title{
   font-family:'Newsreader',serif;font-weight:600;color:#fff;font-size:clamp(52px,9vw,120px);
-  line-height:.9;margin:0 0 26px;letter-spacing:-.02em;
+  line-height:.9;margin:0;letter-spacing:-.02em;
+}
+
+/* Indicador discreto junto al título — un punto vivo + texto chico, en vez del badge
+   central de antes que le competía visualmente a la foto. */
+.proy-hero-label{display:inline-flex;align-items:center;gap:9px}
+.proy-hero-label-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--accent);flex:0 0 auto;
+  animation:proyDotPulse 2.4s ease-out infinite;
+}
+@keyframes proyDotPulse{
+  0%{box-shadow:0 0 0 0 rgba(196,131,106,.5)}
+  70%{box-shadow:0 0 0 7px rgba(196,131,106,0)}
+  100%{box-shadow:0 0 0 0 rgba(196,131,106,0)}
+}
+.proy-hero-label-text{
+  display:inline-block;overflow:hidden;
+  font-family:'DM Sans',sans-serif;font-size:11.5px;font-weight:600;letter-spacing:.22em;
+  text-transform:uppercase;color:rgba(255,255,255,.72);
+}
+.proy-hero-label-text span{display:inline-block}
+
+@media (max-width:640px){
+  .proy-hero-title-row{column-gap:12px}
+  .proy-hero-label-text{font-size:10.5px;letter-spacing:.18em}
 }
 .proy-hero-meta{display:flex;align-items:center;gap:20px}
 .proy-hero-count{

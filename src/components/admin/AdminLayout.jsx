@@ -20,6 +20,7 @@ export default function AdminLayout() {
         </div>
         <nav className="admin-topbar-nav">
           <Link to="/admin/productos">Productos</Link>
+          <Link to="/admin/proyectos">Proyectos</Link>
           <a href="/" target="_blank" rel="noopener">
             Ver sitio ↗
           </a>

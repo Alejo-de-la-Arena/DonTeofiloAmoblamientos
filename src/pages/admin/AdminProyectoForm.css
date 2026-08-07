@@ -1,0 +1,7 @@
+/* Reglas propias de este form — las genéricas (admin-form, admin-field, admin-btn-*, etc.)
+   viven en AdminProductoForm.css y se reusan tal cual, sin duplicarlas acá. */
+.admin-portada-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+@media (max-width:640px){
+  .admin-portada-grid{grid-template-columns:1fr}
+}

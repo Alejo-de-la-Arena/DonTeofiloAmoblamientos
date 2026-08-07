@@ -1,6 +1,7 @@
+.admin-form-page{max-width:760px;margin:0 auto}
 .admin-form-page h1{font-family:'Newsreader',serif;font-weight:600;font-size:24px;margin:0 0 20px}
 .admin-form{
-  background:#fff;border:1px solid var(--border);border-radius:8px;padding:28px;max-width:760px;
+  background:#fff;border:1px solid var(--border);border-radius:8px;padding:28px;
   display:flex;flex-direction:column;gap:20px;
 }
 

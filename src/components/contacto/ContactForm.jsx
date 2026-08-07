@@ -13,12 +13,12 @@ const SEGMENTS = [
 const FIELD_SCHEMA = {
   general: [
     { key: 'nombre', label: 'Nombre', kind: 'text' },
-    { key: 'tel', label: 'Teléfono / WhatsApp', kind: 'text' },
+    { key: 'tel', label: 'Teléfono / WhatsApp', kind: 'text', type: 'tel' },
     { key: 'mensaje', label: 'Contanos qué necesitás', kind: 'area' },
   ],
   cocina: [
     { key: 'nombre', label: 'Nombre', kind: 'text' },
-    { key: 'tel', label: 'Teléfono / WhatsApp', kind: 'text' },
+    { key: 'tel', label: 'Teléfono / WhatsApp', kind: 'text', type: 'tel' },
     { key: 'ciudad', label: 'Ciudad', kind: 'text' },
     { key: 'alcance', label: '¿Cocina completa o parcial?', kind: 'radio', options: ['Completa', 'Parcial'] },
     { key: 'metros', label: 'Metros aproximados', kind: 'text' },
@@ -26,14 +26,14 @@ const FIELD_SCHEMA = {
   ],
   placard: [
     { key: 'nombre', label: 'Nombre', kind: 'text' },
-    { key: 'tel', label: 'Teléfono / WhatsApp', kind: 'text' },
+    { key: 'tel', label: 'Teléfono / WhatsApp', kind: 'text', type: 'tel' },
     { key: 'ciudad', label: 'Ciudad', kind: 'text' },
     { key: 'ambiente', label: 'Ambiente', kind: 'radio', options: ['Dormitorio', 'Living', 'Otro'] },
     { key: 'medidas', label: 'Medidas aproximadas (si las tenés)', kind: 'text' },
   ],
   otro: [
     { key: 'nombre', label: 'Nombre', kind: 'text' },
-    { key: 'tel', label: 'Teléfono / WhatsApp', kind: 'text' },
+    { key: 'tel', label: 'Teléfono / WhatsApp', kind: 'text', type: 'tel' },
     { key: 'ciudad', label: 'Ciudad', kind: 'text' },
     { key: 'descripcion', label: 'Descripción del proyecto', kind: 'area' },
   ],
@@ -47,13 +47,14 @@ function SegmentButton({ active, label, onClick }) {
   );
 }
 
-function FloatingField({ field, value, focused, onInput, onFocus, onBlur }) {
+function FloatingField({ field, value, focused, error, onInput, onFocus, onBlur }) {
   const active = focused || value.length > 0;
   const Tag = field.kind === 'area' ? 'textarea' : 'input';
   return (
-    <div className="floating-field">
+    <div className={`floating-field${error ? ' has-error' : ''}`}>
       <Tag
         className="dtinput"
+        type={field.kind === 'text' ? field.type || 'text' : undefined}
         value={value}
         onChange={(e) => onInput(e.target.value)}
         onFocus={onFocus}
@@ -61,6 +62,7 @@ function FloatingField({ field, value, focused, onInput, onFocus, onBlur }) {
       />
       <label className={`floating-label${active ? ' active' : ''}`}>{field.label}</label>
       <span className={`floating-underline${focused ? ' focused' : ''}`}></span>
+      {error && <span className="floating-error">Falta completar este campo</span>}
     </div>
   );
 }
@@ -120,6 +122,7 @@ export default function ContactForm() {
   const [type, setType] = useState('general');
   const [vals, setVals] = useState({});
   const [focus, setFocus] = useState({});
+  const [errors, setErrors] = useState({});
   const [fade, setFade] = useState(1);
   const [showPreview, setShowPreview] = useState(true);
   const [sent, setSent] = useState(false);
@@ -149,6 +152,7 @@ export default function ContactForm() {
   function handleSetType(t) {
     if (t === type) return;
     setFade(0);
+    setErrors({});
     clearTimeout(fadeTimeoutRef.current);
     fadeTimeoutRef.current = setTimeout(() => {
       setType(t);
@@ -174,6 +178,12 @@ export default function ContactForm() {
 
   function handleSubmit() {
     if (sent) return;
+    const required = ['nombre', 'tel'].filter((key) => FIELD_SCHEMA[type].some((f) => f.key === key));
+    const newErrors = {};
+    required.forEach((key) => {
+      if (!vals[key] || !String(vals[key]).trim()) newErrors[key] = true;
+    });
+    setErrors(newErrors);
     setSent(true);
     const msg = encodeURIComponent(buildMessage());
     sentTimeoutRef.current = setTimeout(() => {
@@ -213,7 +223,11 @@ export default function ContactForm() {
                 field={f}
                 value={vals[f.key] || ''}
                 focused={!!focus[f.key]}
-                onInput={(v) => setVals((prev) => ({ ...prev, [f.key]: v }))}
+                error={!!errors[f.key]}
+                onInput={(v) => {
+                  setVals((prev) => ({ ...prev, [f.key]: v }));
+                  if (errors[f.key]) setErrors((prev) => ({ ...prev, [f.key]: false }));
+                }}
                 onFocus={() => setFocus((prev) => ({ ...prev, [f.key]: true }))}
                 onBlur={() => setFocus((prev) => ({ ...prev, [f.key]: false }))}
               />

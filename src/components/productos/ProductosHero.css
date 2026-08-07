@@ -1,22 +1,248 @@
-.catalog-hero{position:relative;min-height:46vh;overflow:hidden;padding:150px clamp(20px,5vw,72px) 60px}
-.catalog-hero-watermark{
-  position:absolute;left:-3vw;bottom:-6vh;
-  font-family:'Newsreader',serif;font-weight:700;font-size:min(30vw,380px);line-height:.72;
-  color:var(--ink);opacity:.035;pointer-events:none;white-space:nowrap;letter-spacing:-.02em;
+/* El alto disponible para .catalog-hero-inner queda fijado por el inset (100% del hero menos
+   estos paddings), no por contenido — así cada celda de la pila recibe una altura concreta
+   (grid-template-rows:1fr 1fr) y las tarjetas jamás pueden empujar el alto del hero ni
+   desbordarlo, sea cual sea la altura real del viewport. */
+.catalog-hero {
+  position: relative;
+  height: 100vh;
+  min-height: 640px;
+  overflow: hidden;
+  background: var(--bg);
 }
-.catalog-hero-inner{position:relative;max-width:1300px;margin:0 auto}
-.catalog-hero-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:end}
-.catalog-hero-title{
-  font-family:'Newsreader',serif;font-weight:700;font-size:clamp(46px,8vw,104px);line-height:.94;
-  margin:0;letter-spacing:-.02em;
-}
-.catalog-hero-lead{font-size:16px;font-weight:300;line-height:1.65;color:var(--muted);max-width:340px;margin:0 0 14px}
 
-@media (max-width:760px){
-  .catalog-hero{padding-top:120px}
-  .catalog-hero-grid{grid-template-columns:1fr;gap:20px}
-  .catalog-hero-watermark{
-    left:50%;bottom:auto;top:96px;transform:translateX(-50%);
-    font-size:min(48vw,270px);line-height:.7;opacity:.06;letter-spacing:-.01em;
+.catalog-hero-inner {
+  position: absolute;
+  inset: 150px clamp(20px, 5vw, 72px) 48px;
+  max-width: 1300px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  grid-template-rows: minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center;
+}
+
+.catalog-hero-copy {
+  max-width: 520px
+}
+
+.catalog-hero-title {
+  font-family: 'Newsreader', serif;
+  font-weight: 700;
+  font-size: clamp(50px, 7.2vw, 104px);
+  line-height: .92;
+  margin: 22px 0 20px;
+  letter-spacing: -.02em;
+}
+
+.catalog-hero-lead {
+  font-size: 16.5px;
+  font-weight: 300;
+  line-height: 1.68;
+  color: var(--muted);
+  max-width: 400px;
+  margin: 0
+}
+
+/* ---------- pila de muestras ---------- */
+/* Grid 1fr/1fr: la pila siempre ocupa el 100% del alto disponible de su columna, dividido en
+   partes iguales. El desfase visual "escalonado" lo aportan las tarjetas vía transform (ver
+   ProductosHero.jsx), nunca vía margin — un margin infla el alto real de la fila y fue la causa
+   del recorte original. */
+.catalog-hero-stack {
+  position: relative;
+  align-self: stretch;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: clamp(14px, 2.4dvh, 26px);
+}
+
+.catalog-hero-stack::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  right: -14%;
+  width: 62%;
+  height: 62%;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+  opacity: .16;
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.catalog-hero-slot {
+  position: relative;
+  min-width: 0;
+  min-height: 0
+}
+
+.catalog-hero-slot--0 {
+  grid-column: 1;
+  grid-row: 1
+}
+
+.catalog-hero-slot--1 {
+  grid-column: 2;
+  grid-row: 1
+}
+
+.catalog-hero-slot--2 {
+  grid-column: 1;
+  grid-row: 2
+}
+
+.catalog-hero-slot--3 {
+  grid-column: 2;
+  grid-row: 2
+}
+
+.catalog-hero-tile {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--bg-alt);
+  box-shadow: 0 20px 40px -24px rgba(26, 26, 26, .35);
+  border: 1px solid rgba(255, 255, 255, .65);
+}
+
+.catalog-hero-tile img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover
+}
+
+.catalog-hero-tile-label {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  background: rgba(26, 26, 26, .72);
+  color: #fff;
+  backdrop-filter: blur(4px);
+  font-size: 10.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 6px 11px;
+  border-radius: 30px;
+}
+
+/* Tablet: copy y pila se apilan. La fila del copy queda en "auto" (su alto natural, nunca se
+   recorta) y la pila toma el resto vía 1fr — el reparto lo resuelve la grilla, no un cálculo
+   nuestro, así sigue sin poder desbordar sin importar cuánto mida el copy. */
+@media (max-width:1020px) {
+  .catalog-hero-inner {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+    align-items: stretch;
+    gap: clamp(24px, 4vh, 40px);
   }
+
+  .catalog-hero-copy {
+    max-width: none
+  }
+
+  .catalog-hero-stack {
+    max-width: 440px;
+    margin: 0 auto;
+    width: 100%
+  }
+}
+
+/* ---------- mobile (≤760px, mismo corte que el drawer de filtros): markup propio ----------
+   Desde acá para abajo es exclusivo de la rama `isMobile` de ProductosHero.jsx — no comparte
+   clases con el collage de desktop, así que no hay riesgo de que un ajuste acá lo toque. */
+.catalog-hero--mobile {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  min-height: 560px;
+  padding-top: 120px;
+}
+
+.catalog-hero-copy-mobile {
+  flex: 0 0 auto;
+  padding: 0 clamp(20px, 5vw, 72px) 22px;
+}
+
+/* .section-eyebrow es compartido con el resto del sitio, que a ≤640px lo centra (ver
+   global.css) para heros con texto centrado — acá el título y la bajada van a la izquierda,
+   así que el eyebrow tiene que pisar esa regla puntualmente. */
+.catalog-hero-copy-mobile .section-eyebrow {
+  justify-content: flex-start
+}
+
+.catalog-hero-copy-mobile .catalog-hero-title {
+  font-size: clamp(36px, 11.5vw, 52px)
+}
+
+.catalog-hero-copy-mobile .catalog-hero-lead {
+  font-size: 14.5px;
+  line-height: 1.55;
+  max-width: none;
+  margin-top: 12px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+/* El copy queda en su alto natural (nunca se recorta); el carrusel toma exactamente lo que
+   sobra vía flex:1 + min-height:0 — el reparto lo resuelve el navegador, no un número fijo,
+   así el collage de tarjetas jamás puede desbordar el hero sea cual sea la altura real. */
+.catalog-hero-carousel {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline-start: clamp(20px, 5vw, 72px);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 4px 22px 22px clamp(20px, 5vw, 72px);
+}
+
+.catalog-hero-carousel::-webkit-scrollbar {
+  display: none
+}
+
+.catalog-hero-carousel-item {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  position: relative;
+  height: 100%;
+  aspect-ratio: 3/4;
+  max-width: 75vw;
+  padding: 0;
+  background: var(--bg-alt);
+  cursor: pointer;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .65);
+  box-shadow: 0 20px 40px -24px rgba(26, 26, 26, .35);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.catalog-hero-carousel-item img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover
+}
+
+.catalog-hero-carousel-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(0deg, rgba(20, 17, 13, .4) 0%, rgba(20, 17, 13, 0) 40%);
 }

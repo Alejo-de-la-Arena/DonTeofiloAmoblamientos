@@ -15,21 +15,6 @@ export default function InstagramStrip() {
           </a>
         </span>
       </div>
-      <div className="instagram-grid">
-        {TILES.map((n) => (
-          <a
-            key={n}
-            href={INSTAGRAM_URL}
-            target="_blank"
-            rel="noopener"
-            className={`ig-tile ig-tile--${n}`}
-          >
-            <span className="ig-icon">
-              <InstagramIcon size={26} stroke="#fff" />
-            </span>
-          </a>
-        ))}
-      </div>
     </section>
   );
 }

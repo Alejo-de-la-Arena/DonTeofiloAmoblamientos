@@ -8,10 +8,7 @@ export const CONTACT_EMAIL = 'hola@donteofilo.com.ar';
 export const INSTAGRAM_HANDLE = '@donteofiloamoblamientos';
 export const INSTAGRAM_URL = 'https://instagram.com/donteofiloamoblamientos';
 
-export const LOCATIONS = [
-  { city: 'Buenos Aires', address: 'Av. Corrientes 1234, CABA' },
-  { city: 'Tandil', address: 'Av. España 567, Tandil' },
-];
+export const LOCATIONS = [{ city: 'Buenos Aires' }, { city: 'Tandil' }];
 
 export const BUSINESS_HOURS = {
   weekdays: 'Lun a Vie · 9 a 18h',

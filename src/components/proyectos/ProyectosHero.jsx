@@ -57,7 +57,7 @@ export default function ProyectosHero({ count }) {
           <AnimatePresence>
             <motion.div
               key={active}
-              className={`proy-hero-frame${active === 0 ? ' proy-hero-frame--before' : ''}`}
+              className="proy-hero-frame"
               style={{ backgroundImage: `url(${FRAMES[active]})` }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1, scale: 1.09 }}
@@ -74,7 +74,27 @@ export default function ProyectosHero({ count }) {
       <div className="proy-hero-scrim" />
       <div className="proy-hero-content">
         <div className="proy-hero-inner">
-          <h1 className="proy-hero-title">Proyectos</h1>
+          <div className="proy-hero-title-row">
+            <h1 className="proy-hero-title">Proyectos</h1>
+            {!showVideo && (
+              <span className="proy-hero-label">
+                <span className="proy-hero-label-dot" aria-hidden="true" />
+                <span className="proy-hero-label-text">
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={active}
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.45, ease: 'easeInOut' }}
+                    >
+                      {active === 0 ? 'Antes' : 'Después'}
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
+              </span>
+            )}
+          </div>
           <div className="proy-hero-meta">
             <span className="proy-hero-count">{count} proyectos seleccionados</span>
             <span className="proy-hero-line" />

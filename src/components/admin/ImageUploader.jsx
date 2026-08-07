@@ -1,17 +1,23 @@
 import { useCallback, useRef, useState } from 'react';
-import {
-  uploadProductoImagen,
-  deleteProductoImagen,
-  reorderProductoImagenes,
-} from '../../lib/productosApi';
 import './ImageUploader.css';
 
 let stagedIdSeq = 0;
 
-// productoId === null  → modo "alta": los archivos quedan en memoria (solo preview) hasta
-//   que el producto se cree y el padre los suba en orden vía onStagedFilesChange.
-// productoId presente  → modo "edición": cada archivo se sube al instante a Storage + DB.
-export default function ImageUploader({ productoId, initialImages = [], onStagedFilesChange }) {
+// Galería multi-imagen reordenable, genérica: quien la usa inyecta sus propias funciones de
+// Storage/DB (uploadFn/deleteFn/reorderFn) — así sirve tanto para producto_imagenes como para
+// proyecto_imagenes sin duplicar la lógica de staging/drag-reorder.
+//
+// parentId === null  → modo "alta": los archivos quedan en memoria (solo preview) hasta
+//   que el registro padre se cree y el padre los suba en orden vía onStagedFilesChange.
+// parentId presente  → modo "edición": cada archivo se sube al instante a Storage + DB.
+export default function ImageUploader({
+  parentId,
+  initialImages = [],
+  onStagedFilesChange,
+  uploadFn,
+  deleteFn,
+  reorderFn,
+}) {
   const [persisted, setPersisted] = useState(
     [...initialImages].sort((a, b) => a.orden - b.orden)
   );
@@ -33,7 +39,7 @@ export default function ImageUploader({ productoId, initialImages = [], onStaged
     if (files.length === 0) return;
     setError('');
 
-    if (!productoId) {
+    if (!parentId) {
       const additions = files.map((file) => ({
         stagedId: `staged-${stagedIdSeq++}`,
         file,
@@ -51,7 +57,7 @@ export default function ImageUploader({ productoId, initialImages = [], onStaged
     let ordenCounter = persisted.length + staged.length;
     for (const file of files) {
       try {
-        const row = await uploadProductoImagen(productoId, file, ordenCounter);
+        const row = await uploadFn(parentId, file, ordenCounter);
         ordenCounter += 1;
         setPersisted((list) => [...list, row]);
       } catch {
@@ -75,7 +81,7 @@ export default function ImageUploader({ productoId, initialImages = [], onStaged
   async function handleRemovePersisted(img) {
     setPersisted((list) => list.filter((i) => i.id !== img.id));
     try {
-      await deleteProductoImagen(img.id, img.storage_path);
+      await deleteFn(img.id, img.storage_path);
     } catch {
       setError('No pudimos borrar esa imagen. Recargá la página e intentá de nuevo.');
     }
@@ -110,7 +116,7 @@ export default function ImageUploader({ productoId, initialImages = [], onStaged
 
     if (nextPersisted.length > 0) {
       try {
-        await reorderProductoImagenes(nextPersisted.map((img, i) => ({ id: img.id, orden: i })));
+        await reorderFn(nextPersisted.map((img, i) => ({ id: img.id, orden: i })));
       } catch {
         setError('No pudimos guardar el nuevo orden.');
       }

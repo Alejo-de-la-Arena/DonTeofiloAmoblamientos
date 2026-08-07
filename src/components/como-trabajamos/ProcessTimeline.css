@@ -1,20 +1,58 @@
-.work-timeline-section{padding:clamp(70px,10vw,130px) clamp(20px,5vw,72px)}
+/* Misma retícula milimetrada del hero (idénticos valores de opacidad) para que el scroll pase
+   de un "papel" al otro sin corte de lenguaje visual. */
+.work-timeline-section{
+  position:relative;
+  padding:clamp(70px,10vw,130px) clamp(20px,5vw,72px);
+  background-image:
+    linear-gradient(to right, rgba(26,26,26,.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(26,26,26,.04) 1px, transparent 1px),
+    linear-gradient(to right, rgba(26,26,26,.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(26,26,26,.02) 1px, transparent 1px);
+  background-size:40px 40px,40px 40px,8px 8px,8px 8px;
+}
+
 .work-timeline{max-width:1080px;margin:0 auto;position:relative;padding-left:clamp(40px,7vw,90px)}
+
+/* ---------- escala vertical (reemplaza la barra de 4px) ---------- */
 .work-timeline-svg{position:absolute;left:clamp(14px,3.4vw,40px);top:8px;width:4px;height:100%}
 
-.work-step{position:relative;margin-bottom:clamp(56px,8vw,96px)}
+/* Graduaciones tipo regla: un patrón repetido a la derecha de la línea, igual criterio que la
+   retícula del hero (gradiente repetido, no imagen). Dos capas superpuestas — pálida de base,
+   terracota encima recortada por altura — así "se miden" a la par que avanza el scroll. */
+.work-timeline-ticks,.work-timeline-ticks-active{
+  position:absolute;left:calc(clamp(14px,3.4vw,40px) + 6px);top:8px;width:6px;pointer-events:none;
+}
+.work-timeline-ticks{
+  height:calc(100% - 16px);
+  background-image:repeating-linear-gradient(to bottom, var(--border-2) 0 1px, transparent 1px 16px);
+}
+.work-timeline-ticks-active{
+  height:0;overflow:hidden;
+  background-image:repeating-linear-gradient(to bottom, var(--accent) 0 1px, transparent 1px 16px);
+}
+
+.work-step{position:relative;margin-bottom:clamp(64px,9vw,104px)}
 .work-step--last{margin-bottom:0}
-.work-step-marker{
-  position:absolute;left:calc(clamp(14px,3.4vw,40px) - 13px);top:2px;width:30px;height:30px;border-radius:50%;
-  background:var(--bg);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;
-  font-family:'Newsreader',serif;font-weight:600;font-size:13px;color:var(--accent);
+
+/* ---------- callout: tick + línea de referencia hasta "Paso 0X" ---------- */
+/* Reemplaza el círculo numerado: la escala "mide" este punto exacto y lo conecta con su
+   anotación mediante una línea de referencia corta — la misma idea del callout del hero
+   (marca + leader + etiqueta), en horizontal y sin el círculo, para no calcarlo. */
+.work-step-callout{
+  position:absolute;left:clamp(14px,3.4vw,40px);top:5px;
+  width:calc(clamp(40px,7vw,90px) - clamp(14px,3.4vw,40px));height:10px;
+  pointer-events:none;
+}
+.work-step-callout::before{
+  content:'';position:absolute;left:0;top:0;width:1.5px;height:10px;background:var(--accent);
+}
+.work-step-callout::after{
+  content:'';position:absolute;left:7px;right:0;top:5px;height:1px;background:var(--accent);opacity:.7;
 }
 
 .work-step-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,56px);align-items:center}
 .work-step-text{order:1}
-.work-step-img{order:2}
-.work-step-grid--reverse .work-step-text{order:2}
-.work-step-grid--reverse .work-step-img{order:1}
+.work-step-frame{order:2}
 
 .work-step-label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-2);font-weight:600}
 .work-step-title{font-family:'Newsreader',serif;font-weight:600;font-size:clamp(26px,3vw,36px);line-height:1.05;margin:10px 0 16px}
@@ -23,10 +61,20 @@
 .work-step-subs li{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;color:var(--muted);line-height:1.5}
 .work-step-dash{color:var(--accent);font-weight:700;margin-top:1px}
 
-.work-step-img{aspect-ratio:5/4;border-radius:4px;overflow:hidden;background-size:cover;background-position:center;box-shadow:0 24px 50px -28px rgba(0,0,0,.35)}
+/* ---------- foto: ficha técnica, no polaroid ---------- */
+.work-step-frame{
+  position:relative;aspect-ratio:5/4;border-radius:4px;overflow:hidden;
+  border:1px solid var(--border-2);
+}
+.work-step-frame img{width:100%;height:100%;object-fit:cover;display:block}
+.work-step-frame::before,.work-step-frame::after{
+  content:'';position:absolute;width:18px;height:18px;pointer-events:none;opacity:.75;
+}
+.work-step-frame::before{top:-1px;left:-1px;border-top:1.5px solid var(--accent);border-left:1.5px solid var(--accent)}
+.work-step-frame::after{bottom:-1px;right:-1px;border-bottom:1.5px solid var(--accent);border-right:1.5px solid var(--accent)}
 
 @media (max-width:700px){
-  .work-step-grid,.work-step-grid--reverse{grid-template-columns:1fr}
-  .work-step-text,.work-step-grid--reverse .work-step-text{order:2}
-  .work-step-img,.work-step-grid--reverse .work-step-img{order:1}
+  .work-step-grid{grid-template-columns:1fr}
+  .work-step-text{order:2}
+  .work-step-frame{order:1}
 }

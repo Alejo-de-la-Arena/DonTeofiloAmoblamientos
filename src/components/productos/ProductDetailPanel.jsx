@@ -66,11 +66,11 @@ export default function ProductDetailPanel({ product, onClose }) {
             <div className="catalog-panel-body">
               <div className="catalog-panel-cat">{product.categoria}</div>
               <h2 className="catalog-panel-name">{product.nombre}</h2>
-              <div className="catalog-panel-price">
-                {product.mostrar_precio && product.precio != null
-                  ? `$${Number(product.precio).toLocaleString('es-AR')}`
-                  : 'Consultar'}
-              </div>
+              {product.mostrar_precio && product.precio != null && (
+                <div className="catalog-panel-price">
+                  ${Number(product.precio).toLocaleString('es-AR')}
+                </div>
+              )}
               {product.descripcion && <p className="catalog-panel-desc">{product.descripcion}</p>}
 
               <div className="catalog-panel-spec-label">Ficha técnica</div>

@@ -70,8 +70,6 @@ export default function Footer() {
             {LOCATIONS.map((loc) => (
               <div key={loc.city}>
                 <span className="footer-contact-city">{loc.city}</span>
-                <br />
-                {loc.address}
               </div>
             ))}
           </div>
