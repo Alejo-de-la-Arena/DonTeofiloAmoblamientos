@@ -23,6 +23,9 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc }) {
 
     function onMove(ev) {
       if (!draggingRef.current) return;
+      // preventDefault mientras se arrastra para que el gesto horizontal no dispare
+      // también el scroll vertical de la página (requiere el listener no-pasivo).
+      if (ev.touches) ev.preventDefault();
       const r = slider.getBoundingClientRect();
       const cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
       setPos(((cx - r.left) / r.width) * 100);
@@ -38,7 +41,7 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc }) {
     slider.addEventListener('mousedown', onDown);
     slider.addEventListener('touchstart', onDown);
     window.addEventListener('mousemove', onMove);
-    window.addEventListener('touchmove', onMove, { passive: true });
+    window.addEventListener('touchmove', onMove, { passive: false });
     window.addEventListener('mouseup', onUp);
     window.addEventListener('touchend', onUp);
 

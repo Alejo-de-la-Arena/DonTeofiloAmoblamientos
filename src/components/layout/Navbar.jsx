@@ -50,13 +50,20 @@ export default function Navbar({ isSolid }) {
   useEffect(() => {
     const el = navRef.current;
     if (!el) return;
+    // getBoundingClientRect().bottom (no offsetHeight) para reflejar el borde real
+    // renderizado, incluso con el reflow que provoca el swap de la webfont Newsreader.
     const setHeaderHeight = () => {
-      document.documentElement.style.setProperty('--header-h', `${el.offsetHeight}px`);
+      document.documentElement.style.setProperty('--header-h', `${el.getBoundingClientRect().bottom}px`);
     };
     setHeaderHeight();
+    document.fonts?.ready?.then(setHeaderHeight);
+    window.addEventListener('resize', setHeaderHeight);
     const observer = new ResizeObserver(setHeaderHeight);
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      window.removeEventListener('resize', setHeaderHeight);
+      observer.disconnect();
+    };
   }, []);
 
   // Bloquea el scroll del body y permite cerrar con Escape mientras el panel está abierto.

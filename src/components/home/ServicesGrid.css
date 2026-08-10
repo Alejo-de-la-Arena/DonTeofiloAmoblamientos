@@ -22,4 +22,8 @@
 
 @media (max-width:640px){
   .products-grid{grid-template-columns:1fr}
+
+  /* excluido de la regla global de centrado mobile: mismo criterio que .process .section-head */
+  .products .section-head{text-align:left;margin-left:0;margin-right:0}
+  .products .section-eyebrow{justify-content:flex-start}
 }

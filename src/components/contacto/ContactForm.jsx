@@ -47,12 +47,13 @@ function SegmentButton({ active, label, onClick }) {
   );
 }
 
-function FloatingField({ field, value, focused, error, onInput, onFocus, onBlur }) {
+function FloatingField({ field, value, focused, error, inputRef, onInput, onFocus, onBlur }) {
   const active = focused || value.length > 0;
   const Tag = field.kind === 'area' ? 'textarea' : 'input';
   return (
     <div className={`floating-field${error ? ' has-error' : ''}`}>
       <Tag
+        ref={inputRef}
         className="dtinput"
         type={field.kind === 'text' ? field.type || 'text' : undefined}
         value={value}
@@ -130,6 +131,7 @@ export default function ContactForm() {
 
   const fadeTimeoutRef = useRef(null);
   const sentTimeoutRef = useRef(null);
+  const fieldRefs = useRef({});
 
   useEffect(() => {
     return () => {
@@ -178,12 +180,14 @@ export default function ContactForm() {
 
   function handleSubmit() {
     if (sent) return;
-    const required = ['nombre', 'tel'].filter((key) => FIELD_SCHEMA[type].some((f) => f.key === key));
+    // Nombre es el único campo obligatorio del formulario, en cualquier segmento.
     const newErrors = {};
-    required.forEach((key) => {
-      if (!vals[key] || !String(vals[key]).trim()) newErrors[key] = true;
-    });
+    if (!vals.nombre || !String(vals.nombre).trim()) newErrors.nombre = true;
     setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) {
+      fieldRefs.current.nombre?.focus();
+      return;
+    }
     setSent(true);
     const msg = encodeURIComponent(buildMessage());
     sentTimeoutRef.current = setTimeout(() => {
@@ -224,6 +228,7 @@ export default function ContactForm() {
                 value={vals[f.key] || ''}
                 focused={!!focus[f.key]}
                 error={!!errors[f.key]}
+                inputRef={(el) => (fieldRefs.current[f.key] = el)}
                 onInput={(v) => {
                   setVals((prev) => ({ ...prev, [f.key]: v }));
                   if (errors[f.key]) setErrors((prev) => ({ ...prev, [f.key]: false }));

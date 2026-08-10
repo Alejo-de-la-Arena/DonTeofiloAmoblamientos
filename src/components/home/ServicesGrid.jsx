@@ -4,6 +4,7 @@ import imgPlacard from '../../assets/images/inicio/servicios/dtf-placard-servici
 import imgVanitorys from '../../assets/images/inicio/servicios/dtf-vanitorys-servicios.png';
 import imgPuertas from '../../assets/images/inicio/servicios/dtf-puertas-servicios.png';
 import imgAlacenas from '../../assets/images/inicio/servicios/dtf-alacenas-servicios.png';
+import imgDiseno from '../../assets/images/inicio/servicios/dtf-diseno-integral.png';
 import './ServicesGrid.css';
 
 const SERVICES = [
@@ -44,7 +45,7 @@ const SERVICES = [
   },
   {
     img: 'product-img--6',
-    image: imgCocina,
+    image: imgDiseno,
     title: 'Diseño integral',
     desc: 'Te acompañamos desde la idea hasta la instalación. Proyecto completo llave en mano.',
     delay: 180,

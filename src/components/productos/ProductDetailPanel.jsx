@@ -1,15 +1,9 @@
-import { useEffect, useState } from 'react';
 import WhatsAppIcon from '../ui/icons/WhatsAppIcon';
 import { WHATSAPP_NUMBER } from '../../config/contact';
 import './ProductDetailPanel.css';
 
 export default function ProductDetailPanel({ product, onClose }) {
-  const [activeImg, setActiveImg] = useState(0);
   const isOpen = !!product;
-
-  useEffect(() => {
-    setActiveImg(0);
-  }, [product?.id]);
 
   const waHref = product
     ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
@@ -42,26 +36,8 @@ export default function ProductDetailPanel({ product, onClose }) {
 
             <div
               className="catalog-panel-hero"
-              style={
-                product.imagenes[activeImg]
-                  ? { backgroundImage: `url(${product.imagenes[activeImg]})` }
-                  : undefined
-              }
+              style={product.imagen ? { backgroundImage: `url(${product.imagen})` } : undefined}
             />
-            {product.imagenes.length > 0 && (
-              <div className="catalog-panel-thumbs">
-                {product.imagenes.map((src, i) => (
-                  <button
-                    key={src}
-                    type="button"
-                    aria-label={`Foto ${i + 1}`}
-                    className={`catalog-panel-thumb${i === activeImg ? ' active' : ''}`}
-                    style={{ backgroundImage: `url(${src})` }}
-                    onClick={() => setActiveImg(i)}
-                  />
-                ))}
-              </div>
-            )}
 
             <div className="catalog-panel-body">
               <div className="catalog-panel-cat">{product.categoria}</div>

@@ -81,6 +81,34 @@ export async function togglePublicado(id, publicado) {
   if (error) throw error;
 }
 
+export async function setDestacadoHome(id, destacado) {
+  // Al poner destacado_home=true, el trigger proyectos_destacado_home_trigger
+  // desmarca automáticamente cualquier otro proyecto que estuviera destacado.
+  const { error } = await supabase.from('proyectos').update({ destacado_home: destacado }).eq('id', id);
+  if (error) throw error;
+}
+
+// Usado por la sección antes/después de la Home: busca el proyecto marcado como
+// destacado; si no hay ninguno (o se despublicó/borró), cae al primero por `orden`
+// (mismo fallback que fetchProyectosPublicos). Devuelve null si no hay proyectos.
+export async function fetchProyectoDestacadoHome() {
+  const { data: featured, error } = await supabase
+    .from('proyectos')
+    .select('id')
+    .eq('publicado', true)
+    .eq('destacado_home', true)
+    .maybeSingle();
+  if (error) throw error;
+
+  let targetId = featured?.id;
+  if (!targetId) {
+    const fallbackList = await fetchProyectosPublicos();
+    targetId = fallbackList[0]?.id;
+  }
+  if (!targetId) return null;
+  return fetchProyectoById(targetId);
+}
+
 export async function deleteProyecto(id) {
   const { data: imagenes, error: fetchErr } = await supabase
     .from('proyecto_imagenes')

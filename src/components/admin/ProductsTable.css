@@ -26,3 +26,14 @@
   font-size:13px;color:var(--danger);font-weight:600;background:none;border:none;cursor:pointer;padding:0;
 }
 .admin-table-actions button:hover{color:var(--danger-dark)}
+
+.admin-star-toggle{
+  display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;
+  background:none;border:1px solid var(--border-2);color:var(--muted-2);cursor:pointer;padding:0;
+  transition:background .2s ease,color .2s ease,border-color .2s ease;
+}
+.admin-star-toggle svg{fill:none;stroke:currentColor}
+.admin-star-toggle:hover{border-color:var(--accent);color:var(--accent)}
+.admin-star-toggle.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.admin-star-toggle.active svg{fill:currentColor}
+.admin-star-toggle:disabled{opacity:.6;cursor:not-allowed}

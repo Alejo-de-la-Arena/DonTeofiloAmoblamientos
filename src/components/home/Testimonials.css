@@ -26,13 +26,13 @@
 }
 .testimonial-card-mark{
   position:relative;display:block;
-  font-family:'Newsreader',serif;font-style:italic;font-weight:600;
+  font-family:'Newsreader',serif;font-style:normal;font-weight:600;
   font-size:52px;line-height:1;color:var(--accent);opacity:.4;
   margin-bottom:2px;
 }
 .testimonial-card-quote{
   position:relative;
-  font-family:'Newsreader',serif;font-style:italic;font-weight:500;
+  font-family:'Newsreader',serif;font-style:normal;font-weight:500;
   font-size:17px;line-height:1.5;color:var(--ink-soft);
   margin:0 0 20px;
   min-height:5.6em;
@@ -54,6 +54,10 @@
 
 @media (max-width:640px){
   .testimonials-controls .t-arrow{display:none}
+
+  /* excluido de la regla global de centrado mobile: mismo criterio que .process .section-head */
+  .testimonials .section-head{text-align:left;margin-left:0;margin-right:0}
+  .testimonials .section-eyebrow{justify-content:flex-start}
 }
 
 /* desktop: las 3 reviews entran completas sin scroll, quedan centradas y sin controles de navegación */

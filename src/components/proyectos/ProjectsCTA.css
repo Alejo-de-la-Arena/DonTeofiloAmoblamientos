@@ -5,7 +5,7 @@
 }
 .proy-cta-mark{display:block;width:46px;height:1px;background:var(--accent);margin:0 auto 26px}
 .proy-cta-title{
-  font-family:'Newsreader',serif;font-style:italic;font-weight:500;font-size:clamp(28px,4vw,44px);
+  font-family:'Newsreader',serif;font-style:normal;font-weight:500;font-size:clamp(28px,4vw,44px);
   line-height:1.2;margin:0 auto 18px;max-width:560px;
 }
 .proy-cta-text{font-size:16px;font-weight:300;color:var(--muted);line-height:1.6;margin:0 auto 34px;max-width:400px}

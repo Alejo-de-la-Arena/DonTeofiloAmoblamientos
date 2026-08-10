@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import ImageUploader from '../../components/admin/ImageUploader';
+import ProductImageUploader from '../../components/admin/ProductImageUploader';
 import {
   createProducto,
   fetchProductoById,
   updateProducto,
   uploadProductoImagen,
-  deleteProductoImagen,
-  reorderProductoImagenes,
 } from '../../lib/productosApi';
-import { CATEGORIAS, MATERIALES } from '../../data/productCategories';
+import { CATEGORIAS } from '../../data/productCategories';
 import './AdminProductoForm.css';
 
 const EMPTY_FORM = {
@@ -30,8 +28,8 @@ export default function AdminProductoForm() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState(EMPTY_FORM);
-  const [initialImages, setInitialImages] = useState([]);
-  const [stagedFiles, setStagedFiles] = useState([]);
+  const [imagen, setImagen] = useState({ url: '', storagePath: '' });
+  const [stagedImageFile, setStagedImageFile] = useState(null);
   const [loading, setLoading] = useState(isEdit);
   const [loadError, setLoadError] = useState('');
   const [errors, setErrors] = useState({});
@@ -55,7 +53,7 @@ export default function AdminProductoForm() {
           destacado: p.destacado,
           publicado: p.publicado,
         });
-        setInitialImages(p.imagenes);
+        setImagen({ url: p.imagen || '', storagePath: p.imagen_storage_path || '' });
       } catch {
         setLoadError('No pudimos cargar este producto.');
       } finally {
@@ -99,13 +97,12 @@ export default function AdminProductoForm() {
         await updateProducto(id, payload);
       } else {
         const created = await createProducto(payload);
-        let ordenCounter = 0;
-        for (const file of stagedFiles) {
+        if (stagedImageFile) {
           try {
-            await uploadProductoImagen(created.id, file, ordenCounter);
-            ordenCounter += 1;
+            const { url, storage_path } = await uploadProductoImagen(created.id, stagedImageFile);
+            await updateProducto(created.id, { imagen: url, imagen_storage_path: storage_path });
           } catch {
-            setSaveError('El producto se guardó, pero alguna imagen no se pudo subir.');
+            setSaveError('El producto se guardó, pero la imagen no se pudo subir.');
           }
         }
       }
@@ -155,14 +152,12 @@ export default function AdminProductoForm() {
 
           <label className="admin-field">
             <span>Material</span>
-            <select value={form.material} onChange={(e) => setField('material', e.target.value)}>
-              <option value="">Sin especificar</option>
-              {MATERIALES.map((m) => (
-                <option key={m} value={m}>
-                  {m}
-                </option>
-              ))}
-            </select>
+            <input
+              type="text"
+              value={form.material}
+              onChange={(e) => setField('material', e.target.value)}
+              placeholder="Ej: Melamina, Roble macizo, Laca + cuarzo…"
+            />
           </label>
 
           <label className="admin-field">
@@ -216,14 +211,12 @@ export default function AdminProductoForm() {
         </label>
 
         <div className="admin-form-section">
-          <span className="admin-form-section-label">Imágenes</span>
-          <ImageUploader
-            parentId={isEdit ? id : null}
-            initialImages={initialImages}
-            onStagedFilesChange={setStagedFiles}
-            uploadFn={uploadProductoImagen}
-            deleteFn={deleteProductoImagen}
-            reorderFn={reorderProductoImagenes}
+          <span className="admin-form-section-label">Imagen del producto</span>
+          <ProductImageUploader
+            productoId={isEdit ? id : null}
+            initialUrl={imagen.url}
+            initialStoragePath={imagen.storagePath}
+            onStagedFileChange={setStagedImageFile}
           />
         </div>
 

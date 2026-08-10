@@ -4,8 +4,9 @@ import './ImageUploader.css';
 let stagedIdSeq = 0;
 
 // Galería multi-imagen reordenable, genérica: quien la usa inyecta sus propias funciones de
-// Storage/DB (uploadFn/deleteFn/reorderFn) — así sirve tanto para producto_imagenes como para
-// proyecto_imagenes sin duplicar la lógica de staging/drag-reorder.
+// Storage/DB (uploadFn/deleteFn/reorderFn). Hoy solo la usa la galería del proyecto
+// terminado (proyecto_imagenes) — los productos tienen una única imagen (ver
+// ProductImageUploader) y ya no necesitan galería.
 //
 // parentId === null  → modo "alta": los archivos quedan en memoria (solo preview) hasta
 //   que el registro padre se cree y el padre los suba en orden vía onStagedFilesChange.

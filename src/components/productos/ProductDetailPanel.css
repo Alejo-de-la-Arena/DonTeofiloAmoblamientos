@@ -19,14 +19,6 @@
 }
 
 .catalog-panel-hero{position:relative;aspect-ratio:4/3;background-size:cover;background-position:center;background-color:var(--bg-alt)}
-.catalog-panel-thumbs{display:flex;gap:8px;padding:12px 12px 0}
-.catalog-panel-thumb{
-  flex:1;aspect-ratio:1;border:none;padding:0;cursor:pointer;border-radius:2px;
-  background-size:cover;background-position:center;opacity:.75;transition:opacity .2s ease,outline-color .2s ease;
-  outline:2px solid transparent;outline-offset:-2px;
-}
-.catalog-panel-thumb:hover{opacity:.95}
-.catalog-panel-thumb.active{opacity:1;outline-color:var(--accent)}
 
 .catalog-panel-body{padding:26px 32px 40px}
 .catalog-panel-cat{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);font-weight:600}

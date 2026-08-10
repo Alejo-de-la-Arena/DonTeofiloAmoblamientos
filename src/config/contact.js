@@ -1,9 +1,9 @@
-// Datos de contacto — placeholders, reemplazar cuando el cliente confirme los datos reales.
-export const WHATSAPP_NUMBER = '5491155551234';
+// Datos de contacto reales de Don Teófilo Amoblamientos.
+export const WHATSAPP_NUMBER = '5491125278819';
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
-export const WHATSAPP_DISPLAY = '+54 9 11 5555-1234';
+export const WHATSAPP_DISPLAY = '11 2527-8819';
 
-export const CONTACT_EMAIL = 'hola@donteofilo.com.ar';
+export const CONTACT_EMAIL = 'Donteofiloamoblamientos@gmail.com';
 
 export const INSTAGRAM_HANDLE = '@donteofiloamoblamientos';
 export const INSTAGRAM_URL = 'https://instagram.com/donteofiloamoblamientos';

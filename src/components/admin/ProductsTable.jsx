@@ -27,7 +27,7 @@ export default function ProductsTable({ productos, onTogglePublicado, onDelete, 
               <td>
                 <div
                   className="admin-table-thumb"
-                  style={p.imagenes[0] ? { backgroundImage: `url(${p.imagenes[0]})` } : undefined}
+                  style={p.imagen ? { backgroundImage: `url(${p.imagen})` } : undefined}
                 />
               </td>
               <td className="admin-table-name">{p.nombre}</td>

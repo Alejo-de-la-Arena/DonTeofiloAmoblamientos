@@ -5,7 +5,7 @@ import ProductGrid from '../components/productos/ProductGrid';
 import ProductEmptyState from '../components/productos/ProductEmptyState';
 import ProductDetailPanel from '../components/productos/ProductDetailPanel';
 import { fetchProductosPublicos } from '../lib/productosApi';
-import { CATEGORIAS, MATERIALES } from '../data/productCategories';
+import { CATEGORIAS } from '../data/productCategories';
 import './Productos.css';
 
 const MAX_PRICE_DEFAULT = 3000000;
@@ -41,6 +41,15 @@ export default function Productos() {
       cancelled = true;
     };
   }, []);
+
+  // Material es texto libre en el admin — las opciones del filtro se generan a partir de
+  // los valores distintos que efectivamente existan entre los productos publicados.
+  const materiales = useMemo(() => {
+    const distintos = [...new Set(productos.map((p) => p.material).filter(Boolean))].sort((a, b) =>
+      a.localeCompare(b, 'es')
+    );
+    return ['Todos', ...distintos];
+  }, [productos]);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -82,7 +91,7 @@ export default function Productos() {
         categories={['Todos', ...CATEGORIAS]}
         activeCategory={categoria}
         onCategoryChange={setCategoria}
-        materials={['Todos', ...MATERIALES]}
+        materials={materiales}
         activeMaterial={material}
         onMaterialChange={setMaterial}
         maxPrice={maxPrice}

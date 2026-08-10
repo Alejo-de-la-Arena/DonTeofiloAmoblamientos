@@ -3,7 +3,7 @@ import './ProductCard.css';
 
 export default function ProductCard({ product, index, onOpen }) {
   const [ref, isVisible] = useScrollReveal((index % 6) * 80);
-  const cover = product.imagenes[0];
+  const cover = product.imagen;
 
   return (
     <article

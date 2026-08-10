@@ -1,14 +1,25 @@
-# Don Teófilo Amoblamientos — Web
+# Don Teófilo Amoblamientos
 
-Sitio web de Don Teófilo Amoblamientos, carpintería a medida (cocinas, placards, vanitorys,
-aberturas). Migrado desde una maqueta estática (HTML/CSS/JS vanilla, conservada en `legacy/`) a
-un proyecto React + Vite listo para producción.
+Sitio web de Don Teófilo Amoblamientos, carpintería a medida especializada en cocinas,
+placards, vanitorys, aberturas y proyectos de diseño integral.
 
-## Stack
+## Trabajo realizado
 
-- React 18 + Vite
-- React Router v6 (rutas: `/`, `/productos`, `/proyectos`, `/como-trabajamos`, `/contacto`)
-- Framer Motion (instalado, disponible para animaciones futuras)
-- Supabase JS client (inicializado, sin lógica de datos todavía)
-- CSS puro (custom properties globales + un archivo `.css` por componente)
-- ESLint + Prettier
+El sitio incluye las páginas principales de Inicio, Productos, Proyectos, Cómo Trabajamos
+y Contacto, más una subpágina de detalle para cada proyecto terminado con su galería de
+fotos y comparación antes/después.
+
+Cuenta además con un **panel de administración privado** desde el cual se gestiona todo el
+contenido sin necesidad de tocar código: alta, edición y publicación de productos y
+proyectos, carga de imágenes, y elección del proyecto destacado que se muestra en la Home.
+
+## Tecnologías usadas
+
+React, Vite, React Router y Framer Motion en el frontend; Supabase como base de datos,
+autenticación del panel de administración y almacenamiento de imágenes; Vercel para el
+despliegue.
+
+## Resultado
+
+Un sitio profesional y responsive, con contenido totalmente autogestionable desde el
+panel de administración y contacto directo por WhatsApp en cada sección.

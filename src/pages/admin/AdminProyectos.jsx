@@ -2,7 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProjectsTable from '../../components/admin/ProjectsTable';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
-import { fetchProyectosAdmin, togglePublicado, deleteProyecto } from '../../lib/proyectosApi';
+import {
+  fetchProyectosAdmin,
+  togglePublicado,
+  setDestacadoHome,
+  deleteProyecto,
+} from '../../lib/proyectosApi';
 import { CATEGORIAS } from '../../data/productCategories';
 import './AdminProyectos.css';
 
@@ -13,6 +18,7 @@ export default function AdminProyectos() {
   const [search, setSearch] = useState('');
   const [categoria, setCategoria] = useState('Todas');
   const [togglingId, setTogglingId] = useState(null);
+  const [destacandoId, setDestacandoId] = useState(null);
   const [pendingDelete, setPendingDelete] = useState(null);
   const [deleting, setDeleting] = useState(false);
 
@@ -54,6 +60,21 @@ export default function AdminProyectos() {
       setProyectos(prev);
     } finally {
       setTogglingId(null);
+    }
+  }
+
+  async function handleSetDestacado(project, next) {
+    setDestacandoId(project.id);
+    const prev = proyectos;
+    setProyectos((list) =>
+      list.map((p) => ({ ...p, destacado_home: p.id === project.id ? next : next ? false : p.destacado_home }))
+    );
+    try {
+      await setDestacadoHome(project.id, next);
+    } catch {
+      setProyectos(prev);
+    } finally {
+      setDestacandoId(null);
     }
   }
 
@@ -111,6 +132,8 @@ export default function AdminProyectos() {
           proyectos={filtered}
           togglingId={togglingId}
           onTogglePublicado={handleToggle}
+          destacandoId={destacandoId}
+          onSetDestacado={handleSetDestacado}
           onDelete={setPendingDelete}
         />
       )}
