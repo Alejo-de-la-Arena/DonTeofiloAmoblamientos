@@ -10,11 +10,16 @@
 }
 .ba-tag--after{right:22px}
 .ba-tag--before{left:22px}
-.ba-after{position:absolute;inset:0;background-image:var(--after-img);background-size:cover;background-position:center}
+.ba-after{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
 .ba-before-wrap{position:absolute;inset:0;clip-path:inset(0 50% 0 0)}
-.ba-before{position:absolute;inset:0;background-image:var(--before-img);background-size:cover;background-position:center}
-.ba-handle{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.1)}
+.ba-before{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.ba-handle{
+  position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.1);
+  cursor:ew-resize;border-radius:2px;
+}
+.ba-handle:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .ba-handle-btn{
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;
   background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;color:var(--accent);
+  pointer-events:none;
 }

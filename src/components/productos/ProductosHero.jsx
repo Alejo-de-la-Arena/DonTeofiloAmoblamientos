@@ -1,24 +1,56 @@
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import cocinaDesktop from '../../assets/images/inicio/hero/dtf-cocina-hero-desktop.png';
+import cocinaDesktopWebp from '../../assets/images/inicio/hero/dtf-cocina-hero-desktop.png?w=320;480;720&format=webp&as=srcset';
 import cocinaMobile from '../../assets/images/inicio/hero/dtf-cocina-hero-mobile.png';
+import cocinaMobileWebp from '../../assets/images/inicio/hero/dtf-cocina-hero-mobile.png?w=320;480;640&format=webp&as=srcset';
 import placardDesktop from '../../assets/images/inicio/hero/dtf-placard-hero-desktop.png';
+import placardDesktopWebp from '../../assets/images/inicio/hero/dtf-placard-hero-desktop.png?w=320;480;720&format=webp&as=srcset';
 import placardMobile from '../../assets/images/inicio/hero/dtf-placard-hero-mobile.png';
+import placardMobileWebp from '../../assets/images/inicio/hero/dtf-placard-hero-mobile.png?w=320;480;640&format=webp&as=srcset';
 import banioDesktop from '../../assets/images/inicio/hero/dtf-banio-hero-desktop.png';
+import banioDesktopWebp from '../../assets/images/inicio/hero/dtf-banio-hero-desktop.png?w=320;480;720&format=webp&as=srcset';
 import banioMobile from '../../assets/images/inicio/hero/dtf-banio-hero-mobile.png';
+import banioMobileWebp from '../../assets/images/inicio/hero/dtf-banio-hero-mobile.png?w=320;480;640&format=webp&as=srcset';
 import puertaDesktop from '../../assets/images/inicio/hero/dtf-puerta-hero-desktop.png';
+import puertaDesktopWebp from '../../assets/images/inicio/hero/dtf-puerta-hero-desktop.png?w=320;480;720&format=webp&as=srcset';
 import puertaMobile from '../../assets/images/inicio/hero/dtf-puerta-hero-mobile.png';
+import puertaMobileWebp from '../../assets/images/inicio/hero/dtf-puerta-hero-mobile.png?w=320;480;640&format=webp&as=srcset';
 import './ProductosHero.css';
 
 // Punto de montaje de video (a futuro, igual que en ProyectosHero.jsx): cuando haya un video
 // de catálogo, reemplazaría la tarjeta TILES[0] (la primera de la pila en desktop) por un
 // <video> recortado 4:5, con fallback automático a esta misma imagen si falla la carga.
 const TILES = [
-  { desktop: cocinaDesktop, mobile: cocinaMobile, label: 'Cocinas' },
-  { desktop: placardDesktop, mobile: placardMobile, label: 'Placards' },
-  { desktop: banioDesktop, mobile: banioMobile, label: 'Vanitorys' },
-  { desktop: puertaDesktop, mobile: puertaMobile, label: 'Aberturas' },
+  {
+    desktop: cocinaDesktop,
+    desktopWebp: cocinaDesktopWebp,
+    mobile: cocinaMobile,
+    mobileWebp: cocinaMobileWebp,
+    label: 'Cocinas',
+  },
+  {
+    desktop: placardDesktop,
+    desktopWebp: placardDesktopWebp,
+    mobile: placardMobile,
+    mobileWebp: placardMobileWebp,
+    label: 'Placards',
+  },
+  {
+    desktop: banioDesktop,
+    desktopWebp: banioDesktopWebp,
+    mobile: banioMobile,
+    mobileWebp: banioMobileWebp,
+    label: 'Vanitorys',
+  },
+  {
+    desktop: puertaDesktop,
+    desktopWebp: puertaDesktopWebp,
+    mobile: puertaMobile,
+    mobileWebp: puertaMobileWebp,
+    label: 'Aberturas',
+  },
 ];
 
 // Desfase de "pila" y rotación en reposo de cada tarjeta (solo collage desktop). El desfase vive
@@ -59,12 +91,14 @@ const carouselItemVariants = {
 export default function ProductosHero({ onCategorySelect }) {
   const heroRef = useRef(null);
   const isMobile = useIsMobile(760);
+  const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const p0 = useTransform(scrollYProgress, [0, 1], [0, -14]);
-  const p1 = useTransform(scrollYProgress, [0, 1], [0, -30]);
-  const p2 = useTransform(scrollYProgress, [0, 1], [0, -20]);
-  const p3 = useTransform(scrollYProgress, [0, 1], [0, -38]);
+  const p0 = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [0, -14]);
+  const p1 = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [0, -30]);
+  const p2 = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [0, -20]);
+  const p3 = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [0, -38]);
   const parallax = [p0, p1, p2, p3];
+  const initialState = reduce ? false : 'hidden';
 
   if (isMobile) {
     return (
@@ -72,7 +106,7 @@ export default function ProductosHero({ onCategorySelect }) {
         <motion.div
           className="catalog-hero-copy-mobile"
           variants={textVariants}
-          initial="hidden"
+          initial={initialState}
           animate="show"
         >
           <motion.div className="section-eyebrow" variants={itemUp}>
@@ -105,10 +139,23 @@ export default function ProductosHero({ onCategorySelect }) {
               onClick={() => onCategorySelect?.(tile.label)}
               custom={i}
               variants={carouselItemVariants}
-              initial="hidden"
+              initial={initialState}
               animate="show"
             >
-              <img src={tile.mobile} alt={tile.label} loading={i === 0 ? 'eager' : 'lazy'} />
+              <picture>
+                <source
+                  srcSet={tile.mobileWebp}
+                  type="image/webp"
+                  sizes="(max-width: 760px) 80vw, 320px"
+                />
+                <img
+                  src={tile.mobile}
+                  alt=""
+                  sizes="(max-width: 760px) 80vw, 320px"
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  fetchPriority={i === 0 ? 'high' : 'auto'}
+                />
+              </picture>
               <span className="catalog-hero-carousel-scrim" aria-hidden="true" />
               <span className="catalog-hero-tile-label">{tile.label}</span>
             </motion.button>
@@ -124,7 +171,7 @@ export default function ProductosHero({ onCategorySelect }) {
         <motion.div
           className="catalog-hero-copy"
           variants={textVariants}
-          initial="hidden"
+          initial={initialState}
           animate="show"
         >
           <motion.div className="section-eyebrow" variants={itemUp}>
@@ -153,12 +200,20 @@ export default function ProductosHero({ onCategorySelect }) {
                 className="catalog-hero-tile"
                 custom={i}
                 variants={tileVariants}
-                initial="hidden"
+                initial={initialState}
                 animate="show"
               >
                 <picture>
+                  <source media="(max-width: 760px)" srcSet={tile.mobileWebp} type="image/webp" />
                   <source media="(max-width: 760px)" srcSet={tile.mobile} />
-                  <img src={tile.desktop} alt={tile.label} loading={i === 0 ? 'eager' : 'lazy'} />
+                  <source srcSet={tile.desktopWebp} type="image/webp" sizes="320px" />
+                  <img
+                    src={tile.desktop}
+                    alt=""
+                    sizes="320px"
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    fetchPriority={i === 0 ? 'high' : 'auto'}
+                  />
                 </picture>
                 <span className="catalog-hero-tile-label">{tile.label}</span>
               </motion.div>

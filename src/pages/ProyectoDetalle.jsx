@@ -98,7 +98,11 @@ export default function ProyectoDetalle() {
 
       {(proyecto.imagen_antes || proyecto.imagen_despues) && (
         <div className="proydet-slider-wrap">
-          <BeforeAfterSlider beforeSrc={proyecto.imagen_antes} afterSrc={proyecto.imagen_despues} />
+          <BeforeAfterSlider
+            beforeSrc={proyecto.imagen_antes}
+            afterSrc={proyecto.imagen_despues}
+            alt={proyecto.titulo}
+          />
         </div>
       )}
 

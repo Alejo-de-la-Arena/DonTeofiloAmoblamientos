@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import cocinaAntesDesktop from '../../assets/images/proyectos/cocina-antes-proyectos-hero-desktop.png';
+import cocinaAntesDesktopWebp from '../../assets/images/proyectos/cocina-antes-proyectos-hero-desktop.png?w=960;1440;1920&format=webp&as=srcset';
 import cocinaDespuesDesktop from '../../assets/images/proyectos/cocina-despues-proyectos-hero-desktop.png';
+import cocinaDespuesDesktopWebp from '../../assets/images/proyectos/cocina-despues-proyectos-hero-desktop.png?w=960;1440;1920&format=webp&as=srcset';
 import cocinaAntesMobile from '../../assets/images/proyectos/cocina-antes-proyectos-hero-mobile.png';
+import cocinaAntesMobileWebp from '../../assets/images/proyectos/cocina-antes-proyectos-hero-mobile.png?w=480;640;828&format=webp&as=srcset';
 import cocinaDespuesMobile from '../../assets/images/proyectos/cocina-despues-proyectos-hero-mobile.png';
+import cocinaDespuesMobileWebp from '../../assets/images/proyectos/cocina-despues-proyectos-hero-mobile.png?w=480;640;828&format=webp&as=srcset';
 import './ProyectosHero.css';
 
 // Punto de montaje del video del Hero.
@@ -22,17 +26,25 @@ import './ProyectosHero.css';
 // (fotos reales antes/después de la cocina, ya con recorte propio para desktop y mobile).
 const VIDEO_SRC = '';
 const FRAMES_DESKTOP = [cocinaAntesDesktop, cocinaDespuesDesktop];
+const FRAMES_DESKTOP_WEBP = [cocinaAntesDesktopWebp, cocinaDespuesDesktopWebp];
 const FRAMES_MOBILE = [cocinaAntesMobile, cocinaDespuesMobile];
+const FRAMES_MOBILE_WEBP = [cocinaAntesMobileWebp, cocinaDespuesMobileWebp];
+const FRAME_ALT = [
+  'Cocina antes de la renovación de Don Teófilo Amoblamientos',
+  'Cocina después de la renovación de Don Teófilo Amoblamientos',
+];
 const FRAME_DURATION = 4200;
 
 export default function ProyectosHero({ count }) {
   const [videoError, setVideoError] = useState(false);
   const [active, setActive] = useState(0);
+  const reduce = useReducedMotion();
   const showVideo = Boolean(VIDEO_SRC) && !videoError;
   // Elige el par de imágenes antes de montar el frame, según el ancho real del viewport,
   // para no pedirle al navegador las cuatro fotos de golpe.
   const isMobile = useIsMobile();
   const FRAMES = isMobile ? FRAMES_MOBILE : FRAMES_DESKTOP;
+  const FRAMES_WEBP = isMobile ? FRAMES_MOBILE_WEBP : FRAMES_DESKTOP_WEBP;
 
   useEffect(() => {
     if (showVideo) return;
@@ -58,15 +70,25 @@ export default function ProyectosHero({ count }) {
             <motion.div
               key={active}
               className="proy-hero-frame"
-              style={{ backgroundImage: `url(${FRAMES[active]})` }}
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1, scale: 1.09 }}
+              animate={{ opacity: 1, scale: reduce ? 1 : 1.09 }}
               exit={{ opacity: 0 }}
               transition={{
-                opacity: { duration: 1.6, ease: 'easeInOut' },
+                opacity: { duration: reduce ? 0.4 : 1.6, ease: 'easeInOut' },
                 scale: { duration: FRAME_DURATION / 1000 + 1.6, ease: 'easeOut' },
               }}
-            />
+            >
+              <picture>
+                <source srcSet={FRAMES_WEBP[active]} type="image/webp" sizes="100vw" />
+                <img
+                  src={FRAMES[active]}
+                  alt={FRAME_ALT[active]}
+                  sizes="100vw"
+                  loading={active === 0 ? 'eager' : 'lazy'}
+                  fetchPriority={active === 0 ? 'high' : 'auto'}
+                />
+              </picture>
+            </motion.div>
           </AnimatePresence>
         </div>
       )}

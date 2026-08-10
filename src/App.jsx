@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './lib/AuthContext';
 import Layout from './components/layout/Layout';
@@ -8,42 +9,47 @@ import Proyectos from './pages/Proyectos';
 import ProyectoDetalle from './pages/ProyectoDetalle';
 import ComoTrabajamos from './pages/ComoTrabajamos';
 import Contacto from './pages/Contacto';
-import RequireAuth from './components/admin/RequireAuth';
-import AdminLayout from './components/admin/AdminLayout';
-import AdminLogin from './pages/admin/AdminLogin';
-import AdminProductos from './pages/admin/AdminProductos';
-import AdminProductoForm from './pages/admin/AdminProductoForm';
-import AdminProyectos from './pages/admin/AdminProyectos';
-import AdminProyectoForm from './pages/admin/AdminProyectoForm';
+
+// El panel admin nunca lo carga un visitante normal — se separa del bundle inicial para
+// que solo se descargue cuando alguien realmente entra a /admin.
+const RequireAuth = lazy(() => import('./components/admin/RequireAuth'));
+const AdminLayout = lazy(() => import('./components/admin/AdminLayout'));
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
+const AdminProductos = lazy(() => import('./pages/admin/AdminProductos'));
+const AdminProductoForm = lazy(() => import('./pages/admin/AdminProductoForm'));
+const AdminProyectos = lazy(() => import('./pages/admin/AdminProyectos'));
+const AdminProyectoForm = lazy(() => import('./pages/admin/AdminProyectoForm'));
 
 export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <ScrollToTop />
-        <Routes>
-          <Route element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="productos" element={<Productos />} />
-            <Route path="proyectos" element={<Proyectos />} />
-            <Route path="proyectos/:slug" element={<ProyectoDetalle />} />
-            <Route path="como-trabajamos" element={<ComoTrabajamos />} />
-            <Route path="contacto" element={<Contacto />} />
-          </Route>
-
-          <Route path="admin/login" element={<AdminLogin />} />
-          <Route path="admin" element={<RequireAuth />}>
-            <Route element={<AdminLayout />}>
-              <Route index element={<Navigate to="productos" replace />} />
-              <Route path="productos" element={<AdminProductos />} />
-              <Route path="productos/nuevo" element={<AdminProductoForm />} />
-              <Route path="productos/:id/editar" element={<AdminProductoForm />} />
-              <Route path="proyectos" element={<AdminProyectos />} />
-              <Route path="proyectos/nuevo" element={<AdminProyectoForm />} />
-              <Route path="proyectos/:id/editar" element={<AdminProyectoForm />} />
+        <Suspense fallback={<div style={{ padding: 40 }}>Cargando…</div>}>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="productos" element={<Productos />} />
+              <Route path="proyectos" element={<Proyectos />} />
+              <Route path="proyectos/:slug" element={<ProyectoDetalle />} />
+              <Route path="como-trabajamos" element={<ComoTrabajamos />} />
+              <Route path="contacto" element={<Contacto />} />
             </Route>
-          </Route>
-        </Routes>
+
+            <Route path="admin/login" element={<AdminLogin />} />
+            <Route path="admin" element={<RequireAuth />}>
+              <Route element={<AdminLayout />}>
+                <Route index element={<Navigate to="productos" replace />} />
+                <Route path="productos" element={<AdminProductos />} />
+                <Route path="productos/nuevo" element={<AdminProductoForm />} />
+                <Route path="productos/:id/editar" element={<AdminProductoForm />} />
+                <Route path="proyectos" element={<AdminProyectos />} />
+                <Route path="proyectos/nuevo" element={<AdminProyectoForm />} />
+                <Route path="proyectos/:id/editar" element={<AdminProyectoForm />} />
+              </Route>
+            </Route>
+          </Routes>
+        </Suspense>
       </AuthProvider>
     </BrowserRouter>
   );

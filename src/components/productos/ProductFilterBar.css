@@ -84,7 +84,7 @@
   border-bottom: 1px solid var(--border-2);
   background: none;
   padding: 8px 8px 8px 26px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'DM Sans Variable', sans-serif;
   font-size: 14px;
   color: var(--ink);
   outline: none;
@@ -210,7 +210,7 @@
   border: 1px solid var(--border-2);
   background: transparent;
   color: var(--ink-soft);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'DM Sans Variable', sans-serif;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: .02em;

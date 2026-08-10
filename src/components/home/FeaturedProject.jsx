@@ -37,7 +37,11 @@ export default function FeaturedProject() {
   return (
     <section id="proyectos" className="featured">
       <div className="featured-grid">
-        <BeforeAfterSlider beforeSrc={proyecto.imagen_antes} afterSrc={proyecto.imagen_despues} />
+        <BeforeAfterSlider
+          beforeSrc={proyecto.imagen_antes}
+          afterSrc={proyecto.imagen_despues}
+          alt={proyecto.titulo}
+        />
         <div ref={ref} className={`featured-header${revealClass}`} data-reveal>
           <span className="section-eyebrow-solo">Proyecto destacado</span>
           <h2 className="featured-title">

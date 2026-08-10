@@ -32,7 +32,7 @@
 }
 
 .nav-brand-name {
-  font-family: 'Newsreader', serif;
+  font-family: 'Newsreader Variable', serif;
   font-weight: 700;
   font-size: 20px;
   letter-spacing: .22em;
@@ -48,7 +48,7 @@
 }
 
 .nav.solid .nav-brand-sub {
-  color: var(--muted-2)
+  color: var(--muted)
 }
 
 .nav-links {
@@ -224,7 +224,7 @@
 }
 
 .nav-mobile-brand-name {
-  font-family: 'Newsreader', serif;
+  font-family: 'Newsreader Variable', serif;
   font-weight: 700;
   font-size: 17px;
   letter-spacing: .22em
@@ -269,7 +269,7 @@
 }
 
 .nav-mobile-row-index {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'DM Sans Variable', sans-serif;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: .06em;
@@ -279,7 +279,7 @@
 }
 
 .nav-mobile-row-label {
-  font-family: 'Newsreader', serif;
+  font-family: 'Newsreader Variable', serif;
   font-weight: 600;
   font-size: clamp(25px, 7.2vw, 32px);
   letter-spacing: -.01em;

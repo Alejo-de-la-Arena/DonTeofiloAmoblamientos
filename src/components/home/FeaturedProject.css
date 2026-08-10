@@ -36,7 +36,7 @@
 }
 
 .featured-title {
-  font-family: 'Newsreader', serif;
+  font-family: 'Newsreader Variable', serif;
   font-weight: 600;
   font-size: clamp(28px, 3vw, 38px);
   line-height: 1.12;
@@ -79,7 +79,7 @@
 }
 
 .featured-fact-val {
-  font-family: 'Newsreader', serif;
+  font-family: 'Newsreader Variable', serif;
   font-size: 19px
 }
 

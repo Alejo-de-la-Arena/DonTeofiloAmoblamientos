@@ -13,7 +13,7 @@
 .proydet-notfound{
   text-align:center;padding:60px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;
 }
-.proydet-notfound h1{font-family:'Newsreader',serif;font-weight:600;font-size:clamp(26px,4vw,36px);margin:6px 0 0}
+.proydet-notfound h1{font-family:'Newsreader Variable',serif;font-weight:600;font-size:clamp(26px,4vw,36px);margin:6px 0 0}
 .proydet-notfound p{color:var(--muted);font-size:15px;max-width:380px;margin:0}
 .proydet-notfound-cta{
   margin-top:14px;font-size:13px;font-weight:600;color:var(--accent);letter-spacing:.02em;
@@ -30,7 +30,7 @@
 .proydet-header{margin-bottom:24px}
 .proydet-cat{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:600}
 .proydet-title{
-  font-family:'Newsreader',serif;font-weight:600;font-size:clamp(30px,5.5vw,52px);line-height:1.05;
+  font-family:'Newsreader Variable',serif;font-weight:600;font-size:clamp(30px,5.5vw,52px);line-height:1.05;
   margin:12px 0 0;letter-spacing:-.01em;
 }
 
@@ -40,7 +40,7 @@
 }
 
 .proydet-section-title{
-  font-family:'Newsreader',serif;font-weight:600;font-size:clamp(20px,2.6vw,26px);margin:0 0 16px;
+  font-family:'Newsreader Variable',serif;font-weight:600;font-size:clamp(20px,2.6vw,26px);margin:0 0 16px;
 }
 
 /* Galería: mismo criterio de scroll táctil + snap que el carrusel del hero de Productos —

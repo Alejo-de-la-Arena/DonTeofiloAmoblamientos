@@ -50,9 +50,12 @@ function SegmentButton({ active, label, onClick }) {
 function FloatingField({ field, value, focused, error, inputRef, onInput, onFocus, onBlur }) {
   const active = focused || value.length > 0;
   const Tag = field.kind === 'area' ? 'textarea' : 'input';
+  const inputId = `contact-${field.key}`;
+  const errorId = `${inputId}-error`;
   return (
     <div className={`floating-field${error ? ' has-error' : ''}`}>
       <Tag
+        id={inputId}
         ref={inputRef}
         className="dtinput"
         type={field.kind === 'text' ? field.type || 'text' : undefined}
@@ -60,10 +63,18 @@ function FloatingField({ field, value, focused, error, inputRef, onInput, onFocu
         onChange={(e) => onInput(e.target.value)}
         onFocus={onFocus}
         onBlur={onBlur}
+        aria-invalid={error || undefined}
+        aria-describedby={error ? errorId : undefined}
       />
-      <label className={`floating-label${active ? ' active' : ''}`}>{field.label}</label>
+      <label htmlFor={inputId} className={`floating-label${active ? ' active' : ''}`}>
+        {field.label}
+      </label>
       <span className={`floating-underline${focused ? ' focused' : ''}`}></span>
-      {error && <span className="floating-error">Falta completar este campo</span>}
+      {error && (
+        <span id={errorId} className="floating-error" role="alert">
+          Falta completar este campo
+        </span>
+      )}
     </div>
   );
 }

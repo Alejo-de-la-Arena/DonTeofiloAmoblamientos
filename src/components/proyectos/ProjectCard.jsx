@@ -25,7 +25,7 @@ export default function ProjectCard({ project, index, size = 'sm', wide = false 
       </Link>
       <div className="proy-card-info">
         <span className="proy-card-cat">{project.categoria}</span>
-        <h3 className="proy-card-title">{project.titulo}</h3>
+        <h2 className="proy-card-title">{project.titulo}</h2>
         {blurb && <p className="proy-card-blurb">{blurb}</p>}
         <Link to={`/proyectos/${project.slug}`} className="proy-card-link">
           Ver detalles del proyecto <span aria-hidden="true">→</span>

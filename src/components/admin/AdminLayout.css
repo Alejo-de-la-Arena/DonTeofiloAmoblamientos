@@ -5,7 +5,7 @@
   padding:14px clamp(20px,4vw,40px);background:#fff;border-bottom:1px solid var(--border);
 }
 .admin-topbar-brand{display:flex;align-items:baseline;gap:8px;white-space:nowrap}
-.admin-topbar-name{font-family:'Newsreader',serif;font-weight:700;font-size:15px;letter-spacing:.16em}
+.admin-topbar-name{font-family:'Newsreader Variable',serif;font-weight:700;font-size:15px;letter-spacing:.16em}
 .admin-topbar-tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:600}
 
 .admin-topbar-nav{display:flex;gap:20px;flex:1}

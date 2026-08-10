@@ -19,11 +19,11 @@
 .proy-more-btn{
   display:inline-flex;align-items:center;gap:10px;padding:14px 30px;border-radius:40px;
   border:1px solid var(--border-2);background:transparent;color:var(--ink-soft);
-  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  font-family:'DM Sans Variable',sans-serif;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
   cursor:pointer;transition:all .3s ease;
 }
 .proy-more-btn span{transition:transform .25s ease}
-.proy-more-btn:hover{border-color:var(--accent);background:var(--accent);color:#fff}
+.proy-more-btn:hover{border-color:var(--accent-contrast);background:var(--accent-contrast);color:#fff}
 .proy-more-btn:hover span{transform:translateY(2px)}
 
 @media (max-width:1020px){

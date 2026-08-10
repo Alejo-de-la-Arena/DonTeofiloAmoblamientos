@@ -34,6 +34,6 @@
 }
 .admin-star-toggle svg{fill:none;stroke:currentColor}
 .admin-star-toggle:hover{border-color:var(--accent);color:var(--accent)}
-.admin-star-toggle.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.admin-star-toggle.active{background:var(--accent-contrast);border-color:var(--accent-contrast);color:#fff}
 .admin-star-toggle.active svg{fill:currentColor}
 .admin-star-toggle:disabled{opacity:.6;cursor:not-allowed}

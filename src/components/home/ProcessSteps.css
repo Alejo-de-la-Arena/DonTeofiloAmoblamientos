@@ -47,7 +47,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -56%);
-  font-family: 'Newsreader', serif;
+  font-family: 'Newsreader Variable', serif;
   font-weight: 600;
   font-size: 46px;
   line-height: 1;
@@ -91,7 +91,7 @@
 }
 
 .process-content h3 {
-  font-family: 'Newsreader', serif;
+  font-family: 'Newsreader Variable', serif;
   font-weight: 600;
   font-size: 19px;
   margin: 0 0 6px

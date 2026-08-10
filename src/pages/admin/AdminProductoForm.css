@@ -1,5 +1,5 @@
 .admin-form-page{max-width:760px;margin:0 auto}
-.admin-form-page h1{font-family:'Newsreader',serif;font-weight:600;font-size:24px;margin:0 0 20px}
+.admin-form-page h1{font-family:'Newsreader Variable',serif;font-weight:600;font-size:24px;margin:0 0 20px}
 .admin-form{
   background:#fff;border:1px solid var(--border);border-radius:8px;padding:28px;
   display:flex;flex-direction:column;gap:20px;
@@ -8,7 +8,7 @@
 .admin-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .admin-field{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
 .admin-field input,.admin-field select,.admin-field textarea{
-  border:1px solid var(--border-2);border-radius:6px;padding:9px 12px;font-family:'DM Sans',sans-serif;
+  border:1px solid var(--border-2);border-radius:6px;padding:9px 12px;font-family:'DM Sans Variable',sans-serif;
   font-size:14px;color:var(--ink);outline:none;transition:border-color .2s ease;background:#fff;
 }
 .admin-field input:focus,.admin-field select:focus,.admin-field textarea:focus{border-color:var(--accent)}
@@ -31,7 +31,7 @@
 }
 .admin-btn-ghost:hover{border-color:var(--muted-2)}
 .admin-btn-primary{
-  background:var(--accent);color:#fff;border:none;font-size:13px;font-weight:600;padding:10px 22px;
+  background:var(--accent-contrast);color:#fff;border:none;font-size:13px;font-weight:600;padding:10px 22px;
   border-radius:44px;cursor:pointer;transition:background .2s ease;
 }
 .admin-btn-primary:hover:not(:disabled){background:var(--accent-dark)}

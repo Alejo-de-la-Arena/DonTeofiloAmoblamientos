@@ -17,7 +17,7 @@
 .hero-content{position:relative;height:100%;max-width:1360px;margin:0 auto;padding:0 clamp(24px,5vw,72px);display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
 .hero-inner{max-width:660px;text-align:left}
 .hero-title{
-  font-family:'Newsreader',serif;font-weight:700;color:#fff;
+  font-family:'Newsreader Variable',serif;font-weight:700;color:#fff;
   font-size:clamp(40px,6vw,68px);line-height:1.04;margin:0 0 22px;letter-spacing:-.01em;
   transition:opacity .5s ease;
 }

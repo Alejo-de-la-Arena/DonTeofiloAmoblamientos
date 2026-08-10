@@ -3,7 +3,7 @@
 .detalle-editor-handle{color:var(--muted-2);font-size:14px;user-select:none}
 
 .detalle-editor-label,.detalle-editor-value{
-  border:1px solid var(--border-2);border-radius:6px;padding:8px 11px;font-family:'DM Sans',sans-serif;
+  border:1px solid var(--border-2);border-radius:6px;padding:8px 11px;font-family:'DM Sans Variable',sans-serif;
   font-size:13.5px;color:var(--ink);outline:none;transition:border-color .2s ease;background:#fff;
 }
 .detalle-editor-label{flex:0 0 180px}

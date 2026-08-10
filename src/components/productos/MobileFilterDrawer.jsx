@@ -1,4 +1,5 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import './MobileFilterDrawer.css';
 
 const EASE = [0.22, 0.61, 0.36, 1];
@@ -21,6 +22,26 @@ export default function MobileFilterDrawer({
   hasFilters,
   onClearAll,
 }) {
+  const panelRef = useRef(null);
+  const shouldReduceMotion = useReducedMotion();
+
+  // Cierra con Escape y enfoca el panel al abrir — mismo patrón que el menú mobile del nav.
+  useEffect(() => {
+    if (!open) return;
+    document.body.style.overflow = 'hidden';
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    panelRef.current?.focus();
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [open, onClose]);
+
+  const transitionDuration = shouldReduceMotion ? 0.01 : undefined;
+
   return (
     <AnimatePresence>
       {open && (
@@ -31,17 +52,19 @@ export default function MobileFilterDrawer({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.25, ease: EASE }}
+            transition={{ duration: transitionDuration ?? 0.25, ease: EASE }}
           />
           <motion.div
+            ref={panelRef}
             className="filter-drawer"
             role="dialog"
             aria-modal="true"
             aria-label="Filtros de productos"
+            tabIndex={-1}
             initial={{ x: '-100%' }}
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
-            transition={{ duration: 0.35, ease: EASE }}
+            transition={{ duration: transitionDuration ?? 0.35, ease: EASE }}
           >
             <div className="filter-drawer-head">
               <span className="filter-drawer-title">Filtros</span>

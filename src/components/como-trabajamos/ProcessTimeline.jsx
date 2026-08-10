@@ -1,9 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import img01 from '../../assets/images/como-trabajamos/01-nos-contactas.png';
+import img01Webp from '../../assets/images/como-trabajamos/01-nos-contactas.png?w=400;600;900&format=webp&as=srcset';
 import img02 from '../../assets/images/como-trabajamos/02-diseniamos-juntos.png';
+import img02Webp from '../../assets/images/como-trabajamos/02-diseniamos-juntos.png?w=400;600;900&format=webp&as=srcset';
 import img03 from '../../assets/images/como-trabajamos/03-fabricamos.png';
+import img03Webp from '../../assets/images/como-trabajamos/03-fabricamos.png?w=400;600;900&format=webp&as=srcset';
 import img04 from '../../assets/images/como-trabajamos/04-instalamos.png';
+import img04Webp from '../../assets/images/como-trabajamos/04-instalamos.png?w=400;600;900&format=webp&as=srcset';
 import './ProcessTimeline.css';
 
 const STEPS = [
@@ -17,6 +21,7 @@ const STEPS = [
       'Coordinamos una visita si hace falta',
     ],
     img: img01,
+    imgWebp: img01Webp,
     alt: 'Cliente conversando con el equipo de Don Teófilo para definir un mueble a medida',
   },
   {
@@ -29,6 +34,7 @@ const STEPS = [
       'Presupuesto detallado y elección de materiales',
     ],
     img: img02,
+    imgWebp: img02Webp,
     alt: 'Relevamiento y diseño de un mueble a medida en el espacio del cliente',
   },
   {
@@ -41,6 +47,7 @@ const STEPS = [
       'Herrajes y terminaciones premium',
     ],
     img: img03,
+    imgWebp: img03Webp,
     alt: 'Carpintero fabricando un mueble a medida en el taller de Don Teófilo',
   },
   {
@@ -53,6 +60,7 @@ const STEPS = [
       'Entrega y garantía por escrito',
     ],
     img: img04,
+    imgWebp: img04Webp,
     alt: 'Instalación final de un mueble a medida en la casa del cliente',
   },
 ];
@@ -72,7 +80,7 @@ function StepRow({ step, isFirst, isLast }) {
       <div className="work-step-grid">
         <div className="work-step-text">
           <span className="work-step-label">Paso {step.n}</span>
-          <h3 className="work-step-title">{step.title}</h3>
+          <h2 className="work-step-title">{step.title}</h2>
           <p className="work-step-desc">{step.desc}</p>
           <ul className="work-step-subs">
             {step.subs.map((s) => (
@@ -84,7 +92,16 @@ function StepRow({ step, isFirst, isLast }) {
           </ul>
         </div>
         <div className="work-step-frame">
-          <img src={step.img} alt={step.alt} loading={isFirst ? 'eager' : 'lazy'} />
+          <picture>
+            <source srcSet={step.imgWebp} type="image/webp" sizes="(max-width: 700px) 100vw, 50vw" />
+            <img
+              src={step.img}
+              alt={step.alt}
+              sizes="(max-width: 700px) 100vw, 50vw"
+              loading={isFirst ? 'eager' : 'lazy'}
+              fetchPriority={isFirst ? 'high' : 'auto'}
+            />
+          </picture>
         </div>
       </div>
     </div>

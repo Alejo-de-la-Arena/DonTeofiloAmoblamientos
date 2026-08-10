@@ -2,13 +2,21 @@ import { useEffect, useRef, useState } from 'react';
 import BtnPrimary from '../ui/BtnPrimary';
 import BtnOutline from '../ui/BtnOutline';
 import cocinaDesktop from '../../assets/images/inicio/hero/dtf-cocina-hero-desktop.png';
+import cocinaDesktopWebp from '../../assets/images/inicio/hero/dtf-cocina-hero-desktop.png?w=960;1440;1920&format=webp&as=srcset';
 import cocinaMobile from '../../assets/images/inicio/hero/dtf-cocina-hero-mobile.png';
+import cocinaMobileWebp from '../../assets/images/inicio/hero/dtf-cocina-hero-mobile.png?w=480;640;828&format=webp&as=srcset';
 import placardDesktop from '../../assets/images/inicio/hero/dtf-placard-hero-desktop.png';
+import placardDesktopWebp from '../../assets/images/inicio/hero/dtf-placard-hero-desktop.png?w=960;1440;1920&format=webp&as=srcset';
 import placardMobile from '../../assets/images/inicio/hero/dtf-placard-hero-mobile.png';
+import placardMobileWebp from '../../assets/images/inicio/hero/dtf-placard-hero-mobile.png?w=480;640;828&format=webp&as=srcset';
 import banioDesktop from '../../assets/images/inicio/hero/dtf-banio-hero-desktop.png';
+import banioDesktopWebp from '../../assets/images/inicio/hero/dtf-banio-hero-desktop.png?w=960;1440;1920&format=webp&as=srcset';
 import banioMobile from '../../assets/images/inicio/hero/dtf-banio-hero-mobile.png';
+import banioMobileWebp from '../../assets/images/inicio/hero/dtf-banio-hero-mobile.png?w=480;640;828&format=webp&as=srcset';
 import puertaDesktop from '../../assets/images/inicio/hero/dtf-puerta-hero-desktop.png';
+import puertaDesktopWebp from '../../assets/images/inicio/hero/dtf-puerta-hero-desktop.png?w=960;1440;1920&format=webp&as=srcset';
 import puertaMobile from '../../assets/images/inicio/hero/dtf-puerta-hero-mobile.png';
+import puertaMobileWebp from '../../assets/images/inicio/hero/dtf-puerta-hero-mobile.png?w=480;640;828&format=webp&as=srcset';
 import './HeroSlider.css';
 
 const SLIDES_TEXT = [
@@ -19,10 +27,30 @@ const SLIDES_TEXT = [
 ];
 
 const SLIDE_IMAGES = [
-  { desktop: cocinaDesktop, mobile: cocinaMobile },
-  { desktop: placardDesktop, mobile: placardMobile },
-  { desktop: banioDesktop, mobile: banioMobile },
-  { desktop: puertaDesktop, mobile: puertaMobile },
+  {
+    desktop: cocinaDesktop,
+    desktopWebp: cocinaDesktopWebp,
+    mobile: cocinaMobile,
+    mobileWebp: cocinaMobileWebp,
+  },
+  {
+    desktop: placardDesktop,
+    desktopWebp: placardDesktopWebp,
+    mobile: placardMobile,
+    mobileWebp: placardMobileWebp,
+  },
+  {
+    desktop: banioDesktop,
+    desktopWebp: banioDesktopWebp,
+    mobile: banioMobile,
+    mobileWebp: banioMobileWebp,
+  },
+  {
+    desktop: puertaDesktop,
+    desktopWebp: puertaDesktopWebp,
+    mobile: puertaMobile,
+    mobileWebp: puertaMobileWebp,
+  },
 ];
 
 const DUR = 6500;
@@ -68,12 +96,19 @@ export default function HeroSlider() {
             className={`hero-slide hero-slide--${idx}${idx === active ? ' active' : ''}`}
           >
             <picture>
+              <source
+                media="(max-width: 640px)"
+                srcSet={SLIDE_IMAGES[idx].mobileWebp}
+                type="image/webp"
+              />
               <source media="(max-width: 640px)" srcSet={SLIDE_IMAGES[idx].mobile} />
+              <source srcSet={SLIDE_IMAGES[idx].desktopWebp} type="image/webp" />
               <img
                 className="hero-slide-img"
                 src={SLIDE_IMAGES[idx].desktop}
+                sizes="100vw"
                 alt={SLIDES_TEXT[idx]}
-                loading="eager"
+                loading={idx === 0 ? 'eager' : 'lazy'}
                 fetchPriority={idx === 0 ? 'high' : 'auto'}
               />
             </picture>

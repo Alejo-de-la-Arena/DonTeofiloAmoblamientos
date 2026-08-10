@@ -79,7 +79,7 @@
 }
 
 .work-hero-title {
-  font-family: 'Newsreader', serif;
+  font-family: 'Newsreader Variable', serif;
   font-weight: 600;
   font-size: clamp(52px, 8.4vw, 128px);
   line-height: .96;
@@ -89,7 +89,7 @@
 }
 
 .work-hero-lead {
-  font-family: 'Newsreader', serif;
+  font-family: 'Newsreader Variable', serif;
   font-style: normal;
   font-weight: 500;
   font-size: clamp(18px, 2.2vw, 24px);
@@ -151,12 +151,12 @@
   display: block;
   white-space: nowrap;
   background: var(--bg-alt);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'DM Sans Variable', sans-serif;
   font-size: 10.5px;
   font-weight: 600;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--accent-dark);
+  color: var(--accent-contrast);
 }
 
 /* orientación horizontal: línea a lo ancho, extensiones verticales en los extremos */
@@ -350,7 +350,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'DM Sans Variable', sans-serif;
   font-size: 11px;
   font-weight: 600;
   color: var(--accent-dark);
@@ -366,7 +366,7 @@
 }
 
 .wh-callout-label {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'DM Sans Variable', sans-serif;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: .14em;

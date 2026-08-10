@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { removeStorageObject, updateProyecto, uploadProyectoPortada } from '../../lib/proyectosApi';
+import { optimizeImageFile } from '../../lib/imageOptimize';
 import './SingleImageUploader.css';
 
 // Sube/reemplaza UNA sola imagen (antes/después de un proyecto).
@@ -22,9 +23,10 @@ export default function SingleImageUploader({
   const [error, setError] = useState('');
   const inputRef = useRef(null);
 
-  async function handleFile(file) {
-    if (!file) return;
+  async function handleFile(rawFile) {
+    if (!rawFile) return;
     setError('');
+    const file = await optimizeImageFile(rawFile);
 
     if (!proyectoId) {
       setPreviewUrl(URL.createObjectURL(file));

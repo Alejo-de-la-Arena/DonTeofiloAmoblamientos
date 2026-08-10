@@ -27,7 +27,7 @@
 }
 
 .catalog-hero-title {
-  font-family: 'Newsreader', serif;
+  font-family: 'Newsreader Variable', serif;
   font-weight: 700;
   font-size: clamp(50px, 7.2vw, 104px);
   line-height: .92;

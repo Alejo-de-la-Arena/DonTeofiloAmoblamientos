@@ -26,13 +26,13 @@
 }
 .testimonial-card-mark{
   position:relative;display:block;
-  font-family:'Newsreader',serif;font-style:normal;font-weight:600;
+  font-family:'Newsreader Variable',serif;font-style:normal;font-weight:600;
   font-size:52px;line-height:1;color:var(--accent);opacity:.4;
   margin-bottom:2px;
 }
 .testimonial-card-quote{
   position:relative;
-  font-family:'Newsreader',serif;font-style:normal;font-weight:500;
+  font-family:'Newsreader Variable',serif;font-style:normal;font-weight:500;
   font-size:17px;line-height:1.5;color:var(--ink-soft);
   margin:0 0 20px;
   min-height:5.6em;
@@ -40,16 +40,19 @@
 .testimonial-card-footer{position:relative;padding-top:14px;border-top:1px solid var(--border-2)}
 .testimonial-card-stars{color:var(--accent);font-size:12px;letter-spacing:3px;margin-bottom:6px}
 .testimonial-card-name{font-weight:600;font-size:14.5px;color:var(--ink)}
-.testimonial-card-project{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-2);margin-top:3px}
+.testimonial-card-project{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-top:3px}
 
 .testimonials-controls{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:8px}
 .t-arrow{width:40px;height:40px;border-radius:50%;border:1px solid var(--border-2);background:#fff;cursor:pointer;color:var(--ink-soft);display:flex;align-items:center;justify-content:center;transition:all .3s ease}
-.t-arrow:hover{border-color:var(--accent);background:var(--accent);color:#fff}
+.t-arrow:hover{border-color:var(--accent-contrast);background:var(--accent-contrast);color:#fff}
 .t-dots{display:flex;align-items:center;gap:8px}
-.t-dot{width:8px;height:8px;border-radius:5px;border:none;cursor:pointer;padding:0;background:var(--border-2);transition:all .3s ease}
+/* ::after extiende el área táctil a 44×44 sin tocar el tamaño/espaciado visual del punto —
+   mínimo WCAG de área táctil sin ningún cambio de diseño. */
+.t-dot{position:relative;width:8px;height:8px;border-radius:5px;border:none;cursor:pointer;padding:0;background:var(--border-2);transition:all .3s ease}
+.t-dot::after{content:"";position:absolute;inset:-18px}
 .t-dot.active{background:var(--accent);width:22px}
 
-.google-reviews{margin-top:28px;text-align:center;font-size:13px;color:var(--muted-2);letter-spacing:.04em}
+.google-reviews{margin-top:28px;text-align:center;font-size:13px;color:var(--muted);letter-spacing:.04em}
 .stars-inline{color:var(--accent)}
 
 @media (max-width:640px){

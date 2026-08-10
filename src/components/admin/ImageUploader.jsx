@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
+import { optimizeImageFile } from '../../lib/imageOptimize';
 import './ImageUploader.css';
 
 let stagedIdSeq = 0;
@@ -36,9 +37,10 @@ export default function ImageUploader({
   );
 
   async function handleFiles(fileList) {
-    const files = Array.from(fileList || []);
-    if (files.length === 0) return;
+    const rawFiles = Array.from(fileList || []);
+    if (rawFiles.length === 0) return;
     setError('');
+    const files = await Promise.all(rawFiles.map((f) => optimizeImageFile(f)));
 
     if (!parentId) {
       const additions = files.map((file) => ({

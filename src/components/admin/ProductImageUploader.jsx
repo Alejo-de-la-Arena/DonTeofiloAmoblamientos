@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { removeStorageObject, updateProducto, uploadProductoImagen } from '../../lib/productosApi';
+import { optimizeImageFile } from '../../lib/imageOptimize';
 import './SingleImageUploader.css';
 
 // Sube/reemplaza la única imagen de un producto — mismo patrón que SingleImageUploader
@@ -20,9 +21,10 @@ export default function ProductImageUploader({
   const [error, setError] = useState('');
   const inputRef = useRef(null);
 
-  async function handleFile(file) {
-    if (!file) return;
+  async function handleFile(rawFile) {
+    if (!rawFile) return;
     setError('');
+    const file = await optimizeImageFile(rawFile);
 
     if (!productoId) {
       setPreviewUrl(URL.createObjectURL(file));
