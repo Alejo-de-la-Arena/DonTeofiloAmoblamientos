@@ -32,11 +32,6 @@
 .catalog-panel-spec-row span:first-child{color:var(--muted);font-size:14px}
 .catalog-panel-spec-row span:last-child{font-weight:500;font-size:14px;text-align:right}
 
-.catalog-panel-wa{
-  display:flex;align-items:center;justify-content:center;gap:11px;background:var(--whatsapp);color:#0b2c17;
-  font-size:15px;font-weight:700;padding:16px;border-radius:44px;transition:transform .3s ease;
-}
-.catalog-panel-wa:hover{transform:scale(1.02);color:#0b2c17}
 .catalog-panel-note{text-align:center;font-size:12.5px;color:var(--muted-2);margin:14px 0 0}
 
 @media (max-width:480px){

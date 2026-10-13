@@ -1,0 +1,8 @@
+/* Puertas de transición de ruta: cubren el viewport por debajo de la nav (z 100), así el
+   header queda visible y su link activo cambia recién cuando las puertas están cerradas.
+   El flotante de WhatsApp (110) y el burger (250) quedan arriba. */
+.route-doors {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+}

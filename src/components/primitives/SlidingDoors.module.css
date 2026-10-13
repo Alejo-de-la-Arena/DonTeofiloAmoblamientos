@@ -1,0 +1,81 @@
+:where(.doors) {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.doors {
+  display: flex;
+  pointer-events: auto; /* cerradas bloquean la interacción con lo de abajo */
+}
+
+.isOpen {
+  pointer-events: none;
+}
+
+.x {
+  flex-direction: row;
+}
+
+.y {
+  flex-direction: column;
+}
+
+.madera {
+  --door-bg: var(--madera);
+}
+
+.papel {
+  --door-bg: var(--papel-2);
+}
+
+.tinta {
+  --door-bg: var(--tinta);
+}
+
+.panel {
+  position: relative;
+  flex: 1 1 0;
+  background: var(--door-bg);
+  will-change: transform;
+}
+
+/* Junta de 1px en tinta entre paneles (no en los bordes exteriores). */
+.x .panel + .panel {
+  box-shadow: inset 1px 0 0 var(--tinta);
+}
+
+.y .panel + .panel {
+  box-shadow: inset 0 1px 0 var(--tinta);
+}
+
+/* Sobre madera la tinta oscura no se ve: la junta pasa a tinta clara. */
+.madera.x .panel + .panel {
+  box-shadow: inset 1px 0 0 rgba(169, 184, 196, .35);
+}
+
+.madera.y .panel + .panel {
+  box-shadow: inset 0 1px 0 rgba(169, 184, 196, .35);
+}
+
+.x .start {
+  transform-origin: left center;
+}
+
+.x .end {
+  transform-origin: right center;
+}
+
+.y .start {
+  transform-origin: center top;
+}
+
+.y .end {
+  transform-origin: center bottom;
+}
+
+.fade {
+  position: absolute;
+  inset: 0;
+  background: var(--door-bg);
+}

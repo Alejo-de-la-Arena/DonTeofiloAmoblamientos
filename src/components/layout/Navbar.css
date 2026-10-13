@@ -15,7 +15,7 @@
 
 .nav.solid {
   padding: 16px clamp(24px, 5vw, 72px);
-  background: rgba(250, 250, 248, .94);
+  background: rgba(236, 234, 227, .94);
   backdrop-filter: blur(10px);
   box-shadow: 0 1px 0 rgba(0, 0, 0, .06);
 }
@@ -76,6 +76,22 @@
 .nav-link.active {
   border-bottom-color: var(--accent);
   color: var(--accent)
+}
+
+/* Sólido (fondo papel): activo en óxido, que sí pasa AA como texto chico (6.3:1). */
+.nav.solid .nav-link:hover,
+.nav.solid .nav-link.active {
+  border-bottom-color: var(--oxido);
+  color: var(--oxido)
+}
+
+/* Variante "sobre oscuro": nav transparente sobre los heroes de foto (Inicio, Proyectos — ver
+   DARK_HERO_ROUTES en Layout.jsx). El terracota casi no se lee sobre fotos oscuras, así que el
+   activo es texto claro con indicador claro; al scrollear la nav pasa a .solid y vuelve el óxido. */
+.nav:not(.solid) .nav-link:hover,
+.nav:not(.solid) .nav-link.active {
+  color: #fff;
+  border-bottom-color: rgba(255, 255, 255, .9)
 }
 
 /* ---------- mobile burger (independent from .nav's stacking context on purpose,

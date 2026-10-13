@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import WhatsAppIcon from '../ui/icons/WhatsAppIcon';
-import { WHATSAPP_URL } from '../../config/contact';
+import { buildWhatsAppMessage, buildWhatsAppUrl } from '../../lib/whatsapp';
 import './ContactForm.css';
 
 const SEGMENTS = [
@@ -177,16 +177,10 @@ export default function ContactForm() {
     return SEGMENTS.find((s) => s.id === t).label;
   }
 
-  function buildMessage() {
-    const lines = [`Hola Don Teófilo 👋 Quiero hacer una consulta sobre: ${labelFor(type)}.`, ''];
-    FIELD_SCHEMA[type].forEach((f) => {
-      const v = vals[f.key];
-      if (v && String(v).trim()) {
-        lines.push(`• ${f.label.replace('¿', '').replace('?', '')}: ${v}`);
-      }
-    });
-    if (lines.length === 2) lines.push('(Todavía no completé los datos)');
-    return lines.join('\n');
+  // Los campos del segmento activo, en orden y con su label: el armado del texto vive en
+  // src/lib/whatsapp.js (compartido con producto y proyecto).
+  function messageOptions() {
+    return { tipo: labelFor(type), extra: FIELD_SCHEMA[type].map((f) => [f.label, vals[f.key]]) };
   }
 
   function handleSubmit() {
@@ -200,9 +194,9 @@ export default function ContactForm() {
       return;
     }
     setSent(true);
-    const msg = encodeURIComponent(buildMessage());
+    const url = buildWhatsAppUrl(messageOptions());
     sentTimeoutRef.current = setTimeout(() => {
-      window.open(`${WHATSAPP_URL}?text=${msg}`, '_blank');
+      window.open(url, '_blank');
       setSent(false);
     }, 900);
   }
@@ -282,7 +276,7 @@ export default function ContactForm() {
       <MessagePreview
         show={showPreview}
         onToggle={() => setShowPreview((s) => !s)}
-        previewText={buildMessage()}
+        previewText={buildWhatsAppMessage(messageOptions())}
       />
     </div>
   );

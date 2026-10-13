@@ -1,0 +1,110 @@
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: clip;
+  background: var(--madera);
+}
+
+/* Sin pin (reduced motion) no hay 100svh que llenar: el escenario toma una proporción fija. */
+.static {
+  height: auto;
+  aspect-ratio: 4 / 5;
+  max-height: 100svh;
+}
+
+@media (min-width: 768px) {
+  .static {
+    aspect-ratio: 3 / 2;
+  }
+}
+
+.img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.after {
+  position: absolute;
+  inset: 0;
+  will-change: clip-path;
+}
+
+/* ---------- divisor ---------- */
+.divider {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.dividerLine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -.5px;
+  width: 1px;
+  background: var(--sobre-madera);
+  box-shadow: 0 0 0 .5px rgba(43, 33, 28, .25);
+}
+
+.dividerCota {
+  position: absolute;
+  top: 18%;
+  bottom: 18%;
+  left: 10px;
+  width: 24px;
+  filter: drop-shadow(0 0 2px rgba(43, 33, 28, .6));
+}
+
+/* ---------- labels ---------- */
+.tag {
+  position: absolute;
+  top: calc(var(--header-h) + var(--s-4));
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  background: rgba(43, 33, 28, .72);
+  color: var(--sobre-madera);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  backdrop-filter: blur(6px);
+}
+
+.tagAntes {
+  left: var(--gutter);
+}
+
+.tagDespues {
+  right: var(--gutter);
+}
+
+.toggle {
+  position: absolute;
+  right: var(--gutter);
+  top: calc(var(--s-4));
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 1px solid rgba(236, 228, 216, .5);
+  border-radius: var(--r-pill);
+  background: rgba(43, 33, 28, .72);
+  color: var(--sobre-madera);
+  font: 500 var(--fs-small) / 1 var(--font-sans);
+  cursor: pointer;
+}
+
+.static .tagAntes {
+  top: var(--s-4);
+}
+
+/* ---------- slot de info ---------- */
+.info {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: calc(var(--s-6) + env(safe-area-inset-bottom, 0px));
+  color: var(--sobre-madera);
+}

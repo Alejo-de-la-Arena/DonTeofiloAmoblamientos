@@ -1,5 +1,4 @@
-import BtnWhatsapp from '../ui/BtnWhatsapp';
-import { WHATSAPP_URL } from '../../config/contact';
+import WhatsAppButton from '../primitives/WhatsAppButton';
 import './WorkCTA.css';
 
 export default function WorkCTA() {
@@ -11,7 +10,7 @@ export default function WorkCTA() {
         <p className="work-cta-sub">
           Contanos tu idea y te acompañamos en cada paso. Presupuesto sin compromiso.
         </p>
-        <BtnWhatsapp href={WHATSAPP_URL}>Escribinos por WhatsApp</BtnWhatsapp>
+        <WhatsAppButton variant="primary">Escribinos por WhatsApp</WhatsAppButton>
       </div>
     </section>
   );

@@ -1,5 +1,5 @@
 /* ---------- footer ---------- */
-.footer{background:var(--ink);color:#fff}
+.footer{background:var(--madera);color:#fff}
 .footer-grid{max-width:1200px;margin:0 auto;padding:clamp(64px,8vw,96px) clamp(24px,5vw,72px) 0;display:grid;grid-template-columns:1.4fr 1fr 1.2fr 1.2fr;gap:44px}
 .footer-brand{font-family:'Newsreader Variable',serif;font-weight:700;font-size:22px;letter-spacing:.18em}
 .footer-tagline{color:rgba(255,255,255,.55);font-size:14px;font-weight:300;margin:16px 0 24px;line-height:1.6}
@@ -7,7 +7,7 @@
 .footer-social-btn{position:relative;width:40px;height:40px;border:1px solid rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;transition:all .3s ease}
 .footer-social-btn::after{content:"";position:absolute;inset:-2px}
 .footer-social-btn--ig:hover{border-color:var(--accent);color:var(--accent)}
-.footer-social-btn--wa:hover{border-color:var(--whatsapp);color:var(--whatsapp)}
+.footer-social-btn--wa:hover{border-color:var(--accent);color:var(--accent)}
 .footer-heading{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.48);margin-bottom:20px}
 .footer-links{display:flex;flex-direction:column;gap:12px}
 .footer-links a{color:rgba(255,255,255,.75);font-size:14px}

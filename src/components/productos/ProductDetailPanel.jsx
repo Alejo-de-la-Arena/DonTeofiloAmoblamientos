@@ -1,14 +1,14 @@
-import WhatsAppIcon from '../ui/icons/WhatsAppIcon';
-import { WHATSAPP_NUMBER } from '../../config/contact';
+import WhatsAppButton from '../primitives/WhatsAppButton';
+import { buildWhatsAppUrl } from '../../lib/whatsapp';
 import './ProductDetailPanel.css';
 
 export default function ProductDetailPanel({ product, onClose }) {
   const isOpen = !!product;
 
   const waHref = product
-    ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-        `¡Hola Don Teófilo! Me interesa el producto "${product.nombre}" (${product.categoria}). ¿Me pasan más info y presupuesto?`
-      )}`
+    ? buildWhatsAppUrl({
+        mensaje: `¡Hola Don Teófilo! Me interesa el producto "${product.nombre}" (${product.categoria}). ¿Me pasan más info y presupuesto?`,
+      })
     : '#';
 
   return (
@@ -61,10 +61,9 @@ export default function ProductDetailPanel({ product, onClose }) {
                 </div>
               </div>
 
-              <a href={waHref} target="_blank" rel="noopener" className="catalog-panel-wa">
-                <WhatsAppIcon size={20} />
+              <WhatsAppButton href={waHref} variant="primary" block>
                 Consultar por este producto
-              </a>
+              </WhatsAppButton>
               <p className="catalog-panel-note">
                 Te respondemos en menos de 24hs · Presupuesto sin compromiso
               </p>

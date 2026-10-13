@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
-import BtnWhatsapp from '../ui/BtnWhatsapp';
-import { WHATSAPP_URL } from '../../config/contact';
+import WhatsAppButton from '../primitives/WhatsAppButton';
 import './CTABanner.css';
 
 export default function CTABanner() {
@@ -16,7 +15,7 @@ export default function CTABanner() {
         <p className="cta-sub">
           Contanos tu idea y te ayudamos a hacerla realidad. Presupuesto sin compromiso.
         </p>
-        <BtnWhatsapp href={WHATSAPP_URL}>Escribinos por WhatsApp</BtnWhatsapp>
+        <WhatsAppButton variant="primary">Escribinos por WhatsApp</WhatsAppButton>
         <div className="cta-alt">
           <Link to="/contacto">O completá el formulario de contacto →</Link>
         </div>

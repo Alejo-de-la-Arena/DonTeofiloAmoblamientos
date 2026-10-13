@@ -32,6 +32,7 @@
   width:100%;border:none;border-bottom:1px solid var(--border-2);background:none;
   padding:10px 8px 10px 26px;font-family:'DM Sans Variable',sans-serif;font-size:15px;color:var(--ink);outline:none;
 }
+.filter-drawer-search:focus-visible{border-bottom-color:var(--tinta);box-shadow:0 1px 0 var(--tinta)}
 .filter-drawer-search::placeholder{color:var(--muted-2)}
 
 .filter-drawer-pills{display:flex;flex-wrap:wrap;gap:9px}

@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import BeforeAfterSlider from '../components/home/BeforeAfterSlider';
-import WhatsAppIcon from '../components/ui/icons/WhatsAppIcon';
+import WhatsAppButton from '../components/primitives/WhatsAppButton';
 import { fetchProyectoPorSlug } from '../lib/proyectosApi';
-import { WHATSAPP_NUMBER } from '../config/contact';
+import { buildWhatsAppUrl } from '../lib/whatsapp';
 import './ProyectoDetalle.css';
 
 export default function ProyectoDetalle() {
@@ -81,9 +81,9 @@ export default function ProyectoDetalle() {
     );
   }
 
-  const waHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    `¡Hola Don Teófilo! Vi el proyecto "${proyecto.titulo}" en la web y me gustaría hacer una consulta parecida.`
-  )}`;
+  const waHref = buildWhatsAppUrl({
+    mensaje: `¡Hola Don Teófilo! Vi el proyecto "${proyecto.titulo}" en la web y me gustaría hacer una consulta parecida.`,
+  });
 
   return (
     <main className="proydet-page">
@@ -145,10 +145,9 @@ export default function ProyectoDetalle() {
       )}
 
       <section className="proydet-cta-section">
-        <a href={waHref} target="_blank" rel="noopener" className="proydet-cta-wa">
-          <WhatsAppIcon size={20} />
+        <WhatsAppButton href={waHref} variant="primary">
           Consultar por un proyecto similar
-        </a>
+        </WhatsAppButton>
         <p className="proydet-cta-note">Te respondemos en menos de 24hs · Presupuesto sin compromiso</p>
       </section>
 
