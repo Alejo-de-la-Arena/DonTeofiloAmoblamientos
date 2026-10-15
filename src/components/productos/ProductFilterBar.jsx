@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import MobileFilterDrawer from './MobileFilterDrawer';
+import AnimatedCount from './AnimatedCount';
 import './ProductFilterBar.css';
 
 export default function ProductFilterBar({
@@ -9,6 +10,7 @@ export default function ProductFilterBar({
   materials,
   activeMaterial,
   onMaterialChange,
+  showPrice,
   maxPrice,
   maxPriceLabel,
   onMaxPriceChange,
@@ -21,6 +23,21 @@ export default function ProductFilterBar({
   const [stuck, setStuck] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const sentinelRef = useRef(null);
+  const barRef = useRef(null);
+
+  // Publica el alto real de la barra sticky: #catalogo lo suma a su scroll-margin-top, así al
+  // bajar desde las tiles del hero la primera fila no queda debajo de la barra.
+  useEffect(() => {
+    const el = barRef.current;
+    if (!el) return;
+    const root = document.documentElement;
+    const ro = new ResizeObserver(() => root.style.setProperty('--filter-bar-h', `${el.offsetHeight}px`));
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      root.style.removeProperty('--filter-bar-h');
+    };
+  }, []);
 
   useEffect(() => {
     const el = sentinelRef.current;
@@ -36,7 +53,7 @@ export default function ProductFilterBar({
   return (
     <>
       <div ref={sentinelRef} className="catalog-filter-sentinel" />
-      <div className={`catalog-filter-bar${stuck ? ' stuck' : ''}`}>
+      <div ref={barRef} className={`catalog-filter-bar${stuck ? ' stuck' : ''}`}>
         <button
           type="button"
           className="catalog-filter-trigger"
@@ -57,6 +74,7 @@ export default function ProductFilterBar({
                   key={cat}
                   type="button"
                   className={`catalog-filter-pill${cat === activeCategory ? ' active' : ''}`}
+                  aria-pressed={cat === activeCategory}
                   onClick={() => onCategoryChange(cat)}
                 >
                   {cat}
@@ -81,39 +99,46 @@ export default function ProductFilterBar({
                 value={search}
                 onChange={(e) => onSearchChange(e.target.value)}
                 placeholder="Buscar producto…"
+                aria-label="Buscar producto"
               />
             </div>
           </div>
 
           <div className="catalog-filter-row catalog-filter-row--secondary">
-            <div className="catalog-filter-materials">
-              <span className="catalog-filter-label">Material</span>
-              {materials.map((mat) => (
-                <button
-                  key={mat}
-                  type="button"
-                  className={`catalog-material-pill${mat === activeMaterial ? ' active' : ''}`}
-                  onClick={() => onMaterialChange(mat)}
-                >
-                  {mat}
-                </button>
-              ))}
-            </div>
-            <div className="catalog-filter-price">
-              <span className="catalog-filter-label">Hasta</span>
-              <input
-                type="range"
-                min={200000}
-                max={3000000}
-                step={50000}
-                value={maxPrice}
-                onChange={(e) => onMaxPriceChange(Number(e.target.value))}
-              />
-              <span className="catalog-filter-price-val">{maxPriceLabel}</span>
-            </div>
+            {materials && (
+              <div className="catalog-filter-materials" role="group" aria-label="Material">
+                <span className="catalog-filter-label">Material</span>
+                {[{ value: null, label: 'Todos' }, ...materials].map((mat) => (
+                  <button
+                    key={mat.label}
+                    type="button"
+                    className={`catalog-material-pill${mat.value === activeMaterial ? ' active' : ''}`}
+                    aria-pressed={mat.value === activeMaterial}
+                    onClick={() => onMaterialChange(mat.value)}
+                  >
+                    {mat.label}
+                  </button>
+                ))}
+              </div>
+            )}
+            {showPrice && (
+              <div className="catalog-filter-price">
+                <span className="catalog-filter-label">Hasta</span>
+                <input
+                  type="range"
+                  min={200000}
+                  max={3000000}
+                  step={50000}
+                  value={maxPrice}
+                  aria-label="Precio máximo"
+                  onChange={(e) => onMaxPriceChange(Number(e.target.value))}
+                />
+                <span className="catalog-filter-price-val">{maxPriceLabel}</span>
+              </div>
+            )}
             <div className="catalog-filter-count">
-              <span>
-                <b>{count}</b> productos
+              <span aria-live="polite">
+                <AnimatedCount value={count} /> producto{count === 1 ? '' : 's'}
               </span>
               {hasFilters && (
                 <button type="button" className="catalog-filter-clear" onClick={onClearAll}>
@@ -134,6 +159,7 @@ export default function ProductFilterBar({
         materials={materials}
         activeMaterial={activeMaterial}
         onMaterialChange={onMaterialChange}
+        showPrice={showPrice}
         maxPrice={maxPrice}
         maxPriceLabel={maxPriceLabel}
         onMaxPriceChange={onMaxPriceChange}

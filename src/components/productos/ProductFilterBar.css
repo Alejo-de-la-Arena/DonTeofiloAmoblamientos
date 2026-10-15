@@ -4,7 +4,7 @@
 
 .catalog-filter-bar {
   position: sticky;
-  top: 64px;
+  top: var(--header-h);
   z-index: 60;
   background: rgba(236, 234, 227, .96);
   backdrop-filter: blur(10px);
@@ -245,10 +245,6 @@
 }
 
 @media (max-width:640px) {
-  .catalog-filter-bar {
-    top: 56px
-  }
-
   .catalog-search {
     width: 140px
   }

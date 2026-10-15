@@ -1,0 +1,18 @@
+.count {
+  display: inline-block;
+}
+
+/* La ventana recorta el número que sale y el que entra: solo se ve el que está en su lugar. */
+.window {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+  vertical-align: bottom;
+  line-height: inherit;
+}
+
+.digit {
+  display: inline-block;
+  color: var(--texto);
+  font-weight: 700;
+}

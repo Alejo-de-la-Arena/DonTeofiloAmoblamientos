@@ -99,7 +99,29 @@
   grid-row: 2
 }
 
+/* Botón-filtro: ocupa todo el slot y lleva el tilt del puntero (transform propio). */
+.catalog-hero-tile-btn {
+  position: absolute;
+  inset: 0;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.catalog-hero-tile-btn:focus-visible {
+  outline: none;
+}
+
+.catalog-hero-tile-btn:focus-visible .catalog-hero-tile {
+  outline: 2px solid var(--tinta);
+  outline-offset: 4px;
+}
+
 .catalog-hero-tile {
+  display: block;
   position: absolute;
   inset: 0;
   border-radius: 16px;
@@ -130,6 +152,31 @@
   font-weight: 600;
   padding: 6px 11px;
   border-radius: 30px;
+  border: 1px solid transparent;
+  transition: background-color var(--dur-sm) var(--ease-settle), border-color var(--dur-sm) var(--ease-settle);
+}
+
+/* Categoría activa: borde en acento sobre la tarjeta y label relleno en óxido. */
+.catalog-hero-tile,
+.catalog-hero-carousel-item {
+  transition: border-color var(--dur-sm) var(--ease-settle), box-shadow var(--dur-sm) var(--ease-settle);
+}
+
+.is-active .catalog-hero-tile,
+.catalog-hero-carousel-item.is-active {
+  border-color: var(--oxido-medio);
+  box-shadow: 0 0 0 1px var(--oxido-medio), 0 20px 40px -24px rgba(26, 26, 26, .35);
+}
+
+.is-active .catalog-hero-tile-label,
+.catalog-hero-carousel-item.is-active .catalog-hero-tile-label {
+  background: var(--oxido);
+  border-color: var(--oxido-claro);
+}
+
+.catalog-hero-carousel-item:focus-visible {
+  outline: 2px solid var(--tinta);
+  outline-offset: 3px;
 }
 
 /* Tablet: copy y pila se apilan. La fila del copy queda en "auto" (su alto natural, nunca se

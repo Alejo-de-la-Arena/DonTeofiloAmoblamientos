@@ -27,3 +27,17 @@ export function slugifyCategoria(categoria) {
 export function categoriaFromSlug(slug) {
   return CATEGORIAS.find((c) => slugifyCategoria(c) === slug) ?? null;
 }
+
+// "Placards" → "un placard": para armar mensajes en primera persona ("Hola, busco un placard…").
+const CATEGORIA_SINGULAR = {
+  Cocinas: 'una cocina',
+  Placards: 'un placard',
+  Vanitorys: 'un vanitory',
+  Aberturas: 'una abertura',
+  Alacenas: 'una alacena',
+  'Diseño integral': 'un diseño integral',
+};
+
+export function categoriaEnSingular(categoria) {
+  return CATEGORIA_SINGULAR[categoria] ?? null;
+}

@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import cocinaDesktop from '../../assets/images/inicio/hero/dtf-cocina-hero-desktop.png';
 import cocinaDesktopWebp from '../../assets/images/inicio/hero/dtf-cocina-hero-desktop.png?w=320;480;720&format=webp&as=srcset';
@@ -88,7 +88,76 @@ const carouselItemVariants = {
   }),
 };
 
-export default function ProductosHero({ onCategorySelect }) {
+const FINE_POINTER = '(hover: hover) and (pointer: fine)';
+const TILT_MAX = 4; // grados extra, sumados a la rotación base de cada tarjeta
+const TILT_SPRING = { stiffness: 150, damping: 20 };
+
+function useFinePointer() {
+  const [fine, setFine] = useState(() => typeof window !== 'undefined' && window.matchMedia(FINE_POINTER).matches);
+  useEffect(() => {
+    const mql = window.matchMedia(FINE_POINTER);
+    const onChange = (e) => setFine(e.matches);
+    mql.addEventListener('change', onChange);
+    return () => mql.removeEventListener('change', onChange);
+  }, []);
+  return fine;
+}
+
+// Tarjeta del collage desktop. Tres capas, cada una con su propio transform para que no se
+// pisen: el slot lleva el parallax (y), el botón el tilt del puntero y la tarjeta la entrada con
+// su rotación base. Las rotaciones del botón y de la tarjeta se suman.
+function HeroTile({ tile, index, parallax, active, tilt, initialState, onSelect }) {
+  const target = useMotionValue(0);
+  const rotate = useSpring(target, TILT_SPRING);
+
+  function handlePointerMove(e) {
+    if (!tilt) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width) * 2 - 1; // -1 (izq.) … 1 (der.)
+    target.set(Math.max(-1, Math.min(1, x)) * TILT_MAX);
+  }
+
+  return (
+    <motion.div className={`catalog-hero-slot catalog-hero-slot--${index}`} style={{ y: parallax }}>
+      <motion.button
+        type="button"
+        className={`catalog-hero-tile-btn${active ? ' is-active' : ''}`}
+        style={{ rotate }}
+        aria-label={`Ver ${tile.label}`}
+        aria-pressed={active}
+        onClick={() => onSelect?.(tile.label)}
+        onPointerMove={handlePointerMove}
+        onPointerLeave={() => target.set(0)}
+      >
+        <motion.span
+          className="catalog-hero-tile"
+          custom={index}
+          variants={tileVariants}
+          initial={initialState}
+          animate="show"
+        >
+          <picture>
+            <source media="(max-width: 760px)" srcSet={tile.mobileWebp} type="image/webp" />
+            <source media="(max-width: 760px)" srcSet={tile.mobile} />
+            <source srcSet={tile.desktopWebp} type="image/webp" sizes="320px" />
+            <img
+              src={tile.desktop}
+              alt=""
+              sizes="320px"
+              loading={index === 0 ? 'eager' : 'lazy'}
+              fetchPriority={index === 0 ? 'high' : 'auto'}
+            />
+          </picture>
+          <span className="catalog-hero-tile-label" aria-hidden="true">
+            {tile.label}
+          </span>
+        </motion.span>
+      </motion.button>
+    </motion.div>
+  );
+}
+
+export default function ProductosHero({ activeCategory, onCategorySelect }) {
   const heroRef = useRef(null);
   const isMobile = useIsMobile(760);
   const reduce = useReducedMotion();
@@ -99,6 +168,7 @@ export default function ProductosHero({ onCategorySelect }) {
   const p3 = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [0, -38]);
   const parallax = [p0, p1, p2, p3];
   const initialState = reduce ? false : 'hidden';
+  const finePointer = useFinePointer();
 
   if (isMobile) {
     return (
@@ -135,7 +205,10 @@ export default function ProductosHero({ onCategorySelect }) {
             <motion.button
               key={tile.label}
               type="button"
-              className="catalog-hero-carousel-item"
+              className={`catalog-hero-carousel-item${activeCategory === tile.label ? ' is-active' : ''}`}
+              aria-label={`Ver ${tile.label}`}
+              aria-pressed={activeCategory === tile.label}
+              whileTap={reduce ? undefined : { scale: 0.98 }}
               onClick={() => onCategorySelect?.(tile.label)}
               custom={i}
               variants={carouselItemVariants}
@@ -157,7 +230,9 @@ export default function ProductosHero({ onCategorySelect }) {
                 />
               </picture>
               <span className="catalog-hero-carousel-scrim" aria-hidden="true" />
-              <span className="catalog-hero-tile-label">{tile.label}</span>
+              <span className="catalog-hero-tile-label" aria-hidden="true">
+                {tile.label}
+              </span>
             </motion.button>
           ))}
         </div>
@@ -191,33 +266,16 @@ export default function ProductosHero({ onCategorySelect }) {
 
         <div className="catalog-hero-stack">
           {TILES.map((tile, i) => (
-            <motion.div
+            <HeroTile
               key={tile.label}
-              className={`catalog-hero-slot catalog-hero-slot--${i}`}
-              style={{ y: parallax[i] }}
-            >
-              <motion.div
-                className="catalog-hero-tile"
-                custom={i}
-                variants={tileVariants}
-                initial={initialState}
-                animate="show"
-              >
-                <picture>
-                  <source media="(max-width: 760px)" srcSet={tile.mobileWebp} type="image/webp" />
-                  <source media="(max-width: 760px)" srcSet={tile.mobile} />
-                  <source srcSet={tile.desktopWebp} type="image/webp" sizes="320px" />
-                  <img
-                    src={tile.desktop}
-                    alt=""
-                    sizes="320px"
-                    loading={i === 0 ? 'eager' : 'lazy'}
-                    fetchPriority={i === 0 ? 'high' : 'auto'}
-                  />
-                </picture>
-                <span className="catalog-hero-tile-label">{tile.label}</span>
-              </motion.div>
-            </motion.div>
+              tile={tile}
+              index={i}
+              parallax={parallax[i]}
+              active={activeCategory === tile.label}
+              tilt={finePointer && !reduce}
+              initialState={initialState}
+              onSelect={onCategorySelect}
+            />
           ))}
         </div>
       </div>
