@@ -74,13 +74,20 @@
   text-wrap: balance;
 }
 
-/* Cota fina bajo el nombre, posicionada fuera del flujo: aparece sin mover nada. */
+/* Cota fina bajo el nombre, posicionada fuera del flujo: aparece sin mover nada. Oculta por
+   defecto: solo existe con puntero fino (abajo) o con foco de teclado en "Ver detalle". Así ni
+   un :hover pegajoso tras un tap ni un pointerType "mouse" emulado la dejan visible en touch. */
 .cota {
   position: absolute;
   left: 0;
   right: 0;
   top: calc(100% + 1px);
   height: 10px;
+  display: none;
+}
+
+.card:has(.action:focus-visible) .cota {
+  display: block;
 }
 
 .chips {
@@ -147,6 +154,10 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .cota {
+    display: block;
+  }
+
   .card:hover .img {
     scale: 1.04;
   }

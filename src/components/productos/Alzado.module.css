@@ -1,0 +1,75 @@
+/* Alzado técnico: tinta sobre papel. Solo trazos; el contenedor define el tamaño y el SVG se
+   dibuja en sus píxeles reales (ver Alzado.jsx). Defaults con :where para que el className
+   del consumidor lo posicione sin pelear especificidad. */
+:where(.root) {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: visible;
+}
+
+.contorno,
+.modulos,
+.detalles,
+.oculto,
+.cota,
+.mark,
+.ext {
+  fill: none;
+  stroke: var(--tinta);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.contorno {
+  stroke-width: 1.6;
+}
+
+.modulos {
+  stroke-width: 1;
+  stroke-opacity: .8;
+}
+
+.detalles {
+  stroke-width: 1.25;
+}
+
+/* Lo oculto o proyectado: punteado, más liviano. */
+.oculto {
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+  stroke-opacity: .6;
+}
+
+/* Cotas: mismos pesos que la primitiva <Cota>. */
+.cota {
+  stroke-width: 1.25;
+  stroke-linecap: butt;
+}
+
+.mark {
+  stroke-width: 1;
+  stroke-linecap: butt;
+  stroke-opacity: .8;
+}
+
+.ext {
+  stroke-width: .75;
+  stroke-opacity: .45;
+}
+
+.label {
+  fill: var(--tinta);
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-anchor: middle;
+  dominant-baseline: central;
+}

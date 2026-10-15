@@ -5,6 +5,7 @@ import { materialLabels, nombreProducto } from '../../lib/catalogo';
 import styles from './ProductCard.module.css';
 
 const MAX_CHIPS = 2;
+const FINE_POINTER = '(hover: hover) and (pointer: fine)';
 
 /**
  * Card del catálogo. Toda la card es clickeable sin <a> ni botones anidados: el único control
@@ -14,12 +15,18 @@ const MAX_CHIPS = 2;
 export default function ProductCard({ product, materialOptions, showCategory, onOpen }) {
   const nameId = useId();
   const [hover, setHover] = useState(false);
+  const [keyboardFocus, setKeyboardFocus] = useState(false);
   const nombre = nombreProducto(product);
   const materiales = materialLabels(product, materialOptions);
   const extra = materiales.length - MAX_CHIPS;
 
-  // La cota bajo el nombre solo con mouse (pointerType), nunca con touch o lápiz.
-  const onEnter = (e) => e.pointerType === 'mouse' && setHover(true);
+  // La cota bajo el nombre aparece con un puntero fino de verdad (no alcanza con pointerType
+  // "mouse": hay teléfonos y emuladores que lo reportan tras un tap) o con foco de TECLADO en
+  // "Ver detalle" (:focus-visible; nunca :focus-within, que también se activa con un tap).
+  // El CSS la oculta igual fuera de esos casos.
+  const onEnter = (e) => {
+    if (e.pointerType === 'mouse' && window.matchMedia(FINE_POINTER).matches) setHover(true);
+  };
 
   return (
     <article
@@ -49,7 +56,7 @@ export default function ProductCard({ product, materialOptions, showCategory, on
           <h3 id={nameId} className={styles.name}>
             {nombre}
           </h3>
-          {hover && <Cota draw="mount" className={styles.cota} />}
+          {(hover || keyboardFocus) && <Cota draw="mount" className={styles.cota} />}
         </div>
 
         {materiales.length > 0 && (
@@ -75,6 +82,8 @@ export default function ProductCard({ product, materialOptions, showCategory, on
           className={styles.action}
           aria-describedby={nameId}
           onClick={() => onOpen(product)}
+          onFocus={(e) => setKeyboardFocus(e.target.matches(':focus-visible'))}
+          onBlur={() => setKeyboardFocus(false)}
         >
           Ver detalle
         </button>

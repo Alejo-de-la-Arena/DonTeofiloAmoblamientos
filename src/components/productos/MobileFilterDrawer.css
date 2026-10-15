@@ -24,7 +24,7 @@
 
 .filter-drawer-body{flex:1;overflow-y:auto;padding:24px 20px 8px;display:flex;flex-direction:column;gap:30px}
 .filter-drawer-group{display:flex;flex-direction:column;gap:12px}
-.filter-drawer-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);font-weight:600}
+.filter-drawer-label{font-size:13px;color:var(--texto-suave);font-weight:600}
 
 .filter-drawer-search-wrap{position:relative;display:flex;align-items:center}
 .filter-drawer-search-icon{position:absolute;left:2px;color:var(--muted-2)}

@@ -1,17 +1,22 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import ProductosHero from '../components/productos/ProductosHero';
+import CatalogHero from '../components/productos/CatalogHero';
 import ProductFilterBar from '../components/productos/ProductFilterBar';
 import ProductGrid from '../components/productos/ProductGrid';
 import ProductDetailPanel from '../components/productos/ProductDetailPanel';
 import { fetchProductosPublicos } from '../lib/productosApi';
 import { useMotionSafe } from '../lib/motion';
+import { usePageMeta } from '../hooks/usePageMeta';
 import { fold, materialOptions, splitMateriales, tienePrecioVisible } from '../lib/catalogo';
 import { CATEGORIAS, categoriaFromSlug, slugifyCategoria } from '../data/productCategories';
 import './Productos.css';
 
 const MAX_PRICE_DEFAULT = 3000000;
 const TODOS = 'Todos';
+
+const META_TITLE = 'Muebles a medida: cocinas, placards, vanitorys y más | Don Teófilo Amoblamientos';
+const META_DESCRIPTION =
+  'Muebles a medida: cocinas, placards, vanitorys, aberturas, alacenas y diseño integral. Fabricados a la medida de tu espacio en Buenos Aires y Tandil.';
 
 function money(n) {
   return '$' + n.toLocaleString('es-AR');
@@ -27,6 +32,7 @@ export default function Productos() {
   const location = useLocation();
   const navigate = useNavigate();
   const { reduce } = useMotionSafe();
+  usePageMeta(META_TITLE, META_DESCRIPTION);
 
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -135,18 +141,38 @@ export default function Productos() {
     else updateParams((p) => p.delete('producto'));
   }, [location.state, navigate, updateParams]);
 
-  // Tiles del hero: aplican su categoría y bajan hasta la grilla (scroll-margin-top la deja
-  // debajo del header).
-  function handleHeroCategorySelect(cat) {
-    setCategoria(cat);
+  // Conteo del índice del hero: productos publicados por categoría (sin los demás filtros).
+  // null mientras carga, así nunca se lee un "a medida" falso.
+  const counts = useMemo(() => {
+    if (loading || loadError) return null;
+    const out = { [TODOS]: productos.length };
+    CATEGORIAS.forEach((c) => (out[c] = productos.filter((p) => p.categoria === c).length));
+    return out;
+  }, [productos, loading, loadError]);
+
+  // Baja hasta la grilla: scroll-margin-top de #catalogo la deja debajo del header y de la
+  // barra sticky.
+  function scrollToCatalog() {
     document
       .getElementById('catalogo')
       ?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
   }
 
+  function handleHeroCategorySelect(cat, { scroll }) {
+    setCategoria(cat);
+    if (scroll) scrollToCatalog();
+  }
+
   return (
     <>
-      <ProductosHero activeCategory={categoria} onCategorySelect={handleHeroCategorySelect} />
+      <CatalogHero
+        categories={[TODOS, ...CATEGORIAS]}
+        counts={counts}
+        activeCategory={categoria}
+        resultCount={loading || loadError ? null : filtered.length}
+        onSelect={handleHeroCategorySelect}
+        onShowResults={scrollToCatalog}
+      />
       <ProductFilterBar
         categories={[TODOS, ...CATEGORIAS]}
         activeCategory={categoria}

@@ -1,4 +1,5 @@
 import CornerMarks from '../primitives/CornerMarks';
+import Alzado from './Alzado';
 import WhatsAppButton from '../primitives/WhatsAppButton';
 import { buildWhatsAppUrl } from '../../lib/whatsapp';
 import { categoriaEnSingular } from '../../data/productCategories';
@@ -14,12 +15,16 @@ function mensaje(categoria, search) {
   return 'Hola, busco un mueble a medida que no está en el catálogo. ¿Me pasan info?';
 }
 
-/** Última celda fija de la grilla: hoja de plano en blanco, invitación a diseñar a medida. */
+/** Última celda fija de la grilla: hoja de plano con el boceto de "tu espacio" (una pared vacía,
+ *  sin medidas todavía) e invitación a diseñar a medida. */
 export default function ProductCustomCard({ categoria, search }) {
   return (
     <aside className={styles.card} aria-labelledby="catalogo-a-medida">
       <span className={styles.grid} aria-hidden="true" />
       <CornerMarks size="26px" />
+      <div className={styles.boceto}>
+        <Alzado categoria="pared-vacia" draw="view" className={styles.bocetoDibujo} />
+      </div>
       <div className={styles.body}>
         <h3 id="catalogo-a-medida" className={styles.title}>
           ¿No está lo que buscás?

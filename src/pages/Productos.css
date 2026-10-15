@@ -1,6 +1,6 @@
 /* Dirección visual: fondo cálido (--bg-alt) detrás del catálogo en vez de blanco puro,
    para que las tarjetas de producto lean como objetos sobre una superficie. */
-/* Destino del scroll desde las tiles del hero: queda debajo del header Y de la barra sticky de
+/* Destino del scroll desde el índice del hero: queda debajo del header Y de la barra sticky de
    filtros (ProductFilterBar publica --filter-bar-h). #id para ganarle a [id] de global.css. */
 #catalogo{scroll-margin-top:calc(var(--header-h) + var(--filter-bar-h, 0px))}
 

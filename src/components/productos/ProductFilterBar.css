@@ -109,10 +109,8 @@
 }
 
 .catalog-filter-label {
-  font-size: 11px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--muted-2);
+  font-size: 13px;
+  color: var(--texto-suave);
   font-weight: 600;
   margin-right: 4px
 }

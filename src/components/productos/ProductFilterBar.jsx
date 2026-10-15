@@ -26,7 +26,7 @@ export default function ProductFilterBar({
   const barRef = useRef(null);
 
   // Publica el alto real de la barra sticky: #catalogo lo suma a su scroll-margin-top, así al
-  // bajar desde las tiles del hero la primera fila no queda debajo de la barra.
+  // bajar desde el índice del hero la primera fila no queda debajo de la barra.
   useEffect(() => {
     const el = barRef.current;
     if (!el) return;

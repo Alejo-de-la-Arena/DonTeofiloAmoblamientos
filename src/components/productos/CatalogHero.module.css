@@ -1,0 +1,152 @@
+/* Hero compacto: en 1440×900 tiene que asomar la primera fila de cards arriba del fold. */
+.hero {
+  background: var(--papel);
+  padding: calc(var(--header-h) + var(--s-5)) var(--gutter) var(--s-5);
+}
+
+.inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  grid-template-areas:
+    'copy  plano'
+    'index plano';
+  grid-template-rows: auto 1fr;
+  column-gap: var(--s-8);
+  row-gap: var(--s-5);
+}
+
+.copy {
+  grid-area: copy;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(2.25rem, 1.3rem + 2.3vw, 3.5rem);
+  font-weight: 600;
+  line-height: var(--lh-tight);
+  letter-spacing: -.015em;
+  color: var(--texto);
+}
+
+.lead {
+  margin: var(--s-4) 0 0;
+  max-width: 40ch;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--texto-suave);
+}
+
+.index {
+  grid-area: index;
+  align-self: end;
+}
+
+/* Hoja de plano: grilla técnica (mayor cada 50px, menor cada 10px) y escuadras. */
+.plano {
+  grid-area: plano;
+  position: relative;
+  min-height: 360px;
+}
+
+.grilla {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--grilla) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grilla) 1px, transparent 1px),
+    linear-gradient(to right, var(--grilla-fina) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grilla-fina) 1px, transparent 1px);
+  background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
+  background-position: -1px -1px;
+}
+
+.alzado {
+  position: absolute;
+  inset: var(--s-6) var(--s-6) var(--s-5);
+  width: auto;
+  height: auto;
+}
+
+/* ---------- tablet: título arriba, índice y alzado lado a lado ---------- */
+@media (max-width: 999px) and (min-width: 761px) {
+  .inner {
+    grid-template-columns: 240px minmax(0, 1fr);
+    grid-template-areas:
+      'copy  copy'
+      'index plano';
+    grid-template-rows: auto auto;
+    column-gap: var(--s-6);
+  }
+
+  .plano {
+    min-height: 320px;
+  }
+}
+
+/* ---------- mobile: título, bajada, alzado a ancho completo, chips ---------- */
+@media (max-width: 760px) {
+  .hero {
+    padding: calc(var(--header-h) + var(--s-5)) var(--gutter) var(--s-4);
+  }
+
+  .inner {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'copy'
+      'plano'
+      'index';
+    grid-template-rows: auto;
+    row-gap: var(--s-4);
+  }
+
+  .lead {
+    margin-top: var(--s-3);
+  }
+
+  .plano {
+    min-height: 0;
+    height: clamp(210px, 60vw, 280px);
+  }
+
+  .alzado {
+    inset: var(--s-4) var(--s-3) var(--s-3) var(--s-4);
+  }
+}
+
+/* Acción de texto bajo los chips (solo mobile): refleja el filtro actual y baja a la grilla. */
+.ver {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 44px;
+  margin-top: var(--s-2);
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--oxido);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+.ver svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ver:focus-visible {
+  outline: 2px solid var(--tinta);
+  outline-offset: 3px;
+}
