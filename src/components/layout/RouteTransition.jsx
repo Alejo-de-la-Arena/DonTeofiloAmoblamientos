@@ -2,6 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { useLocation, useNavigationType } from 'react-router-dom';
 import SlidingDoors from '../primitives/SlidingDoors';
 import { routeDoors, useMotionSafe } from '../../lib/motion';
+import { RouteEntryContext } from './routeEntry';
 import './RouteTransition.css';
 
 /* ==========================================================================
@@ -76,7 +77,7 @@ export default function RouteTransition({ children }) {
   const navigationType = useNavigationType();
   const { reduce } = useMotionSafe();
 
-  const [shown, setShown] = useState({ location, navigationType });
+  const [shown, setShown] = useState({ location, navigationType, entry: 'initial' });
   const [doorsOpen, setDoorsOpen] = useState(true);
   const pending = useRef(null);
   const positions = useRef(null);
@@ -111,7 +112,7 @@ export default function RouteTransition({ children }) {
   // Cada cambio de location real decide cómo llegar a mostrarla.
   useEffect(() => {
     if (location.key === shown.location.key) return;
-    const next = { location, navigationType };
+    const next = { location, navigationType, entry: navigationType === 'POP' ? 'pop' : 'push' };
     const samePath = location.pathname === shown.location.pathname;
     const instant =
       samePath || reduce || navigationType === 'POP' || isAdmin(location.pathname) || isAdmin(shown.location.pathname);
@@ -159,7 +160,7 @@ export default function RouteTransition({ children }) {
 
   return (
     <>
-      {children(shown.location)}
+      <RouteEntryContext.Provider value={shown.entry}>{children(shown.location)}</RouteEntryContext.Provider>
       {!reduce && (
         <SlidingDoors
           open={doorsOpen}

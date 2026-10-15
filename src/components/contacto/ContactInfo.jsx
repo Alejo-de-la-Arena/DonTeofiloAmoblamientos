@@ -15,7 +15,7 @@ export default function ContactInfo() {
           eternos, sin spam — una conversación real.
         </p>
 
-        <a href={WHATSAPP_URL} target="_blank" rel="noopener" className="contact-info-wa">
+        <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="contact-info-wa">
           <div className="contact-info-wa-label">WhatsApp directo</div>
           <div className="contact-info-wa-number">{WHATSAPP_DISPLAY}</div>
         </a>

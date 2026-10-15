@@ -1,0 +1,72 @@
+/* Fondo y texto explícitos en madera / claro: esta sección tuvo antes un bug de texto oscuro
+   sobre fondo oscuro. No heredar colores acá. */
+.section {
+  background: var(--madera);
+  color: var(--sobre-madera);
+}
+
+.info {
+  display: grid;
+  gap: var(--s-2);
+  color: var(--sobre-madera);
+}
+
+/* Encabezado de la sección (arriba de la lámina, dentro del sticky). */
+.title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-h2);
+  font-weight: 600;
+  line-height: var(--lh-heading);
+  letter-spacing: -.01em;
+  color: #fff;
+}
+
+.lead {
+  margin: var(--s-1) 0 0;
+  font-size: var(--fs-small);
+  line-height: 1.45;
+  color: rgba(236, 228, 216, .86);
+}
+
+.line {
+  margin: var(--s-1) 0 0;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--sobre-madera);
+  max-width: 40ch;
+}
+
+.cota {
+  height: 24px;
+  margin: var(--s-2) 0;
+}
+
+.link {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--sobre-madera);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(236, 228, 216, .45);
+  text-underline-offset: 6px;
+  transition: text-decoration-color var(--dur-sm) var(--ease-settle);
+}
+
+.link:hover {
+  color: #fff;
+  text-decoration-color: currentColor;
+}
+
+@media (min-width: 1024px) {
+  .info {
+    gap: var(--s-3);
+  }
+
+  .lead,
+  .line {
+    font-size: var(--fs-body);
+  }
+}

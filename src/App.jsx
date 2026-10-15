@@ -19,6 +19,7 @@ const AdminProductos = lazy(() => import('./pages/admin/AdminProductos'));
 const AdminProductoForm = lazy(() => import('./pages/admin/AdminProductoForm'));
 const AdminProyectos = lazy(() => import('./pages/admin/AdminProyectos'));
 const AdminProyectoForm = lazy(() => import('./pages/admin/AdminProyectoForm'));
+const AdminTaller = lazy(() => import('./pages/admin/AdminTaller'));
 
 // Catálogo de primitivas, solo en dev: en build import.meta.env.DEV es `false` literal, así
 // que Vite elimina la rama y el chunk ni siquiera se genera.
@@ -55,6 +56,7 @@ export default function App() {
                     <Route path="proyectos" element={<AdminProyectos />} />
                     <Route path="proyectos/nuevo" element={<AdminProyectoForm />} />
                     <Route path="proyectos/:id/editar" element={<AdminProyectoForm />} />
+                    <Route path="taller" element={<AdminTaller />} />
                   </Route>
                 </Route>
               </Routes>

@@ -27,6 +27,8 @@ export const stagger = { door: 0.06, line: 0.08 };
 /** Transición entre rutas: cada tramo (cerrar / abrir) dura 280ms en total,
  *  incluido el escalonado de los paneles: 200ms + 2 × 40ms con 3 paneles. */
 export const routeDoors = { panels: 3, duration: 0.2, step: 0.04 };
+/** Duración total de un tramo de la transición de ruta (lo que tarda en abrir). */
+export const routeDoorsLeg = routeDoors.duration + routeDoors.step * (routeDoors.panels - 1);
 
 /** Transición única para todo lo que se resuelve con reduced motion. */
 export const reducedTransition = { duration: 0.2, ease: 'linear' };

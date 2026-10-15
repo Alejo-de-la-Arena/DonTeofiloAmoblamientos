@@ -1,0 +1,13 @@
+.admin-taller-help{font-size:13.5px;color:var(--muted);margin:-8px 0 18px;max-width:70ch}
+.admin-taller-form{margin-bottom:24px}
+.admin-taller-new{display:grid;grid-template-columns:260px 1fr;gap:22px;align-items:start}
+.admin-taller-fields{display:flex;flex-direction:column;gap:16px}
+.admin-taller-orden input{max-width:110px}
+.admin-taller-alt{max-width:420px;color:var(--ink);line-height:1.45}
+.admin-taller-link a{color:var(--accent-contrast);font-weight:600;font-size:13px}
+.admin-table-actions .admin-taller-edit,.admin-table-actions .admin-taller-save{color:var(--accent-contrast)}
+.admin-table-actions .admin-taller-cancel{color:var(--muted)}
+@media (max-width:720px){
+  .admin-taller-new{grid-template-columns:1fr}
+}
+.admin-table-actions .admin-taller-edit,.admin-table-actions .admin-taller-save,.admin-table-actions .admin-taller-cancel,.admin-table-actions button{font-family:inherit}

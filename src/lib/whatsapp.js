@@ -12,10 +12,11 @@ const asLabel = (label) => label.replace('¿', '').replace('?', '');
  * - Con `tipo` (formulario de Contacto): saludo + "Quiero hacer una consulta sobre: {tipo}."
  *   y una línea "• Campo: valor" por cada dato completado, en orden. `nombre`, `telefono` y
  *   `mensaje` se agregan como campos; `extra` ([[label, valor], …]) suma campos dinámicos
- *   (ej. los de cada segmento del form). Si no hay ningún dato, lo aclara.
+ *   (ej. los de cada segmento del form). Si no hay ningún dato, agrega `sinDatos` (por defecto
+ *   la aclaración del form de Contacto; null para no agregar nada).
  * - Sin `tipo`: `mensaje` va tal cual (consultas puntuales desde producto o proyecto).
  */
-export function buildWhatsAppMessage({ tipo, nombre, telefono, mensaje, extra = [] } = {}) {
+export function buildWhatsAppMessage({ tipo, nombre, telefono, mensaje, extra = [], sinDatos = '(Todavía no completé los datos)' } = {}) {
   if (!tipo) return clean(mensaje);
 
   const fields = [
@@ -28,7 +29,10 @@ export function buildWhatsAppMessage({ tipo, nombre, telefono, mensaje, extra = 
   fields.forEach(([label, value]) => {
     if (clean(value)) lines.push(`• ${asLabel(label)}: ${value}`);
   });
-  if (lines.length === 2) lines.push('(Todavía no completé los datos)');
+  if (lines.length === 2) {
+    if (!sinDatos) return lines[0];
+    lines.push(sinDatos);
+  }
   return lines.join('\n');
 }
 

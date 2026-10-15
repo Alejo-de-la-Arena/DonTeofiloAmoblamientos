@@ -1,21 +1,21 @@
-import HeroSlider from '../components/home/HeroSlider';
-import ServicesGrid from '../components/home/ServicesGrid';
-import FeaturedProject from '../components/home/FeaturedProject';
-import ProcessSteps from '../components/home/ProcessSteps';
-import Testimonials from '../components/home/Testimonials';
-import CTABanner from '../components/home/CTABanner';
-import InstagramStrip from '../components/home/InstagramStrip';
+import Hero from '../components/home/Hero';
+import ServiceIndex from '../components/home/ServiceIndex';
+import BeforeAfterHome from '../components/home/BeforeAfterHome';
+import ProcessTape from '../components/home/ProcessTape';
+import Testimonial from '../components/home/Testimonial';
+import CtaPlano from '../components/home/CtaPlano';
+import DelTaller from '../components/home/DelTaller';
 
 export default function Home() {
   return (
     <>
-      <HeroSlider />
-      <ServicesGrid />
-      <FeaturedProject />
-      <ProcessSteps />
-      <Testimonials />
-      <CTABanner />
-      <InstagramStrip />
+      <Hero />
+      <ServiceIndex />
+      <BeforeAfterHome />
+      <ProcessTape />
+      <Testimonial />
+      <DelTaller />
+      <CtaPlano />
     </>
   );
 }

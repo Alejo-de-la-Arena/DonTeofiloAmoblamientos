@@ -5,6 +5,7 @@
      oxido / papel 6.3 · oxido / papel-2 5.6 · blanco / oxido 7.6 · blanco / oxido-hover 9.7
      tinta / papel 6.5 · tinta / papel-2 5.8 · sobre-madera / madera 12.5
      oxido-claro / madera 5.7 · tinta-clara / madera 7.7 · blanco / madera 15.7 · blanco / tinta 7.8
+     blanco / cianotipo 10.0 · sobre-madera / cianotipo 8.0 · tinta / papel (botón sobre cianotipo) 6.5
    ========================================================================== */
 :root {
   /* ---------- paleta ---------- */
@@ -16,6 +17,7 @@
   --tinta-clara: #A9B8C4;    /* tinta sobre fondos oscuros (madera / fotos) */
   --madera: #2B211C;         /* wengué: secciones oscuras, en lugar del casi negro */
   --sobre-madera: #ECE4D8;   /* texto sobre madera */
+  --cianotipo: #2B4557;      /* azul de plano (tinta oscurecida): CTA "Hoja de plano"; 1.56:1 vs madera */
   --oxido: #8C3B22;          /* acento — usar con restricción: CTA principal, un detalle por vista */
   --oxido-hover: #742F1A;
   --oxido-claro: #D48A64;    /* acento sobre madera / fotos oscuras (no sobre papel: 2.3:1) */
@@ -47,7 +49,7 @@
   --border-2: #CFCABE;
   --border-3: #D9D5CB;
   --muted: var(--texto-suave);
-  --muted-2: #8F8B83;        /* solo decorativo / texto grande — no pasa AA en texto chico */
+  --muted-2: #66625A;        /* texto secundario chico: 5.0:1 sobre papel, 4.5:1 sobre papel-2 */
   --whatsapp: #25D366;       /* SOLO el botón flotante: convención reconocible */
   --danger: #B23B3B;
   --danger-dark: #992f2f;

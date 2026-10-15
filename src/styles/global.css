@@ -37,11 +37,9 @@ a{color:var(--oxido);text-decoration:none}
 }
 /* Contextos oscuros (madera, fotos, footer): la tinta oscura no se ve, el anillo pasa a tinta
    clara. Al crear una sección oscura nueva, sumarla acá o setear --focus-ring en ella. */
-.footer,.cta,.work-cta,.nav:not(.solid),.nav-burger-wrap:not(.solid),.nav-mobile{--focus-ring:var(--tinta-clara)}
+.footer,.work-cta,.nav:not(.solid),.nav-burger-wrap:not(.solid),.nav-mobile{--focus-ring:var(--tinta-clara)}
 
-@keyframes dtKen{from{transform:scale(1.02)}to{transform:scale(1.14)}}
 @keyframes dtPulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.55)}70%{box-shadow:0 0 0 16px rgba(37,211,102,0)}100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}}
-@keyframes dtCtaZoom{from{transform:scale(1)}to{transform:scale(1.12)}}
 
 /* reveal-on-scroll — DEPRECADO (rediseño "Al milímetro").
    El fade-up genérico por sección se reemplaza por las primitivas <RevealImage> / <RevealLines>

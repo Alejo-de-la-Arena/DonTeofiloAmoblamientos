@@ -176,7 +176,7 @@ export default function Navbar({ isSolid }) {
                   <a
                     href={INSTAGRAM_URL}
                     target="_blank"
-                    rel="noopener"
+                    rel="noopener noreferrer"
                     aria-label="Instagram"
                     className="nav-mobile-ig"
                   >

@@ -1,0 +1,338 @@
+/* ---------- marco ---------- */
+.hero {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  min-height: 560px;
+  overflow: clip;
+  background: var(--madera);
+  color: var(--sobre-madera);
+}
+
+@media (min-width: 768px) {
+  .hero {
+    height: min(100vh, 920px);
+    height: min(100svh, 920px);
+  }
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+}
+
+.picture,
+.picture picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Legibilidad: base oscura abajo (texto y ficha), velo arriba (nav) y, en desktop, hacia la
+   izquierda donde vive el título. Siempre en madera, no en negro. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(43, 33, 28, .5) 0%, rgba(43, 33, 28, 0) 22%),
+    linear-gradient(0deg, rgba(43, 33, 28, .92) 0%, rgba(43, 33, 28, .62) 38%, rgba(43, 33, 28, 0) 72%);
+}
+
+@media (min-width: 1024px) {
+  .scrim {
+    background:
+      linear-gradient(180deg, rgba(43, 33, 28, .5) 0%, rgba(43, 33, 28, 0) 22%),
+      linear-gradient(90deg, rgba(43, 33, 28, .7) 0%, rgba(43, 33, 28, .25) 45%, rgba(43, 33, 28, 0) 70%),
+      linear-gradient(0deg, rgba(43, 33, 28, .78) 0%, rgba(43, 33, 28, 0) 50%);
+  }
+}
+
+/* ---------- contenido ---------- */
+.content {
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: calc(var(--header-h) + var(--s-5)) var(--gutter) calc(var(--s-5) + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--s-6);
+}
+
+@media (min-width: 1024px) {
+  .content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    align-items: end;
+    gap: var(--s-8);
+    padding-bottom: var(--s-8);
+  }
+}
+
+.copy {
+  max-width: 880px;
+  container-type: inline-size;
+}
+
+/* Las líneas del título son explícitas (RevealLines): el tamaño se calcula contra el ancho de
+   la columna (cqi) para que la línea más larga, "Medimos dos veces,", siempre entre entera y
+   nunca se corte en dos. ~9.4em de ancho → 10.4cqi. */
+.title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: min(5.75rem, 10.4cqi);
+  white-space: nowrap;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: #fff;
+  margin: 0 0 var(--s-5);
+}
+
+.lead {
+  font-size: var(--fs-body-lg);
+  line-height: 1.5;
+  color: rgba(236, 228, 216, .9);
+  max-width: 44ch;
+  margin: 0 0 var(--s-6);
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-4) var(--s-6);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 0 28px;
+  border-radius: var(--r-pill);
+  background: var(--oxido);
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: .01em;
+  transition: background-color var(--dur-sm) var(--ease-settle);
+}
+
+.cta:hover {
+  background: var(--oxido-hover);
+  color: #fff;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--sobre-madera);
+  font-weight: 500;
+  font-size: 15px;
+  text-decoration: underline;
+  text-decoration-color: rgba(236, 228, 216, .45);
+  text-underline-offset: 6px;
+  transition: text-decoration-color var(--dur-sm) var(--ease-settle);
+}
+
+.link:hover {
+  color: #fff;
+  text-decoration-color: currentColor;
+}
+
+/* ---------- ficha técnica ---------- */
+.ficha {
+  position: relative;
+  border-top: 1px solid rgba(236, 228, 216, .28);
+  padding-top: var(--s-4);
+}
+
+/* En mobile el flotante de WhatsApp (52px, a 16px del borde) cae sobre esta franja: los
+   controles terminan antes para no quedar tapados. */
+@media (max-width: 767px) {
+  .ficha {
+    padding-right: 68px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ficha {
+    padding: var(--s-5);
+    border: 1px solid rgba(236, 228, 216, .16);
+    border-radius: var(--r-taller);
+    background: rgba(43, 33, 28, .55);
+    backdrop-filter: blur(10px);
+  }
+}
+
+.fichaBody {
+  display: grid;
+  gap: var(--s-3);
+}
+
+.fichaCat {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1.1;
+  color: #fff;
+}
+
+.fichaRows {
+  margin: 0;
+  display: grid;
+  gap: var(--s-1);
+  font-size: var(--fs-small);
+}
+
+.fichaRows div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s-4);
+}
+
+.fichaRows dt {
+  color: rgba(236, 228, 216, .72);
+}
+
+.fichaRows dd {
+  margin: 0;
+  color: var(--sobre-madera);
+}
+
+.fichaCota {
+  height: 24px;
+}
+
+/* ---------- controles ---------- */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-top: var(--s-4);
+}
+
+.ctrl {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(236, 228, 216, .3);
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--sobre-madera);
+  cursor: pointer;
+  transition: border-color var(--dur-sm) var(--ease-settle), background-color var(--dur-sm) var(--ease-settle);
+}
+
+.ctrl:hover {
+  border-color: var(--sobre-madera);
+  background: rgba(236, 228, 216, .08);
+}
+
+.ctrl svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ctrl svg .fill {
+  fill: currentColor;
+  stroke: none;
+}
+
+.counter {
+  margin-left: var(--s-2);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: rgba(236, 228, 216, .78);
+}
+
+/* Indicador de autoplay: se dibuja sobre el filete superior de la ficha, a todo su ancho. */
+.track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 1px;
+  overflow: clip;
+}
+
+@media (min-width: 1024px) {
+  .track {
+    left: var(--r-taller);
+    right: var(--r-taller);
+  }
+}
+
+.fillLine {
+  position: absolute;
+  inset: 0;
+  background: var(--sobre-madera);
+  transform-origin: left center;
+}
+
+/* ---------- viewports bajos (ej. 375×667) ----------
+   Sin esto el bloque título + bajada + CTA + ficha no entra en 100svh y empuja el título
+   contra la nav. Se esconde la bajada (la info está en el título y el CTA) y la ficha se
+   condensa a una sola línea: categoría + controles. */
+@media (max-width: 767px) and (max-height: 700px) {
+  .content {
+    gap: var(--s-4);
+  }
+
+  .title {
+    margin-bottom: var(--s-4);
+  }
+
+  .lead {
+    display: none;
+  }
+
+  .ficha {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding-top: var(--s-3);
+  }
+
+  .fichaBody {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .fichaCat {
+    font-size: 1.125rem;
+  }
+
+  .fichaRows,
+  .fichaCota {
+    display: none;
+  }
+
+  .controls {
+    margin-top: 0;
+  }
+
+  .counter {
+    display: none;
+  }
+
+}

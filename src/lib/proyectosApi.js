@@ -88,25 +88,20 @@ export async function setDestacadoHome(id, destacado) {
   if (error) throw error;
 }
 
-// Usado por la sección antes/después de la Home: busca el proyecto marcado como
-// destacado; si no hay ninguno (o se despublicó/borró), cae al primero por `orden`
-// (mismo fallback que fetchProyectosPublicos). Devuelve null si no hay proyectos.
+// Usado por el antes/después pineado del Home: el proyecto marcado como destacado_home, en
+// UNA sola consulta (antes eran dos en serie: id del destacado y después el proyecto entero).
+// Sin destacado publicado, o sin alguna de las dos imágenes, devuelve null y la sección no se
+// muestra: ya no cae al primer proyecto por `orden`.
 export async function fetchProyectoDestacadoHome() {
-  const { data: featured, error } = await supabase
+  const { data, error } = await supabase
     .from('proyectos')
-    .select('id')
+    .select('id, slug, titulo, categoria, resumen, descripcion, imagen_antes, imagen_despues, proyecto_detalles(id, label, valor, orden)')
     .eq('publicado', true)
     .eq('destacado_home', true)
     .maybeSingle();
   if (error) throw error;
-
-  let targetId = featured?.id;
-  if (!targetId) {
-    const fallbackList = await fetchProyectosPublicos();
-    targetId = fallbackList[0]?.id;
-  }
-  if (!targetId) return null;
-  return fetchProyectoById(targetId);
+  if (!data?.imagen_antes || !data?.imagen_despues) return null;
+  return { ...data, detalles: (data.proyecto_detalles || []).slice().sort((a, b) => a.orden - b.orden) };
 }
 
 export async function deleteProyecto(id) {

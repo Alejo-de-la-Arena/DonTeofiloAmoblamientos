@@ -1,13 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { useScroll } from 'framer-motion';
 import { useMotionSafe } from '../../lib/motion';
+import { usePinProgress } from './usePinProgress';
 import styles from './PinnedSection.module.css';
-
-/** Progreso 0→1 del scroll a través de una sección alta (de "start start" a "end end"). */
-export function usePinProgress(ref) {
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] });
-  return scrollYProgress;
-}
 
 // GOTCHA: position:sticky deja de funcionar si CUALQUIER ancestro tiene overflow
 // hidden | auto | scroll (ese ancestro pasa a ser el scroll container). Para recortar desborde

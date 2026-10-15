@@ -57,6 +57,17 @@
   color: var(--sobre-madera);
 }
 
+/* Sobre fondos de color (cianotipo), donde el óxido no se despega del fondo. */
+.paper {
+  background: var(--papel);
+  color: var(--tinta);
+}
+
+.paper:hover {
+  background: #fff;
+  color: var(--tinta);
+}
+
 .ghost {
   background: transparent;
   color: inherit;

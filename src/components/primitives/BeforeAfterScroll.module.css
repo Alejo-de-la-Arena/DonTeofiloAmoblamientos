@@ -108,3 +108,96 @@
   bottom: calc(var(--s-6) + env(safe-area-inset-bottom, 0px));
   color: var(--sobre-madera);
 }
+
+/* ==========================================================================
+   layout="lamina": la imagen como lámina con márgenes (no full-bleed) + info aparte.
+   ========================================================================== */
+.lamina {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  align-content: start;
+  gap: var(--s-4);
+  /* El encabezado arranca debajo del header fijo, con aire: nunca pegado al borde. */
+  padding: calc(var(--header-h) + var(--s-4)) var(--gutter) var(--s-5);
+  background: var(--madera);
+  color: var(--sobre-madera);
+}
+
+/* La lámina misma: recibe las capas del wipe. En mobile es 4:5 a todo el ancho; en viewports
+   bajos (≤700px de alto) pasa a 5:4 para que encabezado + lámina + info entren en 100svh. */
+.plate {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--r-taller);
+  overflow: clip;
+  background: color-mix(in srgb, var(--madera), black 25%);
+}
+
+.lamina .tag {
+  top: var(--s-3);
+}
+
+.lamina .tagAntes {
+  left: var(--s-3);
+}
+
+.lamina .tagDespues {
+  right: var(--s-3);
+}
+
+.lamina .toggle {
+  top: var(--s-3);
+  right: var(--s-3);
+}
+
+.laminaHead,
+.laminaInfo {
+  min-width: 0;
+}
+
+@media (max-width: 1023px) and (max-height: 700px) {
+  .plate {
+    aspect-ratio: 5 / 4;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* ~85% del ancho: márgenes laterales de 7.5vw para que se lea como lámina. */
+  .lamina {
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
+    align-content: stretch;
+    align-items: end;
+    gap: var(--s-5) var(--s-7);
+    padding: calc(var(--header-h) + var(--s-5)) max(var(--gutter), 7.5vw) var(--s-7);
+  }
+
+  .laminaHead {
+    grid-column: 1 / -1;
+  }
+
+  .plate {
+    height: 100%;
+    aspect-ratio: auto;
+    align-self: stretch;
+  }
+}
+
+/* Reduced motion: sin sticky que llenar, la lámina toma una proporción fija. */
+.laminaStatic {
+  height: auto;
+  padding-top: var(--s-8);
+}
+
+.laminaStatic .plate {
+  height: auto;
+  aspect-ratio: 4 / 5;
+}
+
+@media (min-width: 1024px) {
+  .laminaStatic .plate {
+    aspect-ratio: 3 / 2;
+  }
+}
