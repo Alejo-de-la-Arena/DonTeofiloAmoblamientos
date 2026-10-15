@@ -1,0 +1,122 @@
+/* Cajetín técnico: borde fino en tinta, sobre la hoja (fondo papel para que la grilla no
+   interfiera con el texto). */
+.rotulo {
+  position: relative;
+  width: 260px;
+  border: 1px solid var(--tinta);
+  background: var(--papel);
+  color: var(--texto);
+}
+
+.texto {
+  padding: var(--s-3) var(--s-4) var(--s-2);
+  border-bottom: 1px solid var(--linea-fuerte);
+}
+
+.texto p {
+  margin: 0;
+}
+
+.num {
+  font-size: var(--fs-label);
+  font-weight: 600;
+  color: var(--tinta);
+}
+
+.texto .nombre {
+  margin-top: 2px;
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.texto .medidas {
+  margin-top: 2px;
+  font-size: var(--fs-small);
+  color: var(--texto-suave);
+}
+
+.controles {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 var(--s-1) 0 var(--s-4);
+}
+
+.pista {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  margin-right: var(--s-2);
+  background: var(--linea);
+  overflow: hidden;
+}
+
+.progreso {
+  position: absolute;
+  inset: 0;
+  background: var(--oxido);
+  transform-origin: left center;
+}
+
+.btn {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-taller);
+  background: none;
+  color: var(--tinta);
+  cursor: pointer;
+}
+
+.btn svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--tinta);
+  outline-offset: -2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover {
+    background: var(--papel-2);
+  }
+}
+
+/* ---------- mobile: una línea + controles de 44px ---------- */
+.compact {
+  width: 100%;
+}
+
+.compact .texto {
+  padding: var(--s-2) var(--s-3);
+}
+
+.linea {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: var(--fs-small);
+  color: var(--texto);
+}
+
+.compact .controles {
+  padding-left: var(--s-3);
+}
+
+.compact .btn {
+  width: 44px;
+  height: 44px;
+}

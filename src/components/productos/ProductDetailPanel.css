@@ -4,12 +4,20 @@
 }
 .catalog-backdrop.open{opacity:1;pointer-events:auto}
 
+/* Cerrado: fuera de pantalla Y visibility:hidden. Sin esto, el box-shadow del panel pegado al
+   borde se filtraba como una sombra vertical en el borde derecho, y el panel seguía siendo
+   alcanzable con Tab y por lectores de pantalla. La visibility se apaga recién al terminar la
+   salida (transición retrasada .45s) y se prende al instante al abrir. */
 .catalog-panel{
   position:fixed;top:0;right:0;bottom:0;z-index:261;width:min(480px,92vw);
   background:var(--bg);box-shadow:-20px 0 60px rgba(0,0,0,.2);
-  transform:translateX(100%);transition:transform .45s cubic-bezier(.22,.61,.36,1);
+  transform:translateX(100%);visibility:hidden;
+  transition:transform .45s cubic-bezier(.22,.61,.36,1),visibility 0s linear .45s;
 }
-.catalog-panel.open{transform:translateX(0)}
+.catalog-panel.open{
+  transform:translateX(0);visibility:visible;
+  transition:transform .45s cubic-bezier(.22,.61,.36,1),visibility 0s;
+}
 .catalog-panel-scroll{position:relative;height:100%;overflow-y:auto}
 
 .catalog-panel-close{

@@ -38,6 +38,8 @@ const SEQ = {
   label: { delay: 0.66, duration: 0.24 },
 };
 const NUMBER = { delay: 0.58, duration: 0.32 };
+/** Duración del dibujo completo de una lámina (s), sin contar el borrado previo. */
+export const DRAW_S = 0.9;
 const DRAWN = ['contorno', 'modulos', 'detalles', 'cota']; // pathLength; el resto, opacidad
 
 /* ---------- trazado: mm → px ---------- */
@@ -268,13 +270,15 @@ function layout(def, w, h, parciales) {
 
 /**
  * <Alzado categoria="Placards" />
- *   parciales   cotas parciales por módulo (desktop)
- *   draw        'mount' | 'view' (se dibuja la primera vez que entra en viewport)
+ *   parciales     cotas parciales por módulo (desktop)
+ *   draw          'mount' | 'view' (se dibuja la primera vez que entra en viewport)
+ *   onDrawStart   (categoria) => …  cuando EMPIEZA a dibujarse una categoría: es lo que de
+ *                 verdad se ve (en una ráfaga, las intermedias nunca se dibujan)
  * Al cambiar `categoria`, el dibujo actual se borra (todo junto) y el nuevo se dibuja por
  * grupos. Si cambia otra vez mientras tanto, no se encola nada: al terminar el borrado se
  * dibuja la ÚLTIMA categoría pedida. Con reduced motion, crossfade.
  */
-export default function Alzado({ categoria, parciales = false, draw = 'mount', className = '' }) {
+export default function Alzado({ categoria, parciales = false, draw = 'mount', onDrawStart, className = '' }) {
   const rootRef = useRef(null);
   const svgRef = useRef(null);
   const sceneRef = useRef(null);
@@ -360,9 +364,12 @@ export default function Alzado({ categoria, parciales = false, draw = 'mount', c
   // 2) Dibujo de `shown` por grupos (o fade-in con reduced motion). Corre antes del paint, así
   //    el dibujo nuevo nunca aparece completo por un frame.
   const ready = !!geo;
+  const onDrawStartRef = useRef(onDrawStart);
+  onDrawStartRef.current = onDrawStart;
   useLayoutEffect(() => {
     if (!ready || !armed) return;
     const first = drawTick === 0;
+    onDrawStartRef.current?.(shown);
     if (reduce) {
       if (!first) run([sceneRef.current], { opacity: [0, 1] }, { duration: 0.1, ease: 'linear' });
       anchoMv.set(def.ancho);

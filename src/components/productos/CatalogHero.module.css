@@ -10,25 +10,64 @@
   display: grid;
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   grid-template-areas:
-    'copy  plano'
-    'index plano';
-  grid-template-rows: auto 1fr;
+    'copy   plano'
+    'accion plano'
+    'index  plano';
+  grid-template-rows: auto auto 1fr;
   column-gap: var(--s-8);
-  row-gap: var(--s-5);
+  row-gap: var(--s-3);
 }
 
 .copy {
   grid-area: copy;
 }
 
+/* ---------- título ---------- */
 .title {
   margin: 0;
   font-family: var(--font-serif);
   font-size: clamp(2.25rem, 1.3rem + 2.3vw, 3.5rem);
   font-weight: 600;
-  line-height: var(--lh-tight);
+  line-height: 1.08;
   letter-spacing: -.015em;
   color: var(--texto);
+}
+
+/* Línea 1: "Cada" + la palabra variable, sola. Flex con los dos bloques del mismo alto de
+   línea: la palabra cambia de largo sin reacomodar la línea 2 ni el alto del título. */
+.linea1 {
+  display: flex;
+  align-items: flex-start;
+  gap: .26em;
+  white-space: nowrap;
+}
+
+.slot {
+  position: relative;
+}
+
+/* Máscara de una línea: la palabra vieja sale hacia arriba y la nueva entra desde abajo. El
+   padding deja lugar a los descendentes (p, y). */
+.mascara {
+  display: grid;
+  overflow: hidden;
+  padding-bottom: .12em;
+  margin-bottom: -.12em;
+}
+
+.palabra {
+  grid-area: 1 / 1;
+  display: block;
+}
+
+.lapiz {
+  top: calc(100% - .02em);
+}
+
+/* Aire para el trazo de lápiz (14px de alto) entre la palabra y la línea 2. */
+.linea2 {
+  display: block;
+  margin-top: 12px;
 }
 
 .lead {
@@ -39,16 +78,70 @@
   color: var(--texto-suave);
 }
 
+/* ---------- acción contextual ---------- */
+.accion {
+  grid-area: accion;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.accionSlot {
+  display: inline-flex;
+}
+
+.accionLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--oxido);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+  cursor: pointer;
+}
+
+.accionLink svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.accionLink:focus-visible {
+  outline: 2px solid var(--tinta);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .accionLink:hover {
+    color: var(--oxido-hover);
+  }
+}
+
 .index {
   grid-area: index;
   align-self: end;
 }
 
-/* Hoja de plano: grilla técnica (mayor cada 50px, menor cada 10px) y escuadras. */
+/* ---------- hoja de plano: grilla, escuadras, alzado y cajetín ---------- */
 .plano {
   grid-area: plano;
   position: relative;
-  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+  padding: var(--s-5);
 }
 
 .grilla {
@@ -64,33 +157,48 @@
   background-position: -1px -1px;
 }
 
-.alzado {
-  position: absolute;
-  inset: var(--s-6) var(--s-6) var(--s-5);
-  width: auto;
-  height: auto;
+.dibujo {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
-/* ---------- tablet: título arriba, índice y alzado lado a lado ---------- */
+.alzado {
+  position: absolute;
+  inset: 0;
+}
+
+.rotuloDesktop {
+  position: relative;
+  align-self: flex-end;
+  margin-top: var(--s-3);
+}
+
+/* ---------- tablet: título y acción arriba, índice y hoja lado a lado ---------- */
 @media (max-width: 999px) and (min-width: 761px) {
   .inner {
-    grid-template-columns: 240px minmax(0, 1fr);
+    grid-template-columns: 220px minmax(0, 1fr);
     grid-template-areas:
-      'copy  copy'
-      'index plano';
-    grid-template-rows: auto auto;
+      'copy   copy'
+      'accion accion'
+      'index  plano';
+    grid-template-rows: auto auto auto;
     column-gap: var(--s-6);
   }
 
   .plano {
-    min-height: 320px;
+    min-height: 380px;
+  }
+
+  .index {
+    align-self: start;
   }
 }
 
-/* ---------- mobile: título, bajada, alzado a ancho completo, chips ---------- */
+/* ---------- mobile: título → bajada → alzado → cajetín → acción ---------- */
 @media (max-width: 760px) {
   .hero {
-    padding: calc(var(--header-h) + var(--s-5)) var(--gutter) var(--s-4);
+    padding: calc(var(--header-h) + var(--s-5)) var(--gutter) var(--s-3);
   }
 
   .inner {
@@ -98,9 +206,14 @@
     grid-template-areas:
       'copy'
       'plano'
-      'index';
+      'rotulo'
+      'accion';
     grid-template-rows: auto;
-    row-gap: var(--s-4);
+    row-gap: 0;
+  }
+
+  .copy {
+    margin-bottom: var(--s-4);
   }
 
   .lead {
@@ -110,43 +223,15 @@
   .plano {
     min-height: 0;
     height: clamp(210px, 60vw, 280px);
+    padding: var(--s-4) var(--s-3) var(--s-3) var(--s-4);
+    cursor: grab;
   }
 
-  .alzado {
-    inset: var(--s-4) var(--s-3) var(--s-3) var(--s-4);
+  .rotuloMobile {
+    grid-area: rotulo;
   }
-}
 
-/* Acción de texto bajo los chips (solo mobile): refleja el filtro actual y baja a la grilla. */
-.ver {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-2);
-  min-height: 44px;
-  margin-top: var(--s-2);
-  padding: 0;
-  border: 0;
-  background: none;
-  font-family: var(--font-sans);
-  font-size: var(--fs-small);
-  font-weight: 600;
-  color: var(--oxido);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  cursor: pointer;
-}
-
-.ver svg {
-  width: 14px;
-  height: 14px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.ver:focus-visible {
-  outline: 2px solid var(--tinta);
-  outline-offset: 3px;
+  .accion {
+    margin-top: var(--s-2);
+  }
 }

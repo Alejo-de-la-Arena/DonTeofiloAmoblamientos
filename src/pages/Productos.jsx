@@ -5,7 +5,6 @@ import ProductFilterBar from '../components/productos/ProductFilterBar';
 import ProductGrid from '../components/productos/ProductGrid';
 import ProductDetailPanel from '../components/productos/ProductDetailPanel';
 import { fetchProductosPublicos } from '../lib/productosApi';
-import { useMotionSafe } from '../lib/motion';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { fold, materialOptions, splitMateriales, tienePrecioVisible } from '../lib/catalogo';
 import { CATEGORIAS, categoriaFromSlug, slugifyCategoria } from '../data/productCategories';
@@ -31,7 +30,6 @@ export default function Productos() {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const { reduce } = useMotionSafe();
   usePageMeta(META_TITLE, META_DESCRIPTION);
 
   const [productos, setProductos] = useState([]);
@@ -141,38 +139,9 @@ export default function Productos() {
     else updateParams((p) => p.delete('producto'));
   }, [location.state, navigate, updateParams]);
 
-  // Conteo del índice del hero: productos publicados por categoría (sin los demás filtros).
-  // null mientras carga, así nunca se lee un "a medida" falso.
-  const counts = useMemo(() => {
-    if (loading || loadError) return null;
-    const out = { [TODOS]: productos.length };
-    CATEGORIAS.forEach((c) => (out[c] = productos.filter((p) => p.categoria === c).length));
-    return out;
-  }, [productos, loading, loadError]);
-
-  // Baja hasta la grilla: scroll-margin-top de #catalogo la deja debajo del header y de la
-  // barra sticky.
-  function scrollToCatalog() {
-    document
-      .getElementById('catalogo')
-      ?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-  }
-
-  function handleHeroCategorySelect(cat, { scroll }) {
-    setCategoria(cat);
-    if (scroll) scrollToCatalog();
-  }
-
   return (
     <>
-      <CatalogHero
-        categories={[TODOS, ...CATEGORIAS]}
-        counts={counts}
-        activeCategory={categoria}
-        resultCount={loading || loadError ? null : filtered.length}
-        onSelect={handleHeroCategorySelect}
-        onShowResults={scrollToCatalog}
-      />
+      <CatalogHero />
       <ProductFilterBar
         categories={[TODOS, ...CATEGORIAS]}
         activeCategory={categoria}

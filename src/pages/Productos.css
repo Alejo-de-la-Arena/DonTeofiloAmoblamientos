@@ -18,7 +18,7 @@
   position:relative;
   max-width:1300px;
   margin:0 auto;
-  padding:48px clamp(20px,5vw,72px) 120px;
+  padding:36px clamp(20px,5vw,72px) 120px;
   min-height:50vh;
 }
 

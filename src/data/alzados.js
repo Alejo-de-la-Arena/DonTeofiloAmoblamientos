@@ -132,3 +132,16 @@ export const ALZADOS = {
 export function alzadoDe(categoria) {
   return ALZADOS[categoria] ?? placard;
 }
+
+// Láminas del ciclo del hero, en orden. Por cada una:
+//   palabra   la del título "Cada {palabra} / empieza en un plano"
+//   nombre    lo que dibuja el alzado, para el cajetín (genérico: nunca un producto real)
+//   pedido    artículo + sustantivo para "Pedí {pedido} a medida"
+export const LAMINAS = [
+  { categoria: 'Cocinas', palabra: 'cocina', nombre: 'Cocina con alacena y bajo mesada', pedido: 'una cocina' },
+  { categoria: 'Placards', palabra: 'placard', nombre: 'Placard corredizo 3 puertas', pedido: 'un placard' },
+  { categoria: 'Vanitorys', palabra: 'vanitory', nombre: 'Vanitory suspendido', pedido: 'un vanitory' },
+  { categoria: 'Aberturas', palabra: 'puerta', nombre: 'Puerta de abrir con marco', pedido: 'una puerta' },
+  { categoria: 'Alacenas', palabra: 'alacena', nombre: 'Alacena de 3 módulos', pedido: 'una alacena' },
+  { categoria: 'Diseño integral', palabra: 'proyecto', nombre: 'Placard y escritorio integrados', pedido: 'un proyecto integral' },
+].map((l) => ({ ...l, ancho: ALZADOS[l.categoria].ancho, alto: ALZADOS[l.categoria].alto }));
