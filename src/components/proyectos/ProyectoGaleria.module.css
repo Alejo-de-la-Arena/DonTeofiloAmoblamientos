@@ -1,0 +1,196 @@
+.section {
+  display: grid;
+  gap: var(--s-5);
+}
+
+.heading {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-h3);
+  font-weight: 500;
+  line-height: var(--lh-heading);
+  color: var(--texto);
+}
+
+/* Columnas repartidas por JS (a la más corta): orden de izquierda a derecha, sin recortes. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: var(--s-3);
+  align-items: start;
+}
+
+.col {
+  display: grid;
+  gap: var(--s-3);
+}
+
+.item {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-taller);
+  overflow: clip;
+  background: var(--papel-2);
+  cursor: zoom-in;
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--tinta);
+  outline-offset: 3px;
+}
+
+.img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover; /* si ancho/alto guardados no coinciden con el archivo: recorta, nunca deforma */
+  transition: transform var(--dur-md) var(--ease-soft-close);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .item:hover .img {
+    transform: scale(1.02);
+  }
+}
+
+@media (min-width: 768px) {
+  .grid,
+  .col {
+    gap: var(--s-4);
+  }
+}
+
+/* ---------- lightbox (<dialog> nativo) ---------- */
+.lightbox {
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  height: 100svh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--sobre-madera);
+  overscroll-behavior: contain;
+}
+
+/* Cerrado: además del display:none del navegador, visibility:hidden (mismo criterio que el
+   panel de productos: nada de un off-canvas cerrado puede asomar). */
+.lightbox:not([open]) {
+  visibility: hidden;
+}
+
+.lightbox[open] {
+  display: grid;
+  place-items: center;
+  animation: lbIn var(--dur-sm) var(--ease-settle);
+}
+
+.lightbox::backdrop {
+  background: color-mix(in srgb, var(--madera) 94%, transparent);
+}
+
+@keyframes lbIn {
+  from {
+    opacity: 0;
+  }
+}
+
+.figure {
+  margin: 0;
+  display: grid;
+  justify-items: center;
+  gap: var(--s-3);
+  padding: var(--s-8) var(--s-4) var(--s-5);
+  max-width: 100%;
+}
+
+.lbImg {
+  display: block;
+  max-width: min(1200px, 100%);
+  max-height: calc(100svh - 150px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--r-taller);
+}
+
+.count {
+  font-size: var(--fs-small);
+  color: var(--sobre-madera);
+}
+
+.lbBtn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid color-mix(in srgb, var(--sobre-madera) 35%, transparent);
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--madera) 70%, transparent);
+  color: var(--sobre-madera);
+  cursor: pointer;
+  transition: background-color var(--dur-sm) var(--ease-settle);
+}
+
+.lbBtn svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.lbBtn:hover {
+  background: var(--madera);
+}
+
+.lbBtn:focus-visible {
+  outline: 2px solid var(--sobre-madera);
+  outline-offset: 2px;
+}
+
+.close {
+  top: var(--s-4);
+  right: var(--s-4);
+}
+
+.prev,
+.next {
+  bottom: var(--s-4);
+}
+
+.prev {
+  left: var(--s-4);
+}
+
+.next {
+  right: var(--s-4);
+}
+
+@media (min-width: 768px) {
+  .prev,
+  .next {
+    bottom: auto;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .figure {
+    padding-inline: var(--s-10);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox[open] {
+    animation-duration: .2s;
+  }
+
+  .img {
+    transition: none;
+  }
+}

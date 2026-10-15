@@ -49,7 +49,7 @@
   left: -.5px;
   width: 1px;
   background: var(--sobre-madera);
-  box-shadow: 0 0 0 .5px rgba(43, 33, 28, .25);
+  box-shadow: 0 0 0 .5px color-mix(in srgb, var(--madera) 25%, transparent);
 }
 
 .dividerCota {
@@ -58,7 +58,7 @@
   bottom: 18%;
   left: 10px;
   width: 24px;
-  filter: drop-shadow(0 0 2px rgba(43, 33, 28, .6));
+  filter: drop-shadow(0 0 2px color-mix(in srgb, var(--madera) 60%, transparent));
 }
 
 /* ---------- labels ---------- */
@@ -67,7 +67,7 @@
   top: calc(var(--header-h) + var(--s-4));
   padding: 6px 12px;
   border-radius: var(--r-pill);
-  background: rgba(43, 33, 28, .72);
+  background: color-mix(in srgb, var(--madera) 72%, transparent);
   color: var(--sobre-madera);
   font-size: var(--fs-small);
   font-weight: 500;
@@ -88,16 +88,19 @@
   top: calc(var(--s-4));
   min-height: 44px;
   padding: 10px 18px;
-  border: 1px solid rgba(236, 228, 216, .5);
+  border: 1px solid color-mix(in srgb, var(--sobre-madera) 50%, transparent);
   border-radius: var(--r-pill);
-  background: rgba(43, 33, 28, .72);
+  background: color-mix(in srgb, var(--madera) 72%, transparent);
   color: var(--sobre-madera);
   font: 500 var(--fs-small) / 1 var(--font-sans);
   cursor: pointer;
 }
 
-.static .tagAntes {
-  top: var(--s-4);
+/* El escenario "full" vive debajo del header fijo (igual que la versión pineada): el tag y el
+   botón arrancan debajo del nav. */
+.static .tagAntes,
+.static .toggle {
+  top: calc(var(--header-h) + var(--s-4));
 }
 
 /* ---------- slot de info ---------- */
@@ -200,4 +203,11 @@
   .laminaStatic .plate {
     aspect-ratio: 3 / 2;
   }
+}
+
+/* layout="full": capa superior del escenario (slot `head`), a lo ancho y sin capturar eventos. */
+.head {
+  position: absolute;
+  inset: 0 0 auto;
+  pointer-events: none;
 }

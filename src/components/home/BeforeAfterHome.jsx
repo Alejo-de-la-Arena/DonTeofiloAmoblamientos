@@ -5,23 +5,8 @@ import BeforeAfterScroll from '../primitives/BeforeAfterScroll';
 import Cota from '../primitives/Cota';
 import { fetchProyectoDestacadoHome } from '../../lib/proyectosApi';
 import { useAfterLoad } from '../../hooks/useAfterLoad';
+import { detalle, lineaDeTrabajo, splitTitulo } from '../../lib/proyectos';
 import styles from './BeforeAfterHome.module.css';
-
-const detalle = (p, re) => p.detalles.find((d) => re.test(d.label))?.valor || null;
-
-// "Baño Suite — San Isidro" → nombre "Baño Suite" + lugar "San Isidro". La ubicación de la
-// ficha técnica tiene prioridad; si no existe, se usa la parte del título después del guion.
-function splitTitulo(p) {
-  const [nombre, ...resto] = p.titulo.split(/\s+[—–-]\s+/);
-  return { nombre, ubicacion: detalle(p, /ubicaci/i) || resto.join(' — ') || null };
-}
-
-// Una sola línea de qué se hizo: el resumen, o la primera oración de la descripción.
-function lineaDeTrabajo(p) {
-  if (p.resumen?.trim()) return p.resumen.trim();
-  const first = p.descripcion?.trim().match(/^.+?[.!?](\s|$)/);
-  return first ? first[0].trim() : p.descripcion?.trim() || null;
-}
 
 // "Seguí bajando…" es una indicación de uso: se va cuando el wipe ya casi terminó (~90% del
 // tramo 0.15–0.85 ≈ 0.78 del progreso). Con reduced motion no hay wipe: el control es el botón.

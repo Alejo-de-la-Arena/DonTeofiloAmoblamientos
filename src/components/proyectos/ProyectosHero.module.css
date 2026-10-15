@@ -1,0 +1,161 @@
+/* Hero "Transformación": full-bleed sobre madera. Texto y fondo explícitos (no heredar). */
+.hero {
+  position: relative;
+  background: var(--madera);
+  color: var(--sobre-madera);
+}
+
+.pin {
+  background: var(--madera);
+}
+
+/* Escenario propio: mientras carga y en los fallbacks estáticos. */
+.stage {
+  position: relative;
+  height: 88vh;
+  height: 88svh;
+  min-height: 520px;
+  overflow: clip;
+  background: var(--madera);
+}
+
+.img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.staticInfo {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: calc(var(--s-6) + env(safe-area-inset-bottom, 0px));
+}
+
+/* ---------- info ----------
+   La oscuridad vive solo detrás del texto, nunca como velo general sobre la foto. Dos capas de
+   madera, con el alfa mínimo medido sobre el peor caso (pared blanca, #fff):
+   - .info::before (0.62) detrás del título y de la fila de datos: título display ≥ 3:1;
+     se desvanece en los 96px de arriba del título.
+   - .meta::before suma una franja solo detrás de la fila de datos (texto chico ≥ 4.5:1; el
+     lugar en tinta-clara pide ~0.86 en total: 1 − 0.38 × 0.35 ≈ 0.87). */
+.info {
+  position: relative;
+  isolation: isolate;
+  max-width: var(--container);
+  margin: 0 auto;
+  color: var(--sobre-madera);
+}
+
+.info::before,
+.meta::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  /* a sangre: la info está centrada en el viewport, así que medio sobrante de cada lado */
+  left: calc((100% - 100vw) / 2);
+  right: calc((100% - 100vw) / 2);
+  bottom: calc(-1 * (var(--s-6) + env(safe-area-inset-bottom, 0px)));
+  pointer-events: none;
+}
+
+.info::before {
+  top: calc(-1 * var(--s-9));
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--madera) 62%, transparent) calc(100% - var(--s-9)),
+    color-mix(in srgb, var(--madera) 0%, transparent) 100%
+  );
+}
+
+.meta::before {
+  top: calc(-1 * var(--s-4));
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--madera) 65%, transparent) calc(100% - var(--s-4)),
+    color-mix(in srgb, var(--madera) 0%, transparent) 100%
+  );
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: var(--fs-display);
+  font-weight: 600;
+  line-height: var(--lh-tight);
+  letter-spacing: -.025em;
+  color: var(--sobre-madera);
+}
+
+.meta {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-1) var(--s-6);
+  margin-top: var(--s-4);
+  padding-top: var(--s-3);
+  border-top: 1px solid color-mix(in srgb, var(--sobre-madera) 35%, transparent);
+  /* el botón flotante de WhatsApp vive abajo a la derecha: la fila no entra en su zona */
+  padding-right: max(0px, calc(84px - var(--gutter)));
+}
+
+.count {
+  margin: 0;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--sobre-madera);
+}
+
+.current {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--s-3);
+  min-height: 44px;
+  align-content: center;
+  color: var(--sobre-madera);
+}
+
+.name {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--sobre-madera) 45%, transparent);
+  text-underline-offset: 5px;
+  transition: text-decoration-color var(--dur-sm) var(--ease-settle);
+}
+
+.current:hover .name,
+.current:focus-visible .name {
+  text-decoration-color: var(--oxido-claro);
+}
+
+/* El lugar va como anotación de plano: chico y en tinta. */
+.place {
+  font-size: var(--fs-small);
+  color: var(--tinta-clara);
+}
+
+@media (min-width: 768px) {
+  .meta {
+    margin-top: var(--s-5);
+  }
+}
+
+/* Franja detrás del header transparente (links de 12.5px sobre la foto): alfa mínimo medido
+   para 4.5:1 sobre una foto blanca; se desvanece apenas debajo del header. */
+.navScrim {
+  position: absolute;
+  inset: 0 0 auto;
+  height: calc(var(--header-h) + var(--s-7));
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--madera) 76%, transparent) 0%,
+    color-mix(in srgb, var(--madera) 76%, transparent) calc(var(--header-h) - var(--s-3)),
+    color-mix(in srgb, var(--madera) 0%, transparent) 100%
+  );
+  pointer-events: none;
+}

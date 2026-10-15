@@ -8,8 +8,18 @@ import styles from './BeforeAfterScroll.module.css';
 // El wipe ocupa el tramo 0.15–0.85 del progreso: margen quieto al entrar y al salir del pin.
 const WIPE = [0.15, 0.85];
 
+// fetchpriority en minúscula: React 18 no conoce la prop camelCase y la pasaría con warning.
 const Img = ({ img }) => (
-  <img className={styles.img} src={img.src} srcSet={img.srcSet} sizes={img.sizes} alt={img.alt} onError={img.onError} decoding="async" />
+  <img
+    className={styles.img}
+    src={img.src}
+    srcSet={img.srcSet}
+    sizes={img.sizes}
+    alt={img.alt}
+    onError={img.onError}
+    decoding="async"
+    {...(img.priority ? { fetchpriority: 'high' } : {})}
+  />
 );
 
 // Composición: 'full' = la imagen llena el escenario y la info flota encima (abajo);
@@ -28,6 +38,7 @@ function Frame({ layout, isStatic, plate, head, info }) {
   return (
     <div className={`${styles.stage} ${isStatic ? styles.static : ''}`}>
       {plate}
+      {head && <div className={styles.head}>{head}</div>}
       {info && <div className={styles.info}>{info}</div>}
     </div>
   );
@@ -94,13 +105,14 @@ function StaticCompare({ antes, despues, layout, head, info }) {
  * Antes/después controlado por scroll, sobre PinnedSection. Sin drag: cero conflicto con el
  * scroll en mobile. (El slider arrastrable sigue existiendo en home/BeforeAfterSlider.)
  *
- * antes / despues: { src, alt, srcSet?, sizes?, onError? }. Sin loading="lazy": la capa del
+ * antes / despues: { src, alt, srcSet?, sizes?, onError?, priority? }. Sin loading="lazy": la capa del
  *   "después" arranca recortada al 100% y el navegador puede no considerarla visible nunca; si
  *   hay que diferir la descarga, el que usa el componente pasa src recién cuando corresponde. · medida: label opcional de la cota del divisor
  * layout: 'full' (default) | 'lamina'
  * children: slot para la info del proyecto; nodo o función (progress, { pinned }) => nodo,
  *   para atar elementos (ej. una <Cota draw={progress}>) al avance del wipe.
- * head: (solo layout 'lamina') encabezado arriba de la lámina, dentro del sticky; nodo o
+ * head: en 'lamina', encabezado arriba de la lámina; en 'full', capa superior del escenario
+ *   (sobre la imagen, sin eventos; ej. un gradiente detrás del header fijo). Dentro del sticky; nodo o
  *   función con la misma firma que children.
  */
 export default function BeforeAfterScroll({

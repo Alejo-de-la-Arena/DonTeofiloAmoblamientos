@@ -46,6 +46,8 @@ const EMPTY_FORM = {
   categoria: '',
   descripcion: '',
   resumen: '',
+  desafio: '',
+  solucion: '',
   orden: '',
   publicado: true,
 };
@@ -83,6 +85,8 @@ export default function AdminProyectoForm() {
           categoria: p.categoria || '',
           descripcion: p.descripcion || '',
           resumen: p.resumen || '',
+          desafio: p.desafio || '',
+          solucion: p.solucion || '',
           orden: p.orden != null ? String(p.orden) : '',
           publicado: p.publicado,
         });
@@ -162,6 +166,8 @@ export default function AdminProyectoForm() {
       categoria: form.categoria,
       descripcion: form.descripcion || null,
       resumen: form.resumen || null,
+      desafio: form.desafio.trim() || null,
+      solucion: form.solucion.trim() || null,
       orden: form.orden === '' ? null : Number(form.orden),
       publicado: form.publicado,
     };
@@ -298,6 +304,32 @@ export default function AdminProyectoForm() {
             onChange={(e) => setField('descripcion', e.target.value)}
           />
         </label>
+
+        <div className="admin-form-grid">
+          <label className="admin-field">
+            <span>Desafío</span>
+            <textarea
+              rows={4}
+              value={form.desafio}
+              onChange={(e) => setField('desafio', e.target.value)}
+              placeholder="Opcional — qué había que resolver"
+            />
+          </label>
+
+          <label className="admin-field">
+            <span>Solución</span>
+            <textarea
+              rows={4}
+              value={form.solucion}
+              onChange={(e) => setField('solucion', e.target.value)}
+              placeholder="Opcional — cómo lo resolvimos"
+            />
+          </label>
+        </div>
+        <p className="admin-hint">
+          Con desafío y solución completos, el proyecto muestra el relato en dos partes; si falta
+          alguno, muestra la descripción.
+        </p>
 
         <div className="admin-form-section">
           <span className="admin-form-section-label">Imagen antes / después</span>

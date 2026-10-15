@@ -1,128 +1,109 @@
-import { useEffect, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { useIsMobile } from '../../hooks/useIsMobile';
-import cocinaAntesDesktop from '../../assets/images/proyectos/cocina-antes-proyectos-hero-desktop.png';
-import cocinaAntesDesktopWebp from '../../assets/images/proyectos/cocina-antes-proyectos-hero-desktop.png?w=960;1440;1920&format=webp&as=srcset';
-import cocinaDespuesDesktop from '../../assets/images/proyectos/cocina-despues-proyectos-hero-desktop.png';
-import cocinaDespuesDesktopWebp from '../../assets/images/proyectos/cocina-despues-proyectos-hero-desktop.png?w=960;1440;1920&format=webp&as=srcset';
-import cocinaAntesMobile from '../../assets/images/proyectos/cocina-antes-proyectos-hero-mobile.png';
-import cocinaAntesMobileWebp from '../../assets/images/proyectos/cocina-antes-proyectos-hero-mobile.png?w=480;640;828&format=webp&as=srcset';
-import cocinaDespuesMobile from '../../assets/images/proyectos/cocina-despues-proyectos-hero-mobile.png';
-import cocinaDespuesMobileWebp from '../../assets/images/proyectos/cocina-despues-proyectos-hero-mobile.png?w=480;640;828&format=webp&as=srcset';
-import './ProyectosHero.css';
+import { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import BeforeAfterScroll from '../primitives/BeforeAfterScroll';
+import RevealLines from '../primitives/RevealLines';
+import { useMotionSafe } from '../../lib/motion';
+import { contarProyectos, proyectoDelHero, splitTitulo } from '../../lib/proyectos';
+import { useAfterLoad } from '../../hooks/useAfterLoad';
+import { useRouteEntry } from '../layout/routeEntry';
+import { useNavOverDark } from '../layout/navTheme';
+import styles from './ProyectosHero.module.css';
 
-// Punto de montaje del video del Hero.
-// Cuando esté listo, importar el archivo y asignarlo acá:
-//   import proyectosHeroVideo from '../../assets/videos/proyectos-hero-cocina.mp4';
-//   const VIDEO_SRC = proyectosHeroVideo;
-// Specs recomendadas para el video:
-//   - mp4 (H.264), sin audio.
-//   - Relación de aspecto 16:9 — se recorta con object-fit:cover en mobile.
-//   - Duración corta (6-10s) con loop parejo: el primer y el último frame deben empalmar bien.
-//   - Generación sugerida: dos fotos fijas de la MISMA cocina, mismo ángulo y encuadre
-//     (antes deteriorada / después rediseñada) + una herramienta de video IA en modo
-//     first-frame → last-frame para generar el morphing entre ambas.
-// Mientras VIDEO_SRC esté vacío se usa el fallback de crossfade con las imágenes de abajo
-// (fotos reales antes/después de la cocina, ya con recorte propio para desktop y mobile).
-const VIDEO_SRC = '';
-const FRAMES_DESKTOP = [cocinaAntesDesktop, cocinaDespuesDesktop];
-const FRAMES_DESKTOP_WEBP = [cocinaAntesDesktopWebp, cocinaDespuesDesktopWebp];
-const FRAMES_MOBILE = [cocinaAntesMobile, cocinaDespuesMobile];
-const FRAMES_MOBILE_WEBP = [cocinaAntesMobileWebp, cocinaDespuesMobileWebp];
-const FRAME_ALT = [
-  'Cocina antes de la renovación de Don Teófilo Amoblamientos',
-  'Cocina después de la renovación de Don Teófilo Amoblamientos',
-];
-const FRAME_DURATION = 4200;
+// En minúscula y por spread: React 18 no conoce la prop camelCase (igual que en Home/Hero).
+const HIGH_PRIORITY = { fetchpriority: 'high' };
 
-export default function ProyectosHero({ count }) {
-  const [videoError, setVideoError] = useState(false);
-  const [active, setActive] = useState(0);
-  const reduce = useReducedMotion();
-  const showVideo = Boolean(VIDEO_SRC) && !videoError;
-  // Elige el par de imágenes antes de montar el frame, según el ancho real del viewport,
-  // para no pedirle al navegador las cuatro fotos de golpe.
-  const isMobile = useIsMobile();
-  const FRAMES = isMobile ? FRAMES_MOBILE : FRAMES_DESKTOP;
-  const FRAMES_WEBP = isMobile ? FRAMES_MOBILE_WEBP : FRAMES_DESKTOP_WEBP;
-
-  useEffect(() => {
-    if (showVideo) return;
-    const id = setInterval(() => setActive((a) => (a + 1) % FRAMES.length), FRAME_DURATION);
-    return () => clearInterval(id);
-  }, [showVideo, FRAMES.length]);
-
+// Contenido fijo del sticky: título protagonista + conteo + el proyecto que se está mostrando.
+function Info({ total, proyecto, draw }) {
+  const { nombre, ubicacion } = proyecto ? splitTitulo(proyecto) : {};
   return (
-    <header className="proy-hero">
-      {showVideo ? (
-        <video
-          className="proy-hero-video"
-          src={VIDEO_SRC}
-          autoPlay
-          loop
-          muted
-          playsInline
-          onError={() => setVideoError(true)}
-        />
-      ) : (
-        <div className="proy-hero-media">
-          <AnimatePresence>
-            <motion.div
-              key={active}
-              className="proy-hero-frame"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, scale: reduce ? 1 : 1.09 }}
-              exit={{ opacity: 0 }}
-              transition={{
-                opacity: { duration: reduce ? 0.4 : 1.6, ease: 'easeInOut' },
-                scale: { duration: FRAME_DURATION / 1000 + 1.6, ease: 'easeOut' },
-              }}
-            >
-              <picture>
-                <source srcSet={FRAMES_WEBP[active]} type="image/webp" sizes="100vw" />
-                <img
-                  src={FRAMES[active]}
-                  alt={FRAME_ALT[active]}
-                  sizes="100vw"
-                  loading={active === 0 ? 'eager' : 'lazy'}
-                  fetchPriority={active === 0 ? 'high' : 'auto'}
-                />
-              </picture>
-            </motion.div>
-          </AnimatePresence>
+    <div className={styles.info}>
+      <RevealLines as="h1" lines={['Proyectos']} draw={draw} className={styles.title} />
+      {(total > 0 || proyecto) && (
+        <div className={styles.meta}>
+          {total > 0 && <p className={`${styles.count} tabular`}>{contarProyectos(total)}</p>}
+          {proyecto && (
+            <Link to={`/proyectos/${proyecto.slug}`} className={styles.current}>
+              <span className={styles.name}>{nombre}</span>
+              {ubicacion && <span className={styles.place}>{ubicacion}</span>}
+            </Link>
+          )}
         </div>
       )}
-      <div className="proy-hero-grain" />
-      <div className="proy-hero-scrim" />
-      <div className="proy-hero-content">
-        <div className="proy-hero-inner">
-          <div className="proy-hero-title-row">
-            <h1 className="proy-hero-title">Proyectos</h1>
-            {!showVideo && (
-              <span className="proy-hero-label">
-                <span className="proy-hero-label-dot" aria-hidden="true" />
-                <span className="proy-hero-label-text">
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={active}
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -6 }}
-                      transition={{ duration: 0.45, ease: 'easeInOut' }}
-                    >
-                      {active === 0 ? 'Antes' : 'Después'}
-                    </motion.span>
-                  </AnimatePresence>
-                </span>
-              </span>
-            )}
-          </div>
-          <div className="proy-hero-meta">
-            <span className="proy-hero-count">{count} proyectos seleccionados</span>
-            <span className="proy-hero-line" />
-          </div>
-        </div>
+    </div>
+  );
+}
+
+/**
+ * Hero "Transformación" del listado: antes → después con el scroll, full-bleed (el del Home es
+ * una lámina con márgenes) y con otro proyecto que el destacado del Home.
+ * Fallbacks: sin ningún par antes/después, o si una imagen falla → estático con el "después";
+ * sin proyectos → solo el título sobre madera. Con reduced motion, BeforeAfterScroll ya no
+ * pinea y muestra el "después" con un botón para ver el antes.
+ */
+export default function ProyectosHero({ proyectos, loading }) {
+  const ref = useRef(null);
+  useNavOverDark(ref);
+  const entry = useRouteEntry();
+  const { reduce } = useMotionSafe();
+  const afterLoad = useAfterLoad();
+  const [failed, setFailed] = useState(false);
+  const [staticFailed, setStaticFailed] = useState(false);
+
+  const { proyecto, par } = proyectoDelHero(proyectos);
+  const draw = entry === 'pop' ? 'none' : 'mount';
+  const info = <Info total={proyectos.length} proyecto={proyecto} draw={draw} />;
+  // El nav va transparente sobre la foto: una franja medida solo detrás del header.
+  const navScrim = <div className={styles.navScrim} aria-hidden="true" />;
+
+  let body;
+  if (loading) {
+    body = <div className={styles.stage} />;
+  } else if (proyecto && par && !failed) {
+    // Lo primero que se ve es el "antes" (o el "después" con reduced motion): esa capa es el
+    // LCP y va con prioridad; la otra se pide cuando la página ya cargó.
+    const capa = (url, alt, first) => ({
+      src: first || afterLoad ? url : undefined,
+      alt,
+      sizes: '100vw',
+      priority: first,
+      onError: () => setFailed(true),
+    });
+    body = (
+      <BeforeAfterScroll
+        heightDesktop="200vh"
+        heightMobile="170vh"
+        className={styles.pin}
+        head={navScrim}
+        aria-label={`Antes y después: ${proyecto.titulo}`}
+        antes={capa(proyecto.imagen_antes, `${proyecto.titulo}, antes de la obra`, !reduce)}
+        despues={capa(proyecto.imagen_despues, `${proyecto.titulo}, terminado`, reduce)}
+      >
+        {info}
+      </BeforeAfterScroll>
+    );
+  } else {
+    body = (
+      <div className={`${styles.stage} ${styles.static}`}>
+        {proyecto && !staticFailed && (
+          <img
+            className={styles.img}
+            src={proyecto.imagen_despues}
+            alt={`${proyecto.titulo}, terminado`}
+            sizes="100vw"
+            decoding="async"
+            {...HIGH_PRIORITY}
+            onError={() => setStaticFailed(true)}
+          />
+        )}
+        {proyecto && !staticFailed && navScrim}
+        <div className={styles.staticInfo}>{info}</div>
       </div>
+    );
+  }
+
+  return (
+    <header ref={ref} className={styles.hero}>
+      {body}
     </header>
   );
 }

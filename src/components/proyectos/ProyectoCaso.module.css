@@ -1,0 +1,387 @@
+/* ==========================================================================
+   Caso del listado. Mobile: una columna, imagen 4:5 e info debajo (los pares con sangría).
+   ≥768px: tres layouts que rotan — lámina 16:9 / imagen a la izquierda / a la derecha.
+   ========================================================================== */
+.caso {
+  position: relative; /* ancla del ::after estirado del título */
+  list-style: none;
+  --caso-ratio: 4 / 5;
+}
+
+.article {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+}
+
+/* ---------- imagen ----------
+   En el DOM va después de la info (orden de tab); acá se dibuja arriba. */
+.media {
+  position: relative;
+  order: -1;
+}
+
+.mediaLink {
+  position: relative;
+  display: block;
+  overflow: clip;
+  border-radius: var(--r-taller);
+}
+
+.frame {
+  background: var(--papel-2);
+}
+
+/* Con puntero fino la imagen se eleva sobre el ::after del título para recibir el hover;
+   su propio <a> (mismo destino) resuelve el click, el click medio y Ctrl/Cmd+click. */
+@media (hover: hover) and (pointer: fine) {
+  .mediaLink {
+    z-index: 2;
+  }
+}
+
+/* ---------- asomar el antes ---------- */
+.peek {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  background: var(--papel-2);
+  /* touch: crossfade con el botón */
+  opacity: 0;
+  transition: opacity var(--dur-sm) linear;
+}
+
+.peekShown {
+  opacity: 1;
+}
+
+.peekImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.peekLabel {
+  position: absolute;
+  top: var(--s-3);
+  left: var(--s-3);
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--madera) 72%, transparent);
+  color: var(--sobre-madera);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  line-height: 1.2;
+  backdrop-filter: blur(6px);
+}
+
+/* Línea divisoria: capa del ancho de la imagen con el trazo en su borde derecho; se traslada
+   entera (solo transform) hasta dejar el borde en el 40%. */
+.peekLine {
+  position: absolute;
+  inset: 0;
+  border-right: 1px solid var(--sobre-madera);
+  transform: translateX(-100%);
+  pointer-events: none;
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .peek {
+    opacity: 1;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path var(--dur-md) var(--ease-soft-close);
+  }
+
+  .peekLine {
+    display: block;
+    transition: transform var(--dur-md) var(--ease-soft-close);
+  }
+
+  .mediaLink:hover .peek {
+    clip-path: inset(0 60% 0 0);
+  }
+
+  .mediaLink:hover .peekLine {
+    transform: translateX(-60%);
+  }
+
+  .toggle {
+    display: none;
+  }
+}
+
+/* Reduced motion: sin recorte animado; el antes aparece ya al 40% con un crossfade corto. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
+  .peek {
+    clip-path: inset(0 60% 0 0);
+    opacity: 0;
+    transition: opacity .2s linear;
+  }
+
+  .mediaLink:hover .peek {
+    opacity: 1;
+  }
+
+  .peekLine {
+    transform: translateX(-60%);
+    opacity: 0;
+    transition: opacity .2s linear;
+  }
+
+  .mediaLink:hover .peekLine {
+    opacity: 1;
+  }
+}
+
+/* Botón "Ver antes" (touch): por encima del ::after del título y de la imagen. */
+.toggle {
+  position: absolute;
+  z-index: 3;
+  right: var(--s-3);
+  bottom: var(--s-3);
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 1px solid color-mix(in srgb, var(--sobre-madera) 50%, transparent);
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--madera) 72%, transparent);
+  color: var(--sobre-madera);
+  font: 500 var(--fs-small) / 1 var(--font-sans);
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+}
+
+.toggle[aria-pressed="true"] {
+  background: var(--papel);
+  border-color: var(--papel);
+  color: var(--texto);
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--sobre-madera);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px var(--tinta);
+}
+
+/* ---------- info ---------- */
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  min-width: 0;
+}
+
+.caso:nth-child(even) .info {
+  padding-left: 16%;
+}
+
+.lead {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+}
+
+.num {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--tinta);
+}
+
+.cat {
+  margin: 0;
+  font-size: var(--fs-small);
+  color: var(--texto-suave);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-2);
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-h2);
+  font-weight: 500;
+  line-height: var(--lh-heading);
+  letter-spacing: -.015em;
+  color: var(--texto);
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+.titleLink {
+  color: inherit;
+  outline: none;
+}
+
+.titleLink::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: var(--r-taller);
+}
+
+.titleLink:focus-visible::after {
+  outline: 2px solid var(--tinta);
+  outline-offset: 6px;
+}
+
+/* El lugar va como anotación de plano: chico y en tinta. */
+.place {
+  margin: 0;
+  font-size: var(--fs-small);
+  color: var(--tinta);
+}
+
+.desc {
+  margin: var(--s-2) 0 0;
+  max-width: 52ch;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--texto-suave);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+
+.action {
+  margin-top: var(--s-2);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--texto);
+  text-decoration: underline;
+  text-decoration-color: var(--linea-fuerte);
+  text-underline-offset: 6px;
+  transition: text-decoration-color var(--dur-sm) var(--ease-settle);
+}
+
+.caso:hover .action,
+.caso:focus-within .action {
+  text-decoration-color: var(--oxido);
+}
+
+/* ---------- metadata ---------- */
+.meta {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3) var(--s-6);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--linea);
+}
+
+.metaItem {
+  min-width: 0;
+}
+
+.meta dt {
+  font-size: var(--fs-label);
+  color: var(--texto-suave);
+}
+
+.meta dd {
+  margin: 2px 0 0;
+  font-size: var(--fs-small);
+  color: var(--texto);
+}
+
+/* ==========================================================================
+   ≥768px: grilla de 12 columnas y rotación de layouts
+   ========================================================================== */
+@media (min-width: 768px) {
+  .article {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--s-5);
+    row-gap: var(--s-5);
+  }
+
+  .caso:nth-child(even) .info {
+    padding-left: 0;
+  }
+
+  /* A · lámina: imagen 16:9 a lo ancho y debajo una fila 3 / 6 / 3 */
+  .lamina {
+    --caso-ratio: 16 / 9;
+  }
+
+  .lamina .media,
+  .lamina .info {
+    grid-column: 1 / -1;
+  }
+
+  .lamina .media {
+    grid-row: 1;
+  }
+
+  .lamina .info {
+    grid-row: 2;
+  }
+
+  .lamina .info {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--s-5);
+    align-items: start;
+  }
+
+  .lamina .lead {
+    grid-column: 1 / 4;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .lamina .body {
+    grid-column: 4 / 10;
+  }
+
+  .lamina .meta {
+    grid-column: 10 / 13;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding-top: 0;
+    border-top: 0;
+    border-left: 1px solid var(--linea);
+    padding-left: var(--s-4);
+  }
+
+  /* B · izquierda: imagen 4:5 en 7/12, info en 5/12 alineada abajo */
+  .izquierda .media {
+    grid-column: 1 / 8;
+    grid-row: 1;
+  }
+
+  .izquierda .info {
+    grid-column: 8 / 13;
+    grid-row: 1;
+    align-self: end;
+    padding-left: var(--s-5);
+  }
+
+  /* C · derecha: espejo de B, con la info corrida hacia abajo desde arriba (rompe la simetría) */
+  .derecha .media {
+    grid-column: 6 / 13;
+    grid-row: 1;
+  }
+
+  .derecha .info {
+    grid-column: 1 / 6;
+    grid-row: 1;
+    align-self: start;
+    margin-top: var(--s-9);
+    padding-right: var(--s-5);
+  }
+
+  .izquierda .title,
+  .derecha .title {
+    font-size: clamp(1.75rem, 1.2rem + 1.5vw, 2.75rem);
+  }
+}

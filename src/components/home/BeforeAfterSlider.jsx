@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react';
 import './BeforeAfterSlider.css';
 
 const STEP = 4;
+// Movimiento mínimo antes de decidir si un toque sobre la imagen es drag (horizontal) o scroll.
+const LOCK_PX = 8;
 
 export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt = '' }) {
   const sliderRef = useRef(null);
@@ -9,6 +11,9 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt = '' }) {
   const handleRef = useRef(null);
   const draggingRef = useRef(false);
   const posRef = useRef(50);
+  // Toque en curso: { x, y, mode: 'pending' | 'drag' | 'scroll' }. La dirección se decide una
+  // vez por gesto y no cambia hasta el touchend.
+  const touchRef = useRef(null);
 
   useEffect(() => {
     const slider = sliderRef.current;
@@ -30,21 +35,44 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt = '' }) {
       handle.setAttribute('aria-valuetext', `${rounded}%`);
     }
 
-    function onMove(ev) {
-      if (!draggingRef.current) return;
-      // preventDefault mientras se arrastra para que el gesto horizontal no dispare
-      // también el scroll vertical de la página (requiere el listener no-pasivo).
-      if (ev.touches) ev.preventDefault();
+    function moveTo(clientX) {
       const r = slider.getBoundingClientRect();
-      const cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
-      setPos(((cx - r.left) / r.width) * 100);
+      setPos(((clientX - r.left) / r.width) * 100);
     }
 
-    function onDown() {
+    function onMouseMove(ev) {
+      if (draggingRef.current) moveTo(ev.clientX);
+    }
+    function onMouseDown() {
       draggingRef.current = true;
     }
-    function onUp() {
+    function onMouseUp() {
       draggingRef.current = false;
+    }
+
+    // Touch: el tirador es siempre drag (touch-action: none). Sobre el resto de la imagen
+    // (touch-action: pan-y) se espera al primer movimiento de LOCK_PX: horizontal → drag y
+    // recién ahí preventDefault; vertical → se suelta y la página scrollea normal.
+    function onTouchStart(ev) {
+      const t = ev.touches[0];
+      touchRef.current = { x: t.clientX, y: t.clientY, mode: handle.contains(ev.target) ? 'drag' : 'pending' };
+    }
+    function onTouchMove(ev) {
+      const touch = touchRef.current;
+      if (!touch) return;
+      const t = ev.touches[0];
+      if (touch.mode === 'pending') {
+        const dx = t.clientX - touch.x;
+        const dy = t.clientY - touch.y;
+        if (Math.hypot(dx, dy) < LOCK_PX) return;
+        touch.mode = Math.abs(dx) > Math.abs(dy) ? 'drag' : 'scroll';
+      }
+      if (touch.mode !== 'drag') return;
+      if (ev.cancelable) ev.preventDefault();
+      moveTo(t.clientX);
+    }
+    function onTouchEnd() {
+      touchRef.current = null;
     }
 
     function onKeyDown(ev) {
@@ -72,21 +100,23 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt = '' }) {
       }
     }
 
-    slider.addEventListener('mousedown', onDown);
-    slider.addEventListener('touchstart', onDown);
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('touchmove', onMove, { passive: false });
-    window.addEventListener('mouseup', onUp);
-    window.addEventListener('touchend', onUp);
+    slider.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+    slider.addEventListener('touchstart', onTouchStart, { passive: true });
+    slider.addEventListener('touchmove', onTouchMove, { passive: false });
+    slider.addEventListener('touchend', onTouchEnd);
+    slider.addEventListener('touchcancel', onTouchEnd);
     handle.addEventListener('keydown', onKeyDown);
 
     return () => {
-      slider.removeEventListener('mousedown', onDown);
-      slider.removeEventListener('touchstart', onDown);
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('touchmove', onMove);
-      window.removeEventListener('mouseup', onUp);
-      window.removeEventListener('touchend', onUp);
+      slider.removeEventListener('mousedown', onMouseDown);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+      slider.removeEventListener('touchstart', onTouchStart);
+      slider.removeEventListener('touchmove', onTouchMove);
+      slider.removeEventListener('touchend', onTouchEnd);
+      slider.removeEventListener('touchcancel', onTouchEnd);
       handle.removeEventListener('keydown', onKeyDown);
     };
   }, []);

@@ -1,15 +1,28 @@
 import WhatsAppButton from '../primitives/WhatsAppButton';
-import './ProjectsCTA.css';
+import Cota from '../primitives/Cota';
+import { WHATSAPP_URL } from '../../config/contact';
+import styles from './ProjectsCTA.module.css';
 
-export default function ProjectsCTA() {
+/**
+ * Cierre de Proyectos (listado y detalle): una cota corta sobre el título, como una medida de
+ * plano, y la acción por WhatsApp en paleta. El detalle pasa su propio texto y mensaje.
+ */
+export default function ProjectsCTA({
+  titulo = '¿Querés ver tu proyecto acá?',
+  texto = 'El próximo caso de esta galería puede ser el tuyo. Contanos qué tenés en mente.',
+  href = WHATSAPP_URL,
+  accion = 'Escribinos por WhatsApp',
+}) {
   return (
-    <section className="proy-cta">
-      <span className="proy-cta-mark" />
-      <h2 className="proy-cta-title">¿Querés ver tu proyecto acá?</h2>
-      <p className="proy-cta-text">
-        El próximo caso de esta galería puede ser el tuyo. Contanos qué tenés en mente.
-      </p>
-      <WhatsAppButton variant="primary">Escribinos por WhatsApp</WhatsAppButton>
+    <section className={styles.cta} aria-labelledby="proyectos-cta-titulo">
+      <Cota className={styles.cota} draw="view" />
+      <h2 id="proyectos-cta-titulo" className={styles.title}>
+        {titulo}
+      </h2>
+      {texto && <p className={styles.text}>{texto}</p>}
+      <WhatsAppButton href={href} variant="primary">
+        {accion}
+      </WhatsAppButton>
     </section>
   );
 }

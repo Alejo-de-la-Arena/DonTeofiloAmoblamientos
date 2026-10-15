@@ -1,0 +1,290 @@
+.page {
+  background: var(--papel);
+  color: var(--texto);
+}
+
+/* ==========================================================================
+   Hero: foto "después" a 85svh, título sobre la foto
+   ========================================================================== */
+.hero,
+.heroPlaceholder {
+  position: relative;
+  height: 85vh;
+  height: 85svh;
+  min-height: 480px;
+  overflow: clip;
+  background: var(--madera);
+  color: var(--sobre-madera);
+}
+
+.hero {
+  display: flex;
+  align-items: flex-end;
+}
+
+.heroImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Franja detrás del header transparente: mismo alfa medido que el hero del listado. */
+.navScrim {
+  position: absolute;
+  inset: 0 0 auto;
+  height: calc(var(--header-h) + var(--s-7));
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--madera) 76%, transparent) 0%,
+    color-mix(in srgb, var(--madera) 76%, transparent) calc(var(--header-h) - var(--s-3)),
+    color-mix(in srgb, var(--madera) 0%, transparent) 100%
+  );
+  pointer-events: none;
+}
+
+/* Gradiente solo detrás del texto, sin velo general. Dos capas de madera con el alfa mínimo
+   medido sobre una foto blanca (igual que el hero del listado):
+   - .heroInfo::before (0.62) detrás del título (display ≥ 3:1), se desvanece 96px arriba;
+   - .heroMeta::before suma una franja detrás de la fila chica (categoría y lugar en tinta-clara
+     ≥ 4.5:1: 1 − 0.38 × 0.35 ≈ 0.87). */
+.heroInfo {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: var(--s-9) var(--gutter) calc(var(--s-7) + env(safe-area-inset-bottom, 0px));
+}
+
+.heroInfo::before,
+.heroMeta::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: calc((100% - 100vw) / 2);
+  right: calc((100% - 100vw) / 2);
+  pointer-events: none;
+}
+
+.heroInfo::before {
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--madera) 62%, transparent) calc(100% - var(--s-9)),
+    color-mix(in srgb, var(--madera) 0%, transparent) 100%
+  );
+}
+
+.heroTitle {
+  max-width: 20ch;
+  font-family: var(--font-serif);
+  font-size: var(--fs-h1);
+  font-weight: 600;
+  line-height: var(--lh-heading);
+  letter-spacing: -.02em;
+  color: var(--sobre-madera);
+  overflow-wrap: break-word;
+}
+
+.heroMeta {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-1) var(--s-5);
+  margin: var(--s-4) 0 0;
+  padding-top: var(--s-3);
+  border-top: 1px solid color-mix(in srgb, var(--sobre-madera) 35%, transparent);
+  /* el botón flotante de WhatsApp vive abajo a la derecha: la fila no entra en su zona */
+  padding-right: max(0px, calc(84px - var(--gutter)));
+  font-size: var(--fs-small);
+}
+
+.heroMeta::before {
+  top: calc(-1 * var(--s-4));
+  bottom: calc(-1 * (var(--s-7) + env(safe-area-inset-bottom, 0px)));
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--madera) 65%, transparent) calc(100% - var(--s-4)),
+    color-mix(in srgb, var(--madera) 0%, transparent) 100%
+  );
+}
+
+.heroCat {
+  font-weight: 500;
+  color: var(--sobre-madera);
+}
+
+/* El lugar como anotación de plano: chico y en tinta. */
+.heroPlace {
+  color: var(--tinta-clara);
+}
+
+/* ==========================================================================
+   Cuerpo
+   ========================================================================== */
+.body {
+  display: grid;
+  gap: var(--s-9);
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: var(--s-8) var(--gutter) var(--s-9);
+}
+
+/* Si no queda ningún bloque, el cuerpo no deja un hueco. */
+.body:empty {
+  display: none;
+}
+
+.sectionTitle {
+  margin: 0 0 var(--s-5);
+  font-family: var(--font-serif);
+  font-size: var(--fs-h3);
+  font-weight: 500;
+  line-height: var(--lh-heading);
+}
+
+/* ---------- ficha técnica ---------- */
+.fichaList {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-6) var(--s-5);
+}
+
+.fichaItem {
+  min-width: 0;
+}
+
+.fichaCota {
+  width: 100%;
+  max-width: 120px;
+  height: 18px;
+  margin-bottom: var(--s-3);
+}
+
+.fichaLabel {
+  font-size: var(--fs-label);
+  color: var(--texto-suave);
+}
+
+.fichaValor {
+  margin: var(--s-1) 0 0;
+  font-size: var(--fs-body-lg);
+  color: var(--texto);
+  overflow-wrap: break-word;
+}
+
+/* ---------- relato ---------- */
+.relato {
+  display: grid;
+  gap: var(--s-7);
+}
+
+.relatoBloque {
+  max-width: 65ch;
+}
+
+.relatoTitulo {
+  margin: 0 0 var(--s-3);
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--tinta);
+}
+
+.relatoTexto {
+  margin: 0;
+  max-width: 65ch;
+  font-family: var(--font-serif);
+  font-size: var(--fs-body-lg);
+  line-height: 1.65;
+  color: var(--texto);
+  white-space: pre-line;
+}
+
+.relatoUnico {
+  font-size: clamp(1.1875rem, 1.05rem + .5vw, 1.4375rem);
+}
+
+/* ---------- antes / después ---------- */
+.slider {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--r-taller);
+  overflow: clip;
+  background: var(--papel-2);
+}
+
+/* ---------- estados ---------- */
+.statusPage {
+  min-height: 70vh;
+  display: grid;
+  place-items: center;
+  padding: calc(var(--header-h) + var(--s-8)) var(--gutter) var(--s-9);
+}
+
+.status {
+  max-width: 44ch;
+  text-align: center;
+}
+
+.statusTitle {
+  margin: 0 0 var(--s-3);
+  font-family: var(--font-serif);
+  font-size: var(--fs-h2);
+  font-weight: 500;
+  line-height: var(--lh-heading);
+}
+
+.statusText {
+  margin: 0 0 var(--s-5);
+  color: var(--texto-suave);
+}
+
+.statusLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 600;
+  color: var(--oxido);
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+/* ==========================================================================
+   ≥768px
+   ========================================================================== */
+@media (min-width: 768px) {
+  .body {
+    padding-top: var(--s-9);
+    gap: var(--s-10);
+  }
+
+  /* La ficha pasa a una franja horizontal */
+  .fichaList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-6) var(--s-8);
+  }
+
+  .fichaItem {
+    flex: 0 1 auto;
+    min-width: 120px;
+  }
+
+  .relato {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-8);
+  }
+
+  .relato:has(.relatoUnico) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .slider {
+    aspect-ratio: 3 / 2;
+  }
+}
