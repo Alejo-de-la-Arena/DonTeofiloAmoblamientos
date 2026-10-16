@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { animate, useInView, useMotionValue } from 'framer-motion';
 import { ease, useMotionSafe } from '../../lib/motion';
 import { useElementSize } from '../primitives/useElementSize';
-import { cotaGeometry, LABEL_PAD } from '../primitives/cotaGeometry';
+import { labelWidth, LABEL_PAD, placeCota } from '../primitives/cotaGeometry';
 import { alzadoDe } from '../../data/alzados';
 import styles from './Alzado.module.css';
 
@@ -23,8 +23,6 @@ const fmt = (n) => `${mmFormat.format(Math.round(n))} mm`;
 const COTA_T = 22; // espesor de una fila de cotas (px)
 const COTA_GAP = 12; // del dibujo a la primera cota
 const ROW_GAP = 4; // entre la fila de parciales y la del total
-const CHAR_W = 6.9; // ancho medio de un carácter del label (10.5px, 600, tabular, +.06em)
-const labelWidth = (text) => text.length * CHAR_W;
 
 // Tiempos de la secuencia (s). Borrado rápido y todo junto; dibujo por grupos, ~900ms en total.
 const ERASE = 0.25;
@@ -209,14 +207,8 @@ function trazar(def, S, ox, oy) {
 /* ---------- cotas en px ---------- */
 
 function cota({ x, y, length, orientation, label }) {
-  const geo = cotaGeometry({ length, thickness: COTA_T, labelLength: label ? labelWidth(label) : 0, orientation });
-  const t = (d) => d.replace(/(-?[\d.]+) (-?[\d.]+)/g, (_, a, b) => `${r(+a + x)} ${r(+b + y)}`);
   const horizontal = orientation === 'horizontal';
-  return {
-    segments: geo.segments.map(t),
-    marks: [...geo.stops, ...geo.ticks].map(t),
-    label: horizontal ? { x: x + geo.center, y: y + COTA_T / 2 } : { x: x + COTA_T / 2, y: y + geo.center },
-  };
+  return placeCota({ x, y, length, label, thickness: COTA_T, u: horizontal ? [1, 0] : [0, 1], v: horizontal ? [0, 1] : [1, 0] });
 }
 
 function layout(def, w, h, parciales) {

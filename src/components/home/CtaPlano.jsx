@@ -114,15 +114,30 @@ function Cursor({ sx, sy, opacity }) {
   );
 }
 
-/** CTA final del Home como hoja de plano: elegís el tipo, opcionalmente tu nombre, y se arma
- *  el mensaje de WhatsApp (o se pasa el tipo al formulario de Contacto). */
-export default function CtaPlano() {
+/**
+ * CTA final como hoja de plano (Home y Cómo trabajamos). Con chips: elegís el tipo,
+ * opcionalmente tu nombre, y se arma el mensaje de WhatsApp (o se pasa el tipo al formulario de
+ * Contacto). Sin chips: un mensaje fijo.
+ *   title, lead   textos de la hoja
+ *   chips         false = sin elección de tipo ni nombre; el botón manda `mensaje`
+ *   mensaje       mensaje precargado de WhatsApp cuando no hay chips
+ *   cta           texto del botón de WhatsApp
+ */
+export default function CtaPlano({
+  title = 'Empecemos por las medidas',
+  lead = 'Elegí qué querés hacer y te armamos el mensaje. El presupuesto es sin compromiso.',
+  chips = true,
+  mensaje,
+  cta = chips ? 'Armar mensaje por WhatsApp' : 'Escribinos por WhatsApp',
+}) {
   const id = useId();
   const [tipo, setTipo] = useState(null);
   const [nombre, setNombre] = useState('');
-  const elegido = TIPOS.find((t) => t.slug === tipo);
+  const elegido = chips ? TIPOS.find((t) => t.slug === tipo) : null;
 
-  const waHref = buildWhatsAppUrl({ tipo: elegido?.label ?? 'Consulta general', nombre, sinDatos: null });
+  const waHref = chips
+    ? buildWhatsAppUrl({ tipo: elegido?.label ?? 'Consulta general', nombre, sinDatos: null })
+    : buildWhatsAppUrl({ mensaje });
   const formHref = elegido ? `/contacto?tipo=${elegido.slug}` : '/contacto';
 
   const sectionRef = useRef(null);
@@ -192,54 +207,58 @@ export default function CtaPlano() {
 
         <div className={styles.titleWrap}>
           <h2 id={`${id}-title`} className={styles.title}>
-            Empecemos por las medidas
+            {title}
           </h2>
           <Cota tone="light" draw="view" className={styles.cota} />
         </div>
-        <p className={styles.lead}>Elegí qué querés hacer y te armamos el mensaje. El presupuesto es sin compromiso.</p>
+        <p className={styles.lead}>{lead}</p>
 
-        <fieldset className={styles.fieldset}>
-          <legend className={styles.legend}>¿Qué querés hacer?</legend>
-          <div className={styles.chips}>
-            {TIPOS.map((t) => (
-              <label key={t.slug} className={styles.chip}>
-                <input
-                  type="radio"
-                  name={`${id}-tipo`}
-                  value={t.slug}
-                  checked={tipo === t.slug}
-                  onChange={() => setTipo(t.slug)}
-                  className={styles.radio}
-                />
-                <span className={styles.chipFace}>{t.label}</span>
-              </label>
-            ))}
-          </div>
-          {/* Cota decorativa con una medida típica del tipo elegido. El alto está reservado
-              siempre: elegir un chip no mueve nada. */}
-          <div className={styles.chipCotaSlot} aria-hidden="true">
-            {elegido && (
-              <div className={styles.chipCota} style={{ width: `${((elegido.mm ?? MM_OTRO) / MM_MAX) * 100}%` }}>
-                <Cota
-                  key={elegido.slug}
-                  tone="light"
-                  draw={reduce ? 'none' : 'mount'}
-                  label={elegido.mm ? `${elegido.mm} mm` : undefined}
-                  labelPosition="start"
-                />
-              </div>
-            )}
-          </div>
-        </fieldset>
+        {chips && (
+          <fieldset className={styles.fieldset}>
+            <legend className={styles.legend}>¿Qué querés hacer?</legend>
+            <div className={styles.chips}>
+              {TIPOS.map((t) => (
+                <label key={t.slug} className={styles.chip}>
+                  <input
+                    type="radio"
+                    name={`${id}-tipo`}
+                    value={t.slug}
+                    checked={tipo === t.slug}
+                    onChange={() => setTipo(t.slug)}
+                    className={styles.radio}
+                  />
+                  <span className={styles.chipFace}>{t.label}</span>
+                </label>
+              ))}
+            </div>
+            {/* Cota decorativa con una medida típica del tipo elegido. El alto está reservado
+                siempre: elegir un chip no mueve nada. */}
+            <div className={styles.chipCotaSlot} aria-hidden="true">
+              {elegido && (
+                <div className={styles.chipCota} style={{ width: `${((elegido.mm ?? MM_OTRO) / MM_MAX) * 100}%` }}>
+                  <Cota
+                    key={elegido.slug}
+                    tone="light"
+                    draw={reduce ? 'none' : 'mount'}
+                    label={elegido.mm ? `${elegido.mm} mm` : undefined}
+                    labelPosition="start"
+                  />
+                </div>
+              )}
+            </div>
+          </fieldset>
+        )}
 
-        <label className={styles.field}>
-          <span className={styles.fieldLabel}>Tu nombre (opcional)</span>
-          <input type="text" autoComplete="given-name" value={nombre} onChange={(e) => setNombre(e.target.value)} className={styles.input} />
-        </label>
+        {chips && (
+          <label className={styles.field}>
+            <span className={styles.fieldLabel}>Tu nombre (opcional)</span>
+            <input type="text" autoComplete="given-name" value={nombre} onChange={(e) => setNombre(e.target.value)} className={styles.input} />
+          </label>
+        )}
 
         <div className={styles.actions}>
           <WhatsAppButton href={waHref} variant="paper">
-            Armar mensaje por WhatsApp
+            {cta}
           </WhatsAppButton>
           <Link to={formHref} className={styles.formLink}>
             Prefiero completar el formulario

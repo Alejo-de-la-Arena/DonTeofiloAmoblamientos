@@ -37,31 +37,15 @@ a{color:var(--oxido);text-decoration:none}
 }
 /* Contextos oscuros (madera, fotos, footer): la tinta oscura no se ve, el anillo pasa a tinta
    clara. Al crear una sección oscura nueva, sumarla acá o setear --focus-ring en ella. */
-.footer,.work-cta,.nav:not(.solid),.nav-burger-wrap:not(.solid),.nav-mobile{--focus-ring:var(--tinta-clara)}
+.footer,.nav:not(.solid),.nav-burger-wrap:not(.solid),.nav-mobile{--focus-ring:var(--tinta-clara)}
 
 @keyframes dtPulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.55)}70%{box-shadow:0 0 0 16px rgba(37,211,102,0)}100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}}
-
-/* reveal-on-scroll — DEPRECADO (rediseño "Al milímetro").
-   El fade-up genérico por sección se reemplaza por las primitivas <RevealImage> / <RevealLines>
-   (src/components/primitives). Al migrar cada página hay que quitar DOS cosas:
-     1. el hook useScrollReveal() y su ref, y
-     2. el atributo data-reveal del JSX.
-   Si se borra el hook pero queda el atributo, nadie agrega .is-visible y el elemento queda con
-   opacity:0 para siempre (invisible). Cuando ningún componente use data-reveal, borrar este
-   bloque y src/hooks/useScrollReveal.js. */
-[data-reveal]{
-  opacity:0;
-  transform:translateY(26px);
-  transition:opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1);
-}
-[data-reveal].is-visible{opacity:1;transform:none}
 
 /* ---------- movimiento reducido ---------- */
 /* Sin scroll suave, sin loops decorativos y transiciones recortadas a un crossfade corto.
    Las primitivas de Framer Motion resuelven su versión reducida vía useMotionSafe(). */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  [data-reveal]{opacity:1;transform:none;transition:none}
   *,*::before,*::after{
     animation-duration:.01ms !important;
     animation-iteration-count:1 !important;

@@ -1,0 +1,309 @@
+/* padding-top reserva el espacio de la nav fija (transparente sobre el hero) *antes* de que
+   flexbox centre el resto — así el centrado nunca puede llevar la composición (que además
+   necesita ~94px libres arriba para las marcas de esquina y la cota H1) por debajo del navbar.
+   min-height (no height): por debajo de 1024 el mueble va debajo de la bajada y el hero crece. */
+.hero {
+  position: relative;
+  min-height: max(100dvh, 640px);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding-top: 96px;
+  background: var(--papel-2);
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--container);
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 clamp(20px, 5vw, 72px);
+}
+
+/* ---------- retícula de fondo ---------- */
+/* Doble escala tipo papel milimetrado: líneas cada 8px casi invisibles, cada 40px apenas más
+   marcadas. Gradientes repetidos, no imagen ni SVG — así el "grano" es perfectamente nítido a
+   cualquier densidad de pantalla. */
+.grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, var(--grilla) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grilla) 1px, transparent 1px),
+    linear-gradient(to right, var(--grilla-fina) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grilla-fina) 1px, transparent 1px);
+  background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
+}
+
+.gridIntro {
+  opacity: 0;
+  animation: grid-in 1.1s ease-out .1s forwards;
+}
+
+@keyframes grid-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gridIntro {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* ---------- composición: copy + mueble ---------- */
+/* ≥1024 el mueble ocupa la columna derecha; más abajo va debajo de la bajada (ver media). */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 52%) minmax(0, 1fr);
+  column-gap: var(--s-7);
+  align-items: center;
+}
+
+/* El espacio entre columnas deja lugar a la cota vertical del copy (72px + 24px) */
+@media (min-width: 1160px) {
+  .layout {
+    grid-template-columns: minmax(0, 640px) minmax(0, 1fr);
+    column-gap: 128px;
+  }
+}
+
+.iso {
+  width: 100%;
+  aspect-ratio: 9 / 10;
+  max-height: 64svh;
+  justify-self: center;
+}
+
+/* ---------- copy ---------- */
+.copy {
+  position: relative;
+  max-width: 640px;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 14px;
+  letter-spacing: .02em;
+  color: var(--oxido);
+  font-weight: 600;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--oxido);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(52px, 8.4vw, 128px);
+  line-height: .96;
+  margin: 22px 0 0;
+  letter-spacing: -.02em;
+  color: var(--texto);
+}
+
+.lead {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(18px, 2.2vw, 24px);
+  color: var(--texto-suave);
+  line-height: 1.4;
+  margin: 0;
+  max-width: 420px;
+}
+
+/* titleWrap envuelve el <h1> en un bloque de ancho ajustado a su propio contenido, para que
+   la cota "2400 mm" quede siempre pegada al ancho real del título — sea cual sea el breakpoint,
+   el idioma del navegador o el momento de carga de la fuente — sin medir nada por JS. */
+.titleWrap {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 56px;
+}
+
+/* Bloque (no inline): el título nunca sube a la línea del eyebrow aunque entre al lado;
+   fit-content mantiene el callout pegado al final del texto. */
+.eyebrowWrap {
+  position: relative;
+  display: flex;
+  width: fit-content;
+}
+
+/* ---------- cotas ---------- */
+/* La anatomía (líneas, topes, marcas a 45°, label) vive en la primitiva <Cota>. Acá solo se
+   posicionan las instancias. Labels en sentence case, como el resto del sitio. */
+.cotaLabel {
+  letter-spacing: .04em;
+}
+
+/* H1: acota el ancho completo de .inner (margen a margen del container) por encima del
+   eyebrow, a una distancia fija del texto sin importar la altura del viewport. */
+.cotaH1 {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -46px;
+  height: 26px;
+}
+
+/* H2: mide el título exacto — vive dentro de titleWrap y hereda su ancho real */
+.cotaH2 {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 14px);
+  height: 24px;
+}
+
+/* V1: mide el alto del bloque de copy completo, en el espacio entre el copy y el mueble */
+.cotaV1 {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(100% + 72px);
+  width: 24px;
+  display: none;
+}
+
+@media (min-width: 1160px) {
+  .cotaV1 {
+    display: block;
+  }
+}
+
+/* Marcas de esquina: el envoltorio solo hace el fade de entrada; <CornerMarks> se posiciona
+   contra .inner (o contra .hero en mobile) con su inset. */
+.marks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ---------- callout de detalle ---------- */
+.callout {
+  position: absolute;
+  left: calc(100% + 20px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.calloutCircle {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--oxido);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--oxido);
+  flex: 0 0 auto;
+}
+
+.calloutLeader {
+  width: 1px;
+  height: 26px;
+  background: var(--oxido);
+  opacity: .8;
+  transform-origin: top center;
+}
+
+.calloutLabel {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--oxido);
+  white-space: nowrap;
+}
+
+/* ---------- tablet (701–1023): el mueble pasa debajo de la bajada ---------- */
+/* Con el mueble debajo, el contenido puede llenar el alto y el centrado ya no deja aire arriba:
+   el padding reserva el header + los ~94px que necesitan las marcas de esquina y la cota H1. */
+@media (max-width: 1023px) {
+  .hero {
+    padding-top: calc(var(--header-h) + 96px);
+    padding-bottom: var(--s-8);
+  }
+
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--s-7);
+  }
+
+  .iso {
+    width: min(70%, 460px);
+    max-height: none;
+  }
+}
+
+.cotaH1Mobile {
+  display: none;
+}
+
+/* ---------- mobile (≤700px): composición reducida a 2 cotas + mueble simple ---------- */
+@media (max-width: 700px) {
+  .hero {
+    min-height: 0;
+    padding: 104px 0 85px;
+  }
+
+  .copy {
+    max-width: none;
+  }
+
+  .title {
+    font-size: clamp(38px, 12vw, 56px);
+  }
+
+  .lead {
+    max-width: none;
+    font-size: 16px;
+  }
+
+  .titleWrap {
+    margin-bottom: 40px;
+  }
+
+  .cotaH1Mobile {
+    display: block;
+    position: relative;
+    height: 24px;
+    margin-bottom: 28px;
+  }
+
+  .cotaH2 {
+    top: calc(100% + 12px);
+    height: 22px;
+  }
+
+  .iso {
+    display: block;
+    width: 80%;
+    margin: var(--s-7) auto 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .lead {
+    font-size: 14.5px;
+  }
+}

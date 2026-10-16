@@ -78,7 +78,8 @@ export default function RevealImage({
         {sources?.length ? (
           <picture>
             {sources.map((s) => (
-              <source key={s.srcSet} srcSet={load ? s.srcSet : undefined} media={s.media} type={s.type} />
+              // Sin `sizes` propio, un <source> con descriptores w asume 100vw: hereda el de la imagen.
+              <source key={s.srcSet} srcSet={load ? s.srcSet : undefined} sizes={s.sizes ?? sizes} media={s.media} type={s.type} />
             ))}
             {img}
           </picture>

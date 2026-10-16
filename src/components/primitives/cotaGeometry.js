@@ -34,3 +34,37 @@ export function cotaGeometry({ length, thickness, labelLength, labelPosition = '
     }),
   };
 }
+
+/* ---------- cotas dentro de un dibujo SVG ---------- */
+
+// Ancho estimado de un label de cota dibujado como <text> (10.5px, 600, tabular, +.06em; ver
+// .label en Alzado.module.css y MuebleIso.module.css). Dentro de un dibujo no se mide el DOM.
+const CHAR_W = 6.9;
+export const labelWidth = (text) => text.length * CHAR_W;
+
+const half = (v) => Math.round(v * 2) / 2;
+
+/**
+ * Cota ubicada en un marco cualquiera del dibujo: la geometría se arma en horizontal (eje `a` a lo
+ * largo, `c` a lo ancho) y cada punto se lleva a pantalla como origen + a·u + c·v.
+ *   u   dirección de la medida (unitaria)
+ *   v   dirección hacia la que crece el espesor de la fila de cotas (unitaria). En un alzado es
+ *       perpendicular a u; en una isométrica es otro eje iso, así topes y marcas quedan cizallados
+ *       sobre el plano, como en un plano isométrico real.
+ * Devuelve los trazos en px (redondeados a .5) y la posición y el ángulo del label, que siempre
+ * queda legible (nunca cabeza abajo).
+ */
+export function placeCota({ x, y, u, v, length, thickness, label, labelPosition }) {
+  const geo = cotaGeometry({ length, thickness, labelLength: label ? labelWidth(label) : 0, labelPosition, orientation: 'horizontal' });
+  const map = (a, c) => [half(x + a * u[0] + c * v[0]), half(y + a * u[1] + c * v[1])];
+  const t = (d) => d.replace(/(-?[\d.]+) (-?[\d.]+)/g, (_, a, c) => map(+a, +c).join(' '));
+  let angle = (Math.atan2(u[1], u[0]) * 180) / Math.PI;
+  if (angle > 90.01) angle -= 180;
+  if (angle < -90.01) angle += 180;
+  const mid = thickness / 2;
+  return {
+    segments: geo.segments.map(t),
+    marks: [...geo.stops, ...geo.ticks].map(t),
+    label: { x: x + geo.center * u[0] + mid * v[0], y: y + geo.center * u[1] + mid * v[1], angle },
+  };
+}

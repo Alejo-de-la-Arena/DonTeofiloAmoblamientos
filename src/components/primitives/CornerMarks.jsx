@@ -2,8 +2,8 @@ import styles from './CornerMarks.module.css';
 
 /**
  * Marcas de esquina de plano: escuadras en L en las esquinas del contenedor (que tiene que
- * ser position: relative). Decorativas, aria-hidden. Hoy duplicadas a mano en Contacto y en
- * el hero de Cómo Trabajamos; al migrar esas páginas, reemplazarlas por esta primitiva.
+ * ser position: relative). Decorativas, aria-hidden. Todavía duplicadas a mano en Contacto; al
+ * migrar esa página, reemplazarlas por esta primitiva.
  *
  * corners: subconjunto de ['tl', 'tr', 'bl', 'br']
  * tone: 'ink' | 'accent' | 'light'
