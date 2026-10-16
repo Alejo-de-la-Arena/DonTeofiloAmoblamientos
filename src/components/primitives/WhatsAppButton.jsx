@@ -14,6 +14,7 @@ import styles from './WhatsAppButton.module.css';
  * El verde #25D366 de fondo queda reservado al botón flotante (layout/WhatsAppFloat).
  */
 export default function WhatsAppButton({
+  as: Tag = 'a',
   href = WHATSAPP_URL,
   variant = 'primary',
   size = 'md',
@@ -22,13 +23,19 @@ export default function WhatsAppButton({
   children,
   ...rest
 }) {
-  const cls = [styles.btn, styles[variant], styles[size], block && styles.block, className].filter(Boolean).join(' ');
+  const cls = [styles.btn, styles[variant], styles[size], block && styles.block, className]
+    .filter(Boolean)
+    .join(' ');
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={cls} {...rest}>
+    <Tag
+      {...(Tag === 'a' ? { href, target: '_blank', rel: 'noopener noreferrer' } : {})}
+      className={cls}
+      {...rest}
+    >
       <span className={styles.icon} aria-hidden="true">
         <WhatsAppIcon size={size === 'sm' ? 16 : 18} />
       </span>
       <span>{children}</span>
-    </a>
+    </Tag>
   );
 }

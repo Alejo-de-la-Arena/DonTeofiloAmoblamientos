@@ -10,6 +10,7 @@ import {
   useSpring,
   useTransform,
 } from 'framer-motion';
+import { CONTACT_TYPES } from '../../data/contactTypes';
 import Cota from '../primitives/Cota';
 import CornerMarks from '../primitives/CornerMarks';
 import WhatsAppButton from '../primitives/WhatsAppButton';
@@ -20,13 +21,7 @@ import styles from './CtaPlano.module.css';
 
 // `slug` viaja a /contacto?tipo=… (el Prompt 05 lo lee); `label` va en el mensaje de WhatsApp.
 // `mm`: medida representativa del tipo, solo para la cota decorativa bajo los chips.
-const TIPOS = [
-  { slug: 'cocina', label: 'Cocina', mm: 3200 },
-  { slug: 'placard', label: 'Placard', mm: 2400 },
-  { slug: 'vanitory', label: 'Vanitory', mm: 1200 },
-  { slug: 'abertura', label: 'Abertura', mm: 2100 },
-  { slug: 'otro', label: 'Otro', mm: null },
-];
+const TIPOS = CONTACT_TYPES;
 const MM_MAX = 3200; // la cota de 3200 mm ocupa todo el ancho de la fila de chips
 const MM_OTRO = 1600; // "Otro": cota sin label, a media fila
 
@@ -59,7 +54,11 @@ function Regla({ largo, vertical, extra = 0 }) {
   const paso = 10 / MM_POR_PX; // 5px = 10 mm
   const marcas = { menor: '', media: '', mayor: '' };
   const labels = [];
-  for (let px = REGLA - Math.floor((REGLA + extra) / paso) * paso; px <= largo + extra; px += paso) {
+  for (
+    let px = REGLA - Math.floor((REGLA + extra) / paso) * paso;
+    px <= largo + extra;
+    px += paso
+  ) {
     const mm = Math.round((px - REGLA) * MM_POR_PX);
     const tipo = mm % 100 === 0 ? 'mayor' : mm % 50 === 0 ? 'media' : 'menor';
     const len = tipo === 'mayor' ? 12 : tipo === 'media' ? 8 : 4;
@@ -83,11 +82,24 @@ function Regla({ largo, vertical, extra = 0 }) {
       ))}
       {labels.map(({ a, mm }) =>
         vertical ? (
-          <text key={mm} x={REGLA - 14} y={a} transform={`rotate(-90 ${REGLA - 14} ${a})`} textAnchor="middle" className={`${styles.reglaNum} tabular`}>
+          <text
+            key={mm}
+            x={REGLA - 14}
+            y={a}
+            transform={`rotate(-90 ${REGLA - 14} ${a})`}
+            textAnchor="middle"
+            className={`${styles.reglaNum} tabular`}
+          >
             {mm}
           </text>
         ) : (
-          <text key={mm} x={a} y={REGLA - 15} textAnchor="middle" className={`${styles.reglaNum} tabular`}>
+          <text
+            key={mm}
+            x={a}
+            y={REGLA - 15}
+            textAnchor="middle"
+            className={`${styles.reglaNum} tabular`}
+          >
             {mm}
           </text>
         )
@@ -101,8 +113,16 @@ function Regla({ largo, vertical, extra = 0 }) {
 function Cursor({ sx, sy, opacity }) {
   const xRef = useRef(null);
   const yRef = useRef(null);
-  useMotionValueEvent(sx, 'change', (v) => xRef.current && (xRef.current.textContent = `x ${aMm(v)}`));
-  useMotionValueEvent(sy, 'change', (v) => yRef.current && (yRef.current.textContent = `y ${aMm(v)}`));
+  useMotionValueEvent(
+    sx,
+    'change',
+    (v) => xRef.current && (xRef.current.textContent = `x ${aMm(v)}`)
+  );
+  useMotionValueEvent(
+    sy,
+    'change',
+    (v) => yRef.current && (yRef.current.textContent = `y ${aMm(v)}`)
+  );
 
   return (
     <motion.div className={styles.cursor} style={{ opacity }} aria-hidden="true">
@@ -193,10 +213,18 @@ export default function CtaPlano({
         />
       )}
 
-      <motion.div className={`${styles.regla} ${styles.reglaTop}`} style={touch ? { x: shift } : undefined} aria-hidden="true">
+      <motion.div
+        className={`${styles.regla} ${styles.reglaTop}`}
+        style={touch ? { x: shift } : undefined}
+        aria-hidden="true"
+      >
         <Regla largo={width} extra={touch ? PARALLAX : 0} />
       </motion.div>
-      <motion.div className={`${styles.regla} ${styles.reglaLeft}`} style={touch ? { y: shift } : undefined} aria-hidden="true">
+      <motion.div
+        className={`${styles.regla} ${styles.reglaLeft}`}
+        style={touch ? { y: shift } : undefined}
+        aria-hidden="true"
+      >
         <Regla largo={height} vertical extra={touch ? PARALLAX : 0} />
       </motion.div>
       <span className={styles.origen} aria-hidden="true" />
@@ -235,7 +263,10 @@ export default function CtaPlano({
                 siempre: elegir un chip no mueve nada. */}
             <div className={styles.chipCotaSlot} aria-hidden="true">
               {elegido && (
-                <div className={styles.chipCota} style={{ width: `${((elegido.mm ?? MM_OTRO) / MM_MAX) * 100}%` }}>
+                <div
+                  className={styles.chipCota}
+                  style={{ width: `${((elegido.mm ?? MM_OTRO) / MM_MAX) * 100}%` }}
+                >
                   <Cota
                     key={elegido.slug}
                     tone="light"
@@ -252,7 +283,13 @@ export default function CtaPlano({
         {chips && (
           <label className={styles.field}>
             <span className={styles.fieldLabel}>Tu nombre (opcional)</span>
-            <input type="text" autoComplete="given-name" value={nombre} onChange={(e) => setNombre(e.target.value)} className={styles.input} />
+            <input
+              type="text"
+              autoComplete="given-name"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              className={styles.input}
+            />
           </label>
         )}
 

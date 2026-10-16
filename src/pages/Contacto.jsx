@@ -12,7 +12,7 @@ export default function Contacto() {
         <span className="contact-page-seam-ticks"></span>
       </span>
       <ContactInfo />
-      <section className="contact-form-section">
+      <section className="contact-form-section" aria-label="Armá tu mensaje">
         <ContactForm />
       </section>
     </main>

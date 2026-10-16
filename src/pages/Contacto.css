@@ -8,30 +8,6 @@
   overflow:hidden;
 }
 
-/* ---------- costura entre columnas ---------- */
-/* En vez de dejar el corte accidental entre la textura de la izquierda y el blanco liso de la
-   derecha, se convierte en una medición intencional: misma técnica que .work-timeline-ticks
-   (gradiente repetido, no imagen), corriendo los 100% del alto real de la página. */
-.contact-page-seam{
-  position:absolute;
-  left:43%;
-  top:0;
-  bottom:0;
-  width:1px;
-  background:var(--border-2);
-  z-index:2;
-  pointer-events:none;
-}
-.contact-page-seam-ticks{
-  position:absolute;
-  left:0;
-  top:0;
-  width:7px;
-  height:100%;
-  background-image:repeating-linear-gradient(to bottom, var(--accent) 0 1.25px, transparent 1.25px 22px);
-  opacity:.5;
-}
-
 /* ---------- corner brackets ---------- */
 .contact-page-corner{
   position:absolute;
@@ -74,40 +50,26 @@
   background-size:40px 40px,40px 40px,8px 8px,8px 8px;
 }
 
-@media (max-width:980px){
-  .contact-page{grid-template-columns:1fr}
-  .contact-page-seam,
-  .contact-page-corner--tl,
-  .contact-page-corner--tr{display:none}
-  .contact-page-corner--br{bottom:auto;top:calc(var(--page-pad-top) - 26px);right:20px}
 
-  /* cierre visual entre el panel texturado y el formulario: hairline con ticks + un corner
-     accent, mismo criterio que la costura de desktop pero horizontal — el corte deja de ser
-     un borde limpio sin tratamiento. */
-  .contact-form-section{
-    padding-top:clamp(48px,10vw,64px);
-  }
-  .contact-form-section::before{
-    content:'';
-    position:absolute;
-    top:0;
-    left:clamp(20px,5vw,72px);
-    right:clamp(20px,5vw,72px);
-    height:1px;
-    background:var(--border-2);
-    background-image:repeating-linear-gradient(to right, var(--accent) 0 1.25px, transparent 1.25px 22px);
-    opacity:.5;
-  }
-  .contact-form-section::after{
-    content:'';
-    position:absolute;
-    top:16px;
-    left:clamp(20px,5vw,72px);
-    width:16px;
-    height:16px;
-    opacity:.5;
-    border-top:1px solid var(--accent);
-    border-left:1px solid var(--accent);
-    pointer-events:none;
-  }
+
+.contact-page-seam{position:absolute;left:43%;top:0;bottom:0;width:1px;background:var(--border-2);z-index:2;pointer-events:none}
+.contact-page-seam-ticks{position:absolute;left:0;top:0;width:7px;height:100%;background-image:repeating-linear-gradient(to bottom,var(--accent) 0 1.25px,transparent 1.25px 22px);opacity:.5}
+
+/* Solo mobile cambia el orden; desktop conserva el panel y el formulario en paralelo. */
+@media(max-width:980px){
+  .contact-page{display:flex;flex-direction:column;gap:28px}
+  .contact-page>.contact-info,.contact-page .contact-info-inner{display:contents}
+  .contact-page-seam,.contact-page-corner--tl,.contact-page-corner--tr{display:none}
+  .contact-page-corner--br{bottom:auto;top:calc(var(--page-pad-top) - 26px);right:20px}
+  .contact-page-intro,.contact-page .contact-info-wa,.contact-page .workshop-route,.contact-page .contact-info-bottom{width:calc(100% - 48px);max-width:560px;margin-left:auto;margin-right:auto}
+  .contact-page-intro{order:0;padding-top:clamp(32px,5vw,56px)}
+  .contact-page-intro .contact-info-lead{margin-bottom:0}
+  .contact-form-section{order:1;padding:0 24px 32px}
+  .contact-page .contact-info-wa{order:2}
+  .contact-page .workshop-route{order:3;flex:none;height:180px;min-height:0}
+  .contact-page .workshop-route>svg{height:180px}
+  .contact-page .contact-info-bottom{order:4;padding-bottom:48px}
+}
+@media(max-width:600px){
+  .contact-page .workshop-route,.contact-page .workshop-route>svg{height:130px}
 }

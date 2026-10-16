@@ -1,13 +1,15 @@
+import MessagePreview from './MessagePreview';
+import { useMotionSafe } from '../../lib/motion';
 import { useEffect, useRef, useState } from 'react';
-import WhatsAppIcon from '../ui/icons/WhatsAppIcon';
+import { useSearchParams } from 'react-router-dom';
+import { CONTACT_TYPES } from '../../data/contactTypes';
+import WhatsAppButton from '../primitives/WhatsAppButton';
 import { buildWhatsAppMessage, buildWhatsAppUrl } from '../../lib/whatsapp';
 import './ContactForm.css';
 
 const SEGMENTS = [
   { id: 'general', label: 'Consulta general' },
-  { id: 'cocina', label: 'Renovación de cocina' },
-  { id: 'placard', label: 'Placard a medida' },
-  { id: 'otro', label: 'Otro proyecto' },
+  ...CONTACT_TYPES.map(({ slug, label }) => ({ id: slug, label })),
 ];
 
 const FIELD_SCHEMA = {
@@ -20,7 +22,12 @@ const FIELD_SCHEMA = {
     { key: 'nombre', label: 'Nombre', kind: 'text' },
     { key: 'tel', label: 'Teléfono / WhatsApp', kind: 'text', type: 'tel' },
     { key: 'ciudad', label: 'Ciudad', kind: 'text' },
-    { key: 'alcance', label: '¿Cocina completa o parcial?', kind: 'radio', options: ['Completa', 'Parcial'] },
+    {
+      key: 'alcance',
+      label: '¿Cocina completa o parcial?',
+      kind: 'radio',
+      options: ['Completa', 'Parcial'],
+    },
     { key: 'metros', label: 'Metros aproximados', kind: 'text' },
     { key: 'fecha', label: 'Fecha estimada de inicio', kind: 'text' },
   ],
@@ -28,7 +35,12 @@ const FIELD_SCHEMA = {
     { key: 'nombre', label: 'Nombre', kind: 'text' },
     { key: 'tel', label: 'Teléfono / WhatsApp', kind: 'text', type: 'tel' },
     { key: 'ciudad', label: 'Ciudad', kind: 'text' },
-    { key: 'ambiente', label: 'Ambiente', kind: 'radio', options: ['Dormitorio', 'Living', 'Otro'] },
+    {
+      key: 'ambiente',
+      label: 'Ambiente',
+      kind: 'radio',
+      options: ['Dormitorio', 'Living', 'Otro'],
+    },
     { key: 'medidas', label: 'Medidas aproximadas (si las tenés)', kind: 'text' },
   ],
   otro: [
@@ -39,9 +51,17 @@ const FIELD_SCHEMA = {
   ],
 };
 
+FIELD_SCHEMA.vanitory = FIELD_SCHEMA.otro;
+FIELD_SCHEMA.abertura = FIELD_SCHEMA.otro;
+
 function SegmentButton({ active, label, onClick }) {
   return (
-    <button type="button" className={`segment-btn${active ? ' active' : ''}`} onClick={onClick}>
+    <button
+      type="button"
+      className={`segment-btn${active ? ' active' : ''}`}
+      aria-pressed={active}
+      onClick={onClick}
+    >
       {label}
     </button>
   );
@@ -56,6 +76,10 @@ function FloatingField({ field, value, focused, error, inputRef, onInput, onFocu
     <div className={`floating-field${error ? ' has-error' : ''}`}>
       <Tag
         id={inputId}
+        name={field.key}
+        autoComplete={{ nombre: 'name', tel: 'tel', ciudad: 'address-level2' }[field.key] || 'off'}
+        placeholder=" "
+        aria-required={field.key === 'nombre' || undefined}
         ref={inputRef}
         className="dtinput"
         type={field.kind === 'text' ? field.type || 'text' : undefined}
@@ -72,7 +96,7 @@ function FloatingField({ field, value, focused, error, inputRef, onInput, onFocu
       <span className={`floating-underline${focused ? ' focused' : ''}`}></span>
       {error && (
         <span id={errorId} className="floating-error" role="alert">
-          Falta completar este campo
+          Falta tu nombre para armar el mensaje
         </span>
       )}
     </div>
@@ -99,78 +123,78 @@ function RadioPillGroup({ field, value, onSelect }) {
   );
 }
 
-function MessagePreview({ show, onToggle, previewText }) {
-  return (
-    <div className="message-preview">
-      <button type="button" className="message-preview-toggle" onClick={onToggle}>
-        <svg
-          width="15"
-          height="15"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          className={`message-preview-chevron${show ? ' open' : ''}`}
-        >
-          <path d="M6 9l6 6 6-6" />
-        </svg>
-        Así vas a enviar tu mensaje
-      </button>
-      <div className={`message-preview-wrap${show ? ' open' : ''}`}>
-        <div className="message-preview-panel">
-          <div className="message-preview-bubble-row">
-            <div className="message-preview-bubble">
-              {previewText}
-              <div className="message-preview-time">12:34 ✓✓</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function ContactForm() {
-  const [type, setType] = useState('general');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [type, setType] = useState(() => {
+    const tipo = searchParams.get('tipo');
+    return SEGMENTS.some((s) => s.id === tipo) ? tipo : tipo ? 'otro' : 'general';
+  });
+  useEffect(() => {
+    if (!searchParams.has('tipo')) return;
+    const tipo = searchParams.get('tipo');
+    setType(SEGMENTS.some((s) => s.id === tipo) ? tipo : 'otro');
+    const next = new URLSearchParams(searchParams);
+    next.delete('tipo');
+    setSearchParams(next, { replace: true });
+  }, [searchParams, setSearchParams]);
   const [vals, setVals] = useState({});
+  const [typing, setTyping] = useState(false);
+  const [previewVals, setPreviewVals] = useState({});
+  const { reduce } = useMotionSafe();
+  const typingTimeout = useRef(null);
+  useEffect(() => {
+    if (reduce) {
+      clearTimeout(typingTimeout.current);
+      setTyping(false);
+    }
+    return () => clearTimeout(typingTimeout.current);
+  }, [reduce]);
+  function updateValue(key, value, text = true) {
+    const next = { ...vals, [key]: value };
+    setVals(next);
+    clearTimeout(typingTimeout.current);
+    if (reduce || !text) {
+      setTyping(false);
+      setPreviewVals(next);
+      return;
+    }
+    setTyping(true);
+    typingTimeout.current = setTimeout(() => {
+      setPreviewVals(next);
+      setTyping(false);
+    }, 700);
+  }
   const [focus, setFocus] = useState({});
   const [errors, setErrors] = useState({});
   const [fade, setFade] = useState(1);
   const [showPreview, setShowPreview] = useState(true);
-  const [sent, setSent] = useState(false);
-  const [checkDrawn, setCheckDrawn] = useState(false);
 
   const fadeTimeoutRef = useRef(null);
-  const sentTimeoutRef = useRef(null);
+
   const fieldRefs = useRef({});
 
   useEffect(() => {
     return () => {
       clearTimeout(fadeTimeoutRef.current);
-      clearTimeout(sentTimeoutRef.current);
     };
   }, []);
 
-  useEffect(() => {
-    if (!sent) {
-      setCheckDrawn(false);
-      return;
-    }
-    const raf1 = requestAnimationFrame(() => {
-      requestAnimationFrame(() => setCheckDrawn(true));
-    });
-    return () => cancelAnimationFrame(raf1);
-  }, [sent]);
-
   function handleSetType(t) {
     if (t === type) return;
-    setFade(0);
+    clearTimeout(typingTimeout.current);
+    setTyping(false);
+    setPreviewVals(vals);
+    setType(t);
+    setFade(reduce ? 1 : 0);
     setErrors({});
     clearTimeout(fadeTimeoutRef.current);
-    fadeTimeoutRef.current = setTimeout(() => {
-      setType(t);
-      setFade(1);
-    }, 200);
+    fadeTimeoutRef.current = setTimeout(
+      () => {
+        setType(t);
+        setFade(1);
+      },
+      reduce ? 0 : 200
+    );
   }
 
   function labelFor(t) {
@@ -179,12 +203,12 @@ export default function ContactForm() {
 
   // Los campos del segmento activo, en orden y con su label: el armado del texto vive en
   // src/lib/whatsapp.js (compartido con producto y proyecto).
-  function messageOptions() {
-    return { tipo: labelFor(type), extra: FIELD_SCHEMA[type].map((f) => [f.label, vals[f.key]]) };
+  function messageOptions(values = vals) {
+    return { tipo: labelFor(type), extra: FIELD_SCHEMA[type].map((f) => [f.label, values[f.key]]) };
   }
 
-  function handleSubmit() {
-    if (sent) return;
+  function handleSubmit(event) {
+    event.preventDefault();
     // Nombre es el único campo obligatorio del formulario, en cualquier segmento.
     const newErrors = {};
     if (!vals.nombre || !String(vals.nombre).trim()) newErrors.nombre = true;
@@ -193,16 +217,11 @@ export default function ContactForm() {
       fieldRefs.current.nombre?.focus();
       return;
     }
-    setSent(true);
-    const url = buildWhatsAppUrl(messageOptions());
-    sentTimeoutRef.current = setTimeout(() => {
-      window.open(url, '_blank');
-      setSent(false);
-    }, 900);
+    window.open(buildWhatsAppUrl(messageOptions()), '_blank', 'noopener,noreferrer');
   }
 
   return (
-    <div className="contact-form-card">
+    <form className="contact-form-card" onSubmit={handleSubmit} noValidate>
       <div className="contact-form-label">¿Sobre qué querés consultar?</div>
       <div className="contact-form-segments">
         {SEGMENTS.map((s) => (
@@ -225,7 +244,7 @@ export default function ContactForm() {
               <RadioPillGroup
                 field={f}
                 value={vals[f.key]}
-                onSelect={(v) => setVals((prev) => ({ ...prev, [f.key]: v }))}
+                onSelect={(v) => updateValue(f.key, v, false)}
               />
             ) : (
               <FloatingField
@@ -235,7 +254,7 @@ export default function ContactForm() {
                 error={!!errors[f.key]}
                 inputRef={(el) => (fieldRefs.current[f.key] = el)}
                 onInput={(v) => {
-                  setVals((prev) => ({ ...prev, [f.key]: v }));
+                  updateValue(f.key, v);
                   if (errors[f.key]) setErrors((prev) => ({ ...prev, [f.key]: false }));
                 }}
                 onFocus={() => setFocus((prev) => ({ ...prev, [f.key]: true }))}
@@ -246,38 +265,23 @@ export default function ContactForm() {
         ))}
       </div>
 
-      <button type="button" className={`whatsapp-submit${sent ? ' sent' : ''}`} onClick={handleSubmit}>
-        {sent ? (
-          <>
-            <svg
-              width="22"
-              height="22"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="whatsapp-submit-check"
-              style={{ strokeDasharray: 24, strokeDashoffset: checkDrawn ? 0 : 24 }}
-            >
-              <path d="M20 6L9 17l-5-5" />
-            </svg>
-            <span>¡Abriendo WhatsApp…</span>
-          </>
-        ) : (
-          <>
-            <WhatsAppIcon size={20} />
-            <span>Enviar por WhatsApp</span>
-          </>
-        )}
-      </button>
+      <WhatsAppButton
+        as="button"
+        type="submit"
+        variant="dark"
+        block
+        className="contact-form-submit"
+      >
+        Enviar por WhatsApp
+      </WhatsAppButton>
 
       <MessagePreview
         show={showPreview}
         onToggle={() => setShowPreview((s) => !s)}
-        previewText={buildWhatsAppMessage(messageOptions())}
+        typing={typing}
+        typingKey={JSON.stringify(vals)}
+        previewText={buildWhatsAppMessage(messageOptions(reduce ? vals : previewVals))}
       />
-    </div>
+    </form>
   );
 }
