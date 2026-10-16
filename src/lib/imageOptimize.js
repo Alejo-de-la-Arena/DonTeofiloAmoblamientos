@@ -28,3 +28,16 @@ export async function optimizeImageFile(file, { maxWidth = 1920, quality = 0.82 
     return file;
   }
 }
+
+// Ancho y alto reales de una imagen (el archivo ya optimizado que se va a subir). Los usa
+// "Del taller" para reservar el aspect ratio en el front sin reflow. null si no se puede leer.
+export async function imageDimensions(file) {
+  try {
+    const bitmap = await createImageBitmap(file);
+    const dims = { ancho: bitmap.width, alto: bitmap.height };
+    bitmap.close?.();
+    return dims;
+  } catch {
+    return null;
+  }
+}

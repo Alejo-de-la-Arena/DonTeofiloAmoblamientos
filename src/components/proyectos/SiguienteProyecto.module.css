@@ -1,0 +1,123 @@
+/* Bloque grande a sangre. En reposo la foto está más tapada (velo de madera alto); con hover o
+   foco el velo baja a la zona del texto y la foto se asienta (escala 1.04 → 1): "se revela más".
+   Los alfas del velo en reposo y en hover están medidos para AA del texto sobre una foto blanca. */
+.next {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 60vh;
+  min-height: 60svh;
+  overflow: clip;
+  background: var(--madera);
+  color: var(--sobre-madera);
+  isolation: isolate;
+}
+
+.img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.04);
+  transition: transform var(--dur-md) var(--ease-soft-close);
+}
+
+/* Velo general en reposo: se va con el hover / foco. */
+.next::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--madera) 45%, transparent);
+  transition: opacity var(--dur-md) var(--ease-soft-close);
+}
+
+.next:hover .img,
+.next:focus-visible .img {
+  transform: scale(1);
+}
+
+.next:hover::before,
+.next:focus-visible::before {
+  opacity: 0;
+}
+
+.next:focus-visible {
+  outline: 3px solid var(--tinta);
+  outline-offset: -6px;
+}
+
+/* Gradiente fijo detrás del texto, atado a la caja de la info (sigue al nombre aunque ocupe
+   varias líneas): 0.87 de madera = lugar en tinta-clara ≥ 4.5:1 sobre blanco; se desvanece en el
+   padding de arriba. */
+.info {
+  position: relative;
+  display: grid;
+  justify-items: start;
+  gap: var(--s-2);
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: var(--s-9) var(--gutter) var(--s-8);
+}
+
+.info::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: calc((100% - 100vw) / 2);
+  right: calc((100% - 100vw) / 2);
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--madera) 87%, transparent) 0%,
+    color-mix(in srgb, var(--madera) 87%, transparent) calc(100% - var(--s-9)),
+    color-mix(in srgb, var(--madera) 0%, transparent) 100%
+  );
+}
+
+.kicker {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--sobre-madera);
+}
+
+.name {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h1);
+  font-weight: 500;
+  line-height: var(--lh-heading);
+  letter-spacing: -.02em;
+  overflow-wrap: break-word;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .12em;
+  transition: text-decoration-color var(--dur-sm) var(--ease-settle);
+}
+
+.next:hover .name,
+.next:focus-visible .name {
+  text-decoration-color: var(--oxido-claro);
+}
+
+.place {
+  font-size: var(--fs-small);
+  color: var(--tinta-clara);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .img {
+    transform: none;
+    transition: none;
+  }
+
+  .next::before {
+    transition: opacity .2s linear;
+  }
+}

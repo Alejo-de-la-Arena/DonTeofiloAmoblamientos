@@ -1,33 +1,57 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
+/* overflow-x:CLIP, nunca hidden/auto/scroll: cualquier ancestro con overflow hidden|auto|scroll
+   se convierte en el "scroll container" de sus descendientes y rompe position:sticky (y con eso
+   <PinnedSection>/<BeforeAfterScroll>). clip recorta igual el desborde horizontal sin crear un
+   scroll container. Vale para html, body, #root y cualquier layout/wrapper de página que
+   envuelva una sección pineada. */
 body{
   margin:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:'DM Sans Variable',system-ui,sans-serif;
+  background:var(--papel);
+  color:var(--texto);
+  font-family:var(--font-sans);
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
   overflow-x:clip;
   position:relative;
 }
 img{max-width:100%;display:block}
-a{color:var(--accent);text-decoration:none}
-::selection{background:rgba(196,131,106,.24)}
+a{color:var(--oxido);text-decoration:none}
+::selection{background:rgba(61,85,102,.2)}
 
-@keyframes dtKen{from{transform:scale(1.02)}to{transform:scale(1.14)}}
-@keyframes dtPulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.55)}70%{box-shadow:0 0 0 16px rgba(37,211,102,0)}100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}}
-@keyframes dtCtaZoom{from{transform:scale(1)}to{transform:scale(1.12)}}
+/* ---------- utilidades ---------- */
+/* Medidas, contadores y cualquier número que se compare: cifras de ancho fijo. */
+.tabular{font-variant-numeric:tabular-nums;font-feature-settings:'tnum' 1}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
-/* reveal-on-scroll */
-[data-reveal]{
-  opacity:0;
-  transform:translateY(26px);
-  transition:opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1);
+/* ---------- anclas ---------- */
+/* El nav es fixed: sin esto, el destino de un #ancla queda tapado debajo del header. */
+[id]{scroll-margin-top:var(--header-h)}
+
+/* ---------- foco ---------- */
+/* Un único estilo de foco en paleta para todo lo interactivo. Componentes con un foco propio
+   más específico (ej. .nav-mobile-link) lo siguen pisando a propósito. */
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{
+  outline:2px solid var(--focus-ring, var(--tinta));
+  outline-offset:3px;
 }
-[data-reveal].is-visible{opacity:1;transform:none}
+/* Contextos oscuros (madera, fotos, footer): la tinta oscura no se ve, el anillo pasa a tinta
+   clara. Al crear una sección oscura nueva, sumarla acá o setear --focus-ring en ella. */
+.footer,.nav:not(.solid),.nav-burger-wrap:not(.solid),.nav-mobile{--focus-ring:var(--tinta-clara)}
 
+@keyframes dtPulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.55)}70%{box-shadow:0 0 0 16px rgba(37,211,102,0)}100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}}
+
+/* ---------- movimiento reducido ---------- */
+/* Sin scroll suave, sin loops decorativos y transiciones recortadas a un crossfade corto.
+   Las primitivas de Framer Motion resuelven su versión reducida vía useMotionSafe(). */
 @media (prefers-reduced-motion:reduce){
-  [data-reveal]{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.15s !important;
+    transition-delay:0s !important;
+  }
 }
 
 /* ---------- section shared ---------- */
@@ -36,7 +60,7 @@ a{color:var(--accent);text-decoration:none}
 .section-eyebrow-line{width:46px;height:1px;background:var(--accent)}
 .section-eyebrow span:last-child{font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-contrast);font-weight:600}
 .section-eyebrow-solo{font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-contrast);font-weight:600}
-.section-title{font-family:'Newsreader Variable',serif;font-weight:600;font-size:clamp(34px,4.6vw,54px);line-height:1.06;margin:0 0 18px;letter-spacing:-.01em}
+.section-title{font-family:var(--font-serif);font-weight:600;font-size:clamp(34px,4.6vw,54px);line-height:1.06;margin:0 0 18px;letter-spacing:-.01em}
 .section-lead{font-size:18px;font-weight:300;color:var(--muted);line-height:1.55;margin:0}
 
 @media (max-width:640px){

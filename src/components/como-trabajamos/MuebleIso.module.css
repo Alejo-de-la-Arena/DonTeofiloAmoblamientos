@@ -1,0 +1,83 @@
+/* Plano isométrico: trazo en tinta, cotas en acento (como las del hero). El contenedor define
+   el tamaño; el SVG se dibuja en sus px reales (ver MuebleIso.jsx). */
+:where(.root) {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: visible;
+}
+
+.casco,
+.divisiones,
+.frentes,
+.tiradores,
+.oculto,
+.ext {
+  fill: none;
+  stroke: var(--tinta);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.casco {
+  stroke-width: 1.6;
+}
+
+.divisiones {
+  stroke-width: 1;
+  stroke-opacity: .7;
+}
+
+.frentes {
+  stroke-width: 1.25;
+}
+
+.tiradores {
+  stroke-width: 2;
+}
+
+/* Las 3 aristas de atrás: punteadas y tenues, como en un plano. */
+.oculto {
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+  stroke-opacity: .35;
+}
+
+/* Cotas: mismos pesos que la primitiva <Cota>, en su tono acento. */
+.cota,
+.mark {
+  fill: none;
+  stroke: var(--oxido-medio);
+  stroke-linecap: butt;
+}
+
+.cota {
+  stroke-width: 1.25;
+}
+
+.mark {
+  stroke-width: 1;
+  stroke-opacity: .8;
+}
+
+.ext {
+  stroke: var(--oxido-medio);
+  stroke-width: .75;
+  stroke-opacity: .5;
+}
+
+.label {
+  fill: var(--oxido);
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-anchor: middle;
+  dominant-baseline: central;
+}

@@ -1,0 +1,168 @@
+/* Card del catálogo: un objeto sobre la superficie, no un widget. Radio "taller", borde en
+   línea de plano y sin sombra; el hover no levanta la card ni le crece sombra. */
+.card {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--papel);
+  border: 1px solid var(--linea);
+  border-radius: var(--r-taller);
+  overflow: clip;
+}
+
+.mediaWrap {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.badge {
+  position: absolute;
+  top: var(--s-3);
+  left: var(--s-3);
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  background: var(--oxido);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.media {
+  flex: 0 0 auto;
+  border-radius: 0;
+}
+
+.mediaEmpty {
+  aspect-ratio: 4 / 3;
+  background: var(--papel-2);
+}
+
+/* `scale` (no `transform`): RevealImage anima el transform de la imagen con Framer, y la
+   propiedad independiente se compone con ese valor en vez de pisarlo. */
+.img {
+  transition: scale var(--dur-md) var(--ease-soft-close);
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding: var(--s-5) var(--s-5) var(--s-5);
+}
+
+.cat {
+  margin: 0;
+  font-size: var(--fs-small);
+  line-height: 1.3;
+  color: var(--texto-suave);
+}
+
+.nameWrap {
+  position: relative;
+}
+
+.name {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: var(--lh-heading);
+  color: var(--texto);
+  text-wrap: balance;
+}
+
+/* Cota fina bajo el nombre, posicionada fuera del flujo: aparece sin mover nada. Oculta por
+   defecto: solo existe con puntero fino (abajo) o con foco de teclado en "Ver detalle". Así ni
+   un :hover pegajoso tras un tap ni un pointerType "mouse" emulado la dejan visible en touch. */
+.cota {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 1px);
+  height: 10px;
+  display: none;
+}
+
+.card:has(.action:focus-visible) .cota {
+  display: block;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: var(--s-1) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  padding: 3px 10px;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: var(--r-pill);
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--texto-suave);
+}
+
+.desc {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: var(--lh-body);
+  color: var(--texto-suave);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* La acción es texto; su ::after cubre toda la card y la vuelve clickeable. */
+.action {
+  margin-top: auto;
+  align-self: flex-start;
+  padding: var(--s-2) 0 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--oxido);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  transition: text-decoration-color var(--dur-sm) var(--ease-settle);
+}
+
+.action::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.action:focus-visible {
+  outline: none;
+}
+
+.action:focus-visible::after {
+  outline: 2px solid var(--tinta);
+  outline-offset: -2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cota {
+    display: block;
+  }
+
+  .card:hover .img {
+    scale: 1.04;
+  }
+
+  .card:hover .action {
+    text-decoration-color: currentColor;
+  }
+}

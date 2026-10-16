@@ -1,0 +1,55 @@
+.marks {
+  position: absolute;
+  inset: var(--cm-inset);
+  pointer-events: none;
+}
+
+.ink {
+  --cm-color: var(--tinta);
+  --cm-opacity: .55;
+}
+
+.accent {
+  --cm-color: var(--oxido-medio);
+  --cm-opacity: .6;
+}
+
+.light {
+  --cm-color: var(--tinta-clara);
+  --cm-opacity: .55;
+}
+
+.mark {
+  position: absolute;
+  width: var(--cm-size);
+  height: var(--cm-size);
+  opacity: var(--cm-opacity);
+}
+
+.tl {
+  top: 0;
+  left: 0;
+  border-top: 1px solid var(--cm-color);
+  border-left: 1px solid var(--cm-color);
+}
+
+.tr {
+  top: 0;
+  right: 0;
+  border-top: 1px solid var(--cm-color);
+  border-right: 1px solid var(--cm-color);
+}
+
+.bl {
+  bottom: 0;
+  left: 0;
+  border-bottom: 1px solid var(--cm-color);
+  border-left: 1px solid var(--cm-color);
+}
+
+.br {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1px solid var(--cm-color);
+  border-right: 1px solid var(--cm-color);
+}

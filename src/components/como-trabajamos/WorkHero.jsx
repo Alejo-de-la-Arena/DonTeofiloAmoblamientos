@@ -1,6 +1,12 @@
+import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
+import Cota from '../primitives/Cota';
+import CornerMarks from '../primitives/CornerMarks';
+import MuebleIso from './MuebleIso';
+import { useRouteEntry } from '../layout/routeEntry';
+import { ease, dur } from '../../lib/motion';
 import { useIsMobile } from '../../hooks/useIsMobile';
-import './WorkHero.css';
+import styles from './WorkHero.module.css';
 
 const copyVariants = {
   hidden: {},
@@ -8,103 +14,50 @@ const copyVariants = {
 };
 const itemUp = {
   hidden: { opacity: 0, y: 22 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 0.61, 0.36, 1] } },
+  show: { opacity: 1, y: 0, transition: { duration: dur.lg, ease: ease.softClose } },
 };
 
-const easeDraw = [0.65, 0, 0.35, 1];
+// El mueble arranca sobre la cola de las cotas del hero: una sola secuencia que termina a los
+// 3 s (desktop: 1.2 + 1.8) o 2.5 s (mobile: 1.1 + 1.4).
+const ISO_DELAY = 1.2;
+const ISO_DELAY_MOBILE = 1.1;
 
-// Anatomía de una cota de plano técnico: líneas de extensión perpendiculares en los extremos,
-// línea principal que se dibuja de punta a punta, marcas a 45° en cada extremo y una anotación
-// que "corta" la línea (fondo sólido detrás del texto). `delay` escalona el orden de dibujado
-// entre cotas — cada una arranca después de que la anterior ya se está dibujando, no en simultáneo.
-function Cota({ orientation = 'horizontal', label, delay = 0, reduce, className = '' }) {
-  const initial = reduce ? false : 'hidden';
-  const lineVariants = {
-    hidden: { scaleX: orientation === 'horizontal' ? 0 : 1, scaleY: orientation === 'vertical' ? 0 : 1 },
-    show: {
-      scaleX: 1,
-      scaleY: 1,
-      transition: { duration: 0.32, delay: delay + 0.15, ease: easeDraw },
-    },
-  };
-  const extVariants = {
-    hidden: { opacity: 0, scaleX: orientation === 'vertical' ? 0 : 1, scaleY: orientation === 'horizontal' ? 0 : 1 },
-    show: {
-      opacity: 1,
-      scaleX: 1,
-      scaleY: 1,
-      transition: { duration: 0.15, delay, ease: easeDraw },
-    },
-  };
-  const tickVariants = {
-    hidden: { opacity: 0, scale: 0.4 },
-    show: { opacity: 1, scale: 1, transition: { duration: 0.12, delay: delay + 0.46 } },
-  };
-  const labelVariants = {
-    hidden: { opacity: 0, y: orientation === 'horizontal' ? 5 : 0, x: orientation === 'vertical' ? 5 : 0 },
-    show: { opacity: 1, y: 0, x: 0, transition: { duration: 0.25, delay: delay + 0.56 } },
-  };
-
-  return (
-    <div className={`wh-cota wh-cota--${orientation} ${className}`} aria-hidden="true">
-      <motion.span className="wh-cota-ext wh-cota-ext--start" initial={initial} animate="show" variants={extVariants} />
-      <motion.span className="wh-cota-ext wh-cota-ext--end" initial={initial} animate="show" variants={extVariants} />
-      <motion.span className="wh-cota-line" initial={initial} animate="show" variants={lineVariants} />
-      {/* El span exterior fija posición + rotación 45° por CSS estático; Framer solo anima
-          scale/opacity en el span interno — así no compiten por la propiedad `transform`. */}
-      <span className="wh-cota-tick-pos wh-cota-tick-pos--start">
-        <motion.span className="wh-cota-tick" initial={initial} animate="show" variants={tickVariants} />
-      </span>
-      <span className="wh-cota-tick-pos wh-cota-tick-pos--end">
-        <motion.span className="wh-cota-tick" initial={initial} animate="show" variants={tickVariants} />
-      </span>
-      <span className="wh-cota-label-pos">
-        <motion.span className="wh-cota-label" initial={initial} animate="show" variants={labelVariants}>
-          {label}
-        </motion.span>
-      </span>
-    </div>
-  );
-}
-
-function CornerMark({ position, delay = 0, reduce }) {
-  const variants = {
-    hidden: { opacity: 0, scale: 0.5 },
-    show: { opacity: 1, scale: 1, transition: { duration: 0.3, delay } },
-  };
+function Marks({ intro, ...props }) {
   return (
     <motion.span
-      className={`wh-corner wh-corner--${position}`}
+      className={styles.marks}
       aria-hidden="true"
-      initial={reduce ? false : 'hidden'}
-      animate="show"
-      variants={variants}
-    />
+      initial={intro ? { opacity: 0 } : false}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3, delay: 0.05 }}
+    >
+      <CornerMarks tone="accent" {...props} />
+    </motion.span>
   );
 }
 
-function Callout({ delay = 0, reduce }) {
+function Callout({ delay = 0, intro }) {
   const variants = {
     hidden: { opacity: 0, scale: 0.6 },
     show: { opacity: 1, scale: 1, transition: { duration: 0.25, delay } },
   };
   const leaderVariants = {
     hidden: { scaleY: 0 },
-    show: { scaleY: 1, transition: { duration: 0.18, delay: delay + 0.15, ease: easeDraw } },
+    show: { scaleY: 1, transition: { duration: 0.18, delay: delay + 0.15, ease: ease.door } },
   };
   const labelVariants = {
     hidden: { opacity: 0, y: 5 },
     show: { opacity: 1, y: 0, transition: { duration: 0.22, delay: delay + 0.35 } },
   };
-  const initial = reduce ? false : 'hidden';
+  const initial = intro ? 'hidden' : false;
 
   return (
-    <div className="wh-callout" aria-hidden="true">
-      <motion.span className="wh-callout-circle" initial={initial} animate="show" variants={variants}>
+    <div className={styles.callout} aria-hidden="true">
+      <motion.span className={styles.calloutCircle} initial={initial} animate="show" variants={variants}>
         1
       </motion.span>
-      <motion.span className="wh-callout-leader" initial={initial} animate="show" variants={leaderVariants} />
-      <motion.span className="wh-callout-label" initial={initial} animate="show" variants={labelVariants}>
+      <motion.span className={styles.calloutLeader} initial={initial} animate="show" variants={leaderVariants} />
+      <motion.span className={styles.calloutLabel} initial={initial} animate="show" variants={labelVariants}>
         A medida
       </motion.span>
     </div>
@@ -114,71 +67,82 @@ function Callout({ delay = 0, reduce }) {
 export default function WorkHero() {
   const reduce = useReducedMotion();
   const isMobile = useIsMobile(700);
-  const copyInitial = reduce ? false : 'hidden';
+  // Atrás/adelante del navegador: se vuelve a algo ya visto, sin intro (ver routeEntry.js).
+  const entry = useRouteEntry();
+  const intro = !reduce && entry !== 'pop';
+  // Una vez dibujado, el mueble no se redibuja si el hero cambia de variante (resize).
+  const [isoDrawn, setIsoDrawn] = useState(false);
+  const isoDraw = intro && !isoDrawn ? 'mount' : 'none';
+  const cotaDraw = intro ? 'mount' : 'none';
+  const copyInitial = intro ? 'hidden' : false;
+  const cota = { orientation: 'horizontal', draw: cotaDraw, tone: 'accent', ticks: 'both', labelClassName: styles.cotaLabel };
 
   if (isMobile) {
     return (
-      <header className="work-hero">
-        <div className="wh-grid" aria-hidden="true" />
-        <CornerMark position="br-mobile" delay={0.05} reduce={reduce} />
+      <header className={styles.hero}>
+        <div className={`${styles.grid} ${intro ? styles.gridIntro : ''}`} aria-hidden="true" />
+        <Marks intro={intro} corners={['br']} size="16px" inset="0px 20px 22px 0px" />
 
-        <div className="work-hero-inner">
-          <Cota orientation="horizontal" className="wh-cota-h1-mobile" label="A medida" delay={0.15} reduce={reduce} />
+        <div className={styles.inner}>
+          <Cota {...cota} className={styles.cotaH1Mobile} label="A medida" delay={0.15} />
 
-          <motion.div className="work-hero-copy" variants={copyVariants} initial={copyInitial} animate="show">
-            <motion.div className="work-hero-eyebrow" variants={itemUp}>
+          <motion.div className={styles.copy} variants={copyVariants} initial={copyInitial} animate="show">
+            <motion.div className={styles.eyebrow} variants={itemUp}>
               <span>Nuestro oficio</span>
             </motion.div>
-            <div className="wh-title-wrap">
-              <motion.h1 className="work-hero-title" variants={itemUp}>
-                Cómo Trabajamos
+            <div className={styles.titleWrap}>
+              <motion.h1 className={styles.title} variants={itemUp}>
+                Cómo trabajamos
               </motion.h1>
-              <Cota orientation="horizontal" className="wh-cota-h2" label="2400 mm" delay={0.4} reduce={reduce} />
+              <Cota {...cota} className={styles.cotaH2} label="2400 mm" delay={0.4} />
             </div>
-            <motion.p className="work-hero-lead" variants={itemUp}>
+            <motion.p className={styles.lead} variants={itemUp}>
               Cada mueble empieza con una idea y termina con un detalle bien hecho.
             </motion.p>
           </motion.div>
+
+          <MuebleIso simple draw={isoDraw} delay={ISO_DELAY_MOBILE} onDrawn={() => setIsoDrawn(true)} className={styles.iso} />
         </div>
       </header>
     );
   }
 
   return (
-    <header className="work-hero">
-      <div className="wh-grid" aria-hidden="true" />
+    <header className={styles.hero}>
+      <div className={`${styles.grid} ${intro ? styles.gridIntro : ''}`} aria-hidden="true" />
 
-      {/* Las marcas de esquina y la cota H1 viven dentro de .work-hero-inner (no de .work-hero)
-          a propósito: es la misma caja que centra flexbox, así que quedan ancladas al bloque de
-          texto sin importar la altura real del viewport — nunca se desalinean por overflow del
-          padding, siempre están a N px del contenido, sea cual sea la altura de la pantalla. */}
-      <div className="work-hero-inner">
-        <CornerMark position="tl" delay={0.05} reduce={reduce} />
-        <CornerMark position="tr" delay={0.1} reduce={reduce} />
-        <CornerMark position="br" delay={0.15} reduce={reduce} />
-        <Cota orientation="horizontal" className="wh-cota-h1" label="Desde 2011" delay={0.2} reduce={reduce} />
+      {/* Las marcas de esquina y la cota H1 viven dentro de .inner (no de .hero) a propósito: es
+          la misma caja que centra flexbox, así que quedan ancladas al bloque de texto sin
+          importar la altura real del viewport. */}
+      <div className={styles.inner}>
+        <Marks intro={intro} corners={['tl', 'tr', 'br']} inset="-72px 0px" />
+        <Cota {...cota} className={styles.cotaH1} label="Desde 2011" delay={0.2} />
 
-        <motion.div className="work-hero-copy" variants={copyVariants} initial={copyInitial} animate="show">
-          <div className="wh-eyebrow-wrap">
-            <motion.div className="work-hero-eyebrow" variants={itemUp}>
-              <span>Nuestro oficio</span>
-            </motion.div>
-            <Callout delay={0.95} reduce={reduce} />
-          </div>
+        <div className={styles.layout}>
+          <motion.div className={styles.copy} variants={copyVariants} initial={copyInitial} animate="show">
+            <div className={styles.eyebrowWrap}>
+              <motion.div className={styles.eyebrow} variants={itemUp}>
+                <span>Nuestro oficio</span>
+              </motion.div>
+              <Callout delay={0.95} intro={intro} />
+            </div>
 
-          <div className="wh-title-wrap">
-            <motion.h1 className="work-hero-title" variants={itemUp}>
-              Cómo Trabajamos
-            </motion.h1>
-            <Cota orientation="horizontal" className="wh-cota-h2" label="2400 mm" delay={0.45} reduce={reduce} />
-          </div>
+            <div className={styles.titleWrap}>
+              <motion.h1 className={styles.title} variants={itemUp}>
+                Cómo trabajamos
+              </motion.h1>
+              <Cota {...cota} className={styles.cotaH2} label="2400 mm" delay={0.45} />
+            </div>
 
-          <motion.p className="work-hero-lead" variants={itemUp}>
-            Cada mueble empieza con una idea y termina con un detalle bien hecho.
-          </motion.p>
+            <motion.p className={styles.lead} variants={itemUp}>
+              Cada mueble empieza con una idea y termina con un detalle bien hecho.
+            </motion.p>
 
-          <Cota orientation="vertical" className="wh-cota-v1" label="Al milímetro" delay={0.7} reduce={reduce} />
-        </motion.div>
+            <Cota {...cota} orientation="vertical" className={styles.cotaV1} label="Al milímetro" delay={0.7} />
+          </motion.div>
+
+          <MuebleIso draw={isoDraw} delay={ISO_DELAY} onDrawn={() => setIsoDrawn(true)} className={styles.iso} />
+        </div>
       </div>
     </header>
   );

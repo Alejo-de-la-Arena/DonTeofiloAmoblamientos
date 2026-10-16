@@ -6,6 +6,7 @@
 }
 
 .admin-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.admin-form-grid--3{grid-template-columns:repeat(3,1fr)}
 .admin-field{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
 .admin-field input,.admin-field select,.admin-field textarea{
   border:1px solid var(--border-2);border-radius:6px;padding:9px 12px;font-family:'DM Sans Variable',sans-serif;

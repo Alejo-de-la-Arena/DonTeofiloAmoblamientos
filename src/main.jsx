@@ -6,7 +6,7 @@ import App from './App.jsx';
 // que ya no se usa en el sitio).
 import '@fontsource-variable/newsreader/wght.css';
 import '@fontsource-variable/dm-sans/wght.css';
-import './styles/variables.css';
+import './styles/tokens.css';
 import './styles/global.css';
 
 createRoot(document.getElementById('root')).render(

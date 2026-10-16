@@ -4,9 +4,9 @@
 
 .catalog-filter-bar {
   position: sticky;
-  top: 64px;
+  top: var(--header-h);
   z-index: 60;
-  background: rgba(250, 250, 248, .96);
+  background: rgba(236, 234, 227, .96);
   backdrop-filter: blur(10px);
   border-top: 1px solid var(--border-3);
   border-bottom: 1px solid var(--border-3);
@@ -91,6 +91,12 @@
   width: 190px;
 }
 
+/* Sin outline (es una línea de plano): el foco se marca engrosando la línea en tinta. */
+.catalog-search:focus-visible {
+  border-bottom-color: var(--tinta);
+  box-shadow: 0 1px 0 var(--tinta)
+}
+
 .catalog-search::placeholder {
   color: var(--muted-2)
 }
@@ -103,10 +109,8 @@
 }
 
 .catalog-filter-label {
-  font-size: 11px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--muted-2);
+  font-size: 13px;
+  color: var(--texto-suave);
   font-weight: 600;
   margin-right: 4px
 }
@@ -239,10 +243,6 @@
 }
 
 @media (max-width:640px) {
-  .catalog-filter-bar {
-    top: 56px
-  }
-
   .catalog-search {
     width: 140px
   }

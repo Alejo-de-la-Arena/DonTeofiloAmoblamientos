@@ -1,0 +1,26 @@
+.mark {
+  position: absolute;
+  top: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.principal,
+.pasada {
+  fill: none;
+  stroke: var(--oxido);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Grafito ancho y plano: un trazo grueso apenas translúcido… */
+.principal {
+  stroke-width: 6.5;
+  stroke-opacity: .82;
+}
+
+/* …y una segunda pasada fina, desfasada, que le da la textura de la mina. */
+.pasada {
+  stroke-width: 1.6;
+  stroke-opacity: .55;
+}

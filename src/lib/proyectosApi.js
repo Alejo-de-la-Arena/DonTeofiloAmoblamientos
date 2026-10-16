@@ -1,4 +1,5 @@
 import { supabase } from './supabaseClient';
+import { imageDimensions } from './imageOptimize';
 
 const BUCKET = 'proyectos-imagenes';
 
@@ -16,10 +17,32 @@ function mapDetalle(row) {
   return { ...row, galeria, detalles };
 }
 
+// Listado público: cada proyecto con su ficha (metadata de las cards), sin galería.
 export async function fetchProyectosPublicos() {
-  const { data, error } = await supabase.from('proyectos').select('*').eq('publicado', true);
+  const { data, error } = await supabase
+    .from('proyectos')
+    .select('*, proyecto_detalles(id, label, valor, orden)')
+    .eq('publicado', true);
   if (error) throw error;
-  return withOrdenFallback(data || []);
+  return withOrdenFallback(data || []).map((row) => ({
+    ...row,
+    detalles: (row.proyecto_detalles || []).slice().sort((a, b) => a.orden - b.orden),
+  }));
+}
+
+// "Siguiente proyecto" del detalle: el que sigue por el mismo orden del listado; el último
+// vuelve al primero. Con un solo proyecto publicado devuelve null (no hay siguiente).
+export async function fetchSiguienteProyecto(slug) {
+  const { data, error } = await supabase
+    .from('proyectos')
+    .select('id, slug, titulo, categoria, imagen_despues, orden, created_at, proyecto_detalles(label, valor, orden)')
+    .eq('publicado', true);
+  if (error) throw error;
+  const lista = withOrdenFallback(data || []);
+  const i = lista.findIndex((p) => p.slug === slug);
+  if (i === -1 || lista.length < 2) return null;
+  const next = lista[(i + 1) % lista.length];
+  return { ...next, detalles: next.proyecto_detalles || [] };
 }
 
 export async function fetchProyectosAdmin() {
@@ -35,7 +58,7 @@ export async function fetchProyectoById(id) {
   const { data, error } = await supabase
     .from('proyectos')
     .select(
-      '*, proyecto_imagenes(id, url, storage_path, alt, orden), proyecto_detalles(id, label, valor, orden)'
+      '*, proyecto_imagenes(id, url, storage_path, alt, orden, ancho, alto), proyecto_detalles(id, label, valor, orden)'
     )
     .eq('id', id)
     .single();
@@ -50,7 +73,7 @@ export async function fetchProyectoPorSlug(slug) {
   const { data, error } = await supabase
     .from('proyectos')
     .select(
-      '*, proyecto_imagenes(id, url, storage_path, alt, orden), proyecto_detalles(id, label, valor, orden)'
+      '*, proyecto_imagenes(id, url, storage_path, alt, orden, ancho, alto), proyecto_detalles(id, label, valor, orden)'
     )
     .eq('slug', slug)
     .eq('publicado', true)
@@ -88,25 +111,20 @@ export async function setDestacadoHome(id, destacado) {
   if (error) throw error;
 }
 
-// Usado por la sección antes/después de la Home: busca el proyecto marcado como
-// destacado; si no hay ninguno (o se despublicó/borró), cae al primero por `orden`
-// (mismo fallback que fetchProyectosPublicos). Devuelve null si no hay proyectos.
+// Usado por el antes/después pineado del Home: el proyecto marcado como destacado_home, en
+// UNA sola consulta (antes eran dos en serie: id del destacado y después el proyecto entero).
+// Sin destacado publicado, o sin alguna de las dos imágenes, devuelve null y la sección no se
+// muestra: ya no cae al primer proyecto por `orden`.
 export async function fetchProyectoDestacadoHome() {
-  const { data: featured, error } = await supabase
+  const { data, error } = await supabase
     .from('proyectos')
-    .select('id')
+    .select('id, slug, titulo, categoria, resumen, descripcion, imagen_antes, imagen_despues, proyecto_detalles(id, label, valor, orden)')
     .eq('publicado', true)
     .eq('destacado_home', true)
     .maybeSingle();
   if (error) throw error;
-
-  let targetId = featured?.id;
-  if (!targetId) {
-    const fallbackList = await fetchProyectosPublicos();
-    targetId = fallbackList[0]?.id;
-  }
-  if (!targetId) return null;
-  return fetchProyectoById(targetId);
+  if (!data?.imagen_antes || !data?.imagen_despues) return null;
+  return { ...data, detalles: (data.proyecto_detalles || []).slice().sort((a, b) => a.orden - b.orden) };
 }
 
 export async function deleteProyecto(id) {
@@ -159,7 +177,10 @@ export async function removeStorageObject(storagePath) {
 }
 
 // ---------- galería del proyecto terminado (multi-imagen, reordenable) ----------
+// El archivo llega ya optimizado (ImageUploader): se guardan su ancho y alto reales para que el
+// detalle reparta la galería y reserve el alto de cada imagen sin reflow (igual que Del taller).
 export async function uploadProyectoImagen(proyectoId, file, orden) {
+  const dims = await imageDimensions(file);
   const path = `${proyectoId}/galeria-${crypto.randomUUID()}-${sanitizeFileName(file.name)}`;
   const { error: uploadErr } = await supabase.storage.from(BUCKET).upload(path, file);
   if (uploadErr) throw uploadErr;
@@ -168,7 +189,14 @@ export async function uploadProyectoImagen(proyectoId, file, orden) {
 
   const { data, error } = await supabase
     .from('proyecto_imagenes')
-    .insert({ proyecto_id: proyectoId, url: urlData.publicUrl, storage_path: path, orden })
+    .insert({
+      proyecto_id: proyectoId,
+      url: urlData.publicUrl,
+      storage_path: path,
+      orden,
+      ancho: dims?.ancho ?? null,
+      alto: dims?.alto ?? null,
+    })
     .select()
     .single();
   if (error) throw error;

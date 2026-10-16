@@ -1,25 +1,35 @@
-/* ---------- before/after slider (shared, used in Home + Proyectos) ---------- */
-.ba-slider{position:relative;overflow:hidden;cursor:ew-resize;user-select:none;background:#c7b291;width:100%;height:100%;touch-action:none}
-.ba-slider::before{
-  content:"";position:absolute;inset:0;
-  background:radial-gradient(120% 100% at 40% 30%,rgba(255,248,236,.4),transparent 60%),linear-gradient(125deg,#d9c8ab,#b39a74 60%,#8a7050);
+/* ---------- before/after slider (detalle de proyecto) ----------
+   touch-action: pan-y en la imagen → el scroll vertical de la página sigue funcionando; el JS
+   decide por dirección (ver BeforeAfterSlider.jsx). El tirador es siempre drag: none. */
+.ba-slider{
+  position:relative;overflow:hidden;cursor:ew-resize;user-select:none;width:100%;height:100%;
+  touch-action:pan-y;background:var(--papel-2);
 }
-.ba-tag{
-  position:absolute;top:22px;background:rgba(26,26,26,.55);color:#fff;font-size:11px;letter-spacing:.12em;
-  text-transform:uppercase;padding:6px 12px;border-radius:30px;backdrop-filter:blur(4px);z-index:3;
+.ba-tag{pointer-events:none;
+  position:absolute;top:var(--s-4);z-index:3;padding:6px 12px;border-radius:var(--r-pill);
+  background:color-mix(in srgb, var(--madera) 72%, transparent);color:var(--sobre-madera);
+  font-size:var(--fs-small);font-weight:500;line-height:1.2;backdrop-filter:blur(6px);
 }
-.ba-tag--after{right:22px}
-.ba-tag--before{left:22px}
-.ba-after{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.ba-tag--after{right:var(--s-4)}
+.ba-tag--before{left:var(--s-4)}
+.ba-after,.ba-before{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
 .ba-before-wrap{position:absolute;inset:0;clip-path:inset(0 50% 0 0)}
-.ba-before{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
 .ba-handle{
-  position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.1);
-  cursor:ew-resize;border-radius:2px;
+  position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;z-index:2;
+  background:var(--sobre-madera);box-shadow:0 0 0 .5px color-mix(in srgb, var(--madera) 35%, transparent);
+  cursor:ew-resize;touch-action:none;
 }
-.ba-handle:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+/* Área táctil de 44px alrededor de la línea de 2px: si el dedo arranca acá, siempre es drag. */
+.ba-handle::before{content:"";position:absolute;top:0;bottom:0;left:-21px;width:44px}
+.ba-handle:focus-visible{outline:2px solid var(--sobre-madera);outline-offset:2px;box-shadow:0 0 0 5px var(--tinta)}
 .ba-handle-btn{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;
-  background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;color:var(--accent);
-  pointer-events:none;
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:var(--r-pill);
+  background:var(--papel);color:var(--tinta);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px color-mix(in srgb, var(--madera) 35%, transparent);pointer-events:none;
 }
+/* fadeTags (wipe por scroll en el listado): cada tag se apaga cuando el tirador llega a él. */
+.ba-tag--before,.ba-tag--after{transition:opacity var(--dur-sm) linear}
+/* direction="ltr": el "antes" queda a la derecha del tirador y el "después" a la izquierda. */
+.ba-slider--ltr .ba-tag--after{right:auto;left:var(--s-4)}
+.ba-slider--ltr .ba-tag--before{left:auto;right:var(--s-4)}
+.ba-slider--ltr .ba-before-wrap{clip-path:inset(0 0 0 50%)}

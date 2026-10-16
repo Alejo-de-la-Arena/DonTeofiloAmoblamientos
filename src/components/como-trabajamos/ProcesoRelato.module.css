@@ -1,0 +1,291 @@
+/* Misma retícula milimetrada del hero, así el scroll pasa de un "papel" al otro sin corte. */
+.section {
+  position: relative;
+  padding: clamp(70px, 10vw, 130px) var(--gutter);
+  background-image:
+    linear-gradient(to right, var(--grilla) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grilla) 1px, transparent 1px),
+    linear-gradient(to right, var(--grilla-fina) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grilla-fina) 1px, transparent 1px);
+  background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
+}
+
+.inner {
+  position: relative;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------- texto de cada paso ---------- */
+.label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--texto-suave);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(30px, 3.2vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+  color: var(--texto);
+  margin: 10px 0 16px;
+}
+
+.desc {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.68;
+  color: var(--texto-suave);
+  margin: 0 0 20px;
+  max-width: 46ch;
+}
+
+/* Lista sobria: filas separadas por la línea técnica, sin viñetas. */
+.subs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-width: 46ch;
+}
+
+.subs li {
+  padding: 9px 0;
+  border-top: 1px solid var(--linea);
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--texto-suave);
+}
+
+.subs li:last-child {
+  border-bottom: 1px solid var(--linea);
+}
+
+.step {
+  transition: opacity var(--dur-sm) var(--ease-settle);
+}
+
+.inactivo {
+  opacity: .35;
+}
+
+/* ---------- datos sobre la foto ---------- */
+.tabPaso,
+.tabMm {
+  position: absolute;
+  z-index: 3;
+  padding: 6px 10px;
+  border-radius: var(--r-taller);
+  background: var(--papel);
+  color: var(--texto);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+.tabPaso {
+  top: 12px;
+  left: 12px;
+}
+
+/* min-width: los mm cambian de 1 a 4 dígitos sin que la ficha salte. */
+.tabMm {
+  bottom: 12px;
+  right: 12px;
+  min-width: 9ch;
+  text-align: right;
+}
+
+/* ---------- desktop pineado (≥1024, sin reduced motion) ---------- */
+.pinned .inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: clamp(48px, 6vw, 96px);
+  padding-left: 56px;
+}
+
+.pinned .item {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+}
+
+/* La columna del marco es un container: el alto del marco no puede superar 5/4 de su ancho. */
+.frameCol {
+  position: relative;
+  container-type: inline-size;
+}
+
+.frame {
+  --frame-h: min(calc(100svh - var(--header-h) - 96px), 125cqi, 760px);
+  position: sticky;
+  top: calc(var(--header-h) + (100svh - var(--header-h) - var(--frame-h)) / 2);
+  height: var(--frame-h);
+  aspect-ratio: 4 / 5;
+  margin-inline: auto;
+}
+
+.frameImgs {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: var(--r-taller);
+  background: var(--papel-2);
+}
+
+.frameImgs picture {
+  display: contents;
+}
+
+.frameImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+}
+
+.frameImgOn {
+  opacity: 1;
+}
+
+/* ---------- regla de progreso (desktop) ---------- */
+.regla {
+  position: absolute;
+  left: 16px;
+  width: 1px;
+  pointer-events: none;
+}
+
+.reglaBase,
+.reglaOn {
+  position: absolute;
+  inset: 0;
+}
+
+.reglaBase {
+  background: var(--linea-fuerte);
+}
+
+.reglaOn {
+  left: -.5px;
+  width: 2px;
+  background: var(--oxido);
+  transform-origin: top center;
+}
+
+.reglaMarca {
+  position: absolute;
+  left: -6px;
+  width: 13px;
+  height: 1px;
+  background: var(--linea-fuerte);
+  transition: background-color var(--dur-sm) var(--ease-settle), transform var(--dur-sm) var(--ease-settle);
+}
+
+.reglaMarcaOn {
+  background: var(--oxido);
+  transform: scaleX(1.5);
+}
+
+/* ---------- en flujo: mobile/tablet y reduced motion ---------- */
+.flow .item + .item {
+  margin-top: clamp(56px, 10vw, 96px);
+}
+
+.media {
+  margin-bottom: var(--s-5);
+}
+
+.reveal {
+  aspect-ratio: 4 / 3;
+}
+
+.staticFrame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--r-taller);
+  background: var(--papel-2);
+}
+
+.staticFrame picture {
+  display: contents;
+}
+
+.staticImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Reduced motion en desktop: bloques en 2 columnas, texto y foto; la regla completa. */
+@media (min-width: 1024px) {
+  .flow .inner {
+    padding-left: 56px;
+  }
+
+  .flow .item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: clamp(48px, 6vw, 96px);
+    align-items: center;
+  }
+
+  .flow .media {
+    order: 2;
+    margin-bottom: 0;
+  }
+}
+
+/* ---------- mini barra (mobile) ---------- */
+/* Fija justo debajo del header (z 100) y debajo del menú (190+) y de las puertas de ruta (90);
+   el botón flotante de WhatsApp vive abajo a la derecha, así que no se cruzan. */
+.barra {
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  right: 0;
+  z-index: 80;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--gutter);
+  background: var(--papel);
+  border-bottom: 1px solid var(--linea);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--texto);
+}
+
+.barraLinea {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+}
+
+.barraFill {
+  position: absolute;
+  inset: 0;
+  background: var(--oxido);
+  transform-origin: left center;
+  transform: scaleX(0);
+}

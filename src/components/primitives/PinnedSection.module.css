@@ -1,0 +1,20 @@
+.pin {
+  position: relative;
+  height: var(--pin-h-mobile);
+}
+
+@media (min-width: 768px) {
+  .pin {
+    height: var(--pin-h);
+  }
+}
+
+/* svh con fallback a vh: en iOS 100vh incluye la barra del navegador y el contenido
+   pineado "salta" al mostrarse/ocultarse; 100svh es el viewport chico, estable. */
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: clip; /* sobre el propio sticky no rompe nada: solo importan los ancestros */
+}

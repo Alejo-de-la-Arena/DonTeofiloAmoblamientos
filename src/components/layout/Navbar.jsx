@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { ease, dur } from '../../lib/motion';
 import BtnPill from '../ui/BtnPill';
 import InstagramIcon from '../ui/icons/InstagramIcon';
 import { WHATSAPP_URL, INSTAGRAM_URL, LOCATIONS } from '../../config/contact';
@@ -81,7 +82,7 @@ export default function Navbar({ isSolid }) {
     };
   }, [isOpen]);
 
-  const motionTransition = shouldReduceMotion ? { duration: 0.01 } : { duration: 0.5, ease: [0.65, 0, 0.35, 1] };
+  const motionTransition = shouldReduceMotion ? { duration: 0.01 } : { duration: dur.md, ease: ease.door };
 
   return (
     <>
@@ -175,7 +176,7 @@ export default function Navbar({ isSolid }) {
                   <a
                     href={INSTAGRAM_URL}
                     target="_blank"
-                    rel="noopener"
+                    rel="noopener noreferrer"
                     aria-label="Instagram"
                     className="nav-mobile-ig"
                   >

@@ -1,0 +1,103 @@
+/* ==========================================================================
+   Tokens de diseño — "Al milímetro" (paleta B · Wengué + pizarra)
+   Único archivo de variables globales. Contraste AA verificado (WCAG 2.1):
+     texto / papel 14.3 · texto / papel-2 12.8 · texto-suave / papel 6.1 · texto-suave / papel-2 5.5
+     oxido / papel 6.3 · oxido / papel-2 5.6 · blanco / oxido 7.6 · blanco / oxido-hover 9.7
+     tinta / papel 6.5 · tinta / papel-2 5.8 · sobre-madera / madera 12.5
+     oxido-claro / madera 5.7 · tinta-clara / madera 7.7 · blanco / madera 15.7 · blanco / tinta 7.8
+     blanco / cianotipo 10.0 · sobre-madera / cianotipo 8.0 · tinta / papel (botón sobre cianotipo) 6.5
+   ========================================================================== */
+:root {
+  /* ---------- paleta ---------- */
+  --papel: #ECEAE3;          /* fondo base: gris yeso, no crema */
+  --papel-2: #E1DED4;        /* fondo alternativo de sección */
+  --texto: #1C1B19;
+  --texto-suave: #585650;
+  --tinta: #3D5566;          /* "tinta de plano": exclusiva de cotas, grilla, foco y anotaciones */
+  --tinta-clara: #A9B8C4;    /* tinta sobre fondos oscuros (madera / fotos) */
+  --madera: #2B211C;         /* wengué: secciones oscuras, en lugar del casi negro */
+  --sobre-madera: #ECE4D8;   /* texto sobre madera */
+  --cianotipo: #2B4557;      /* azul de plano (tinta oscurecida): CTA "Hoja de plano"; 1.56:1 vs madera */
+  --oxido: #8C3B22;          /* acento — usar con restricción: CTA principal, un detalle por vista */
+  --oxido-hover: #742F1A;
+  --oxido-claro: #D48A64;    /* acento sobre madera / fotos oscuras (no sobre papel: 2.3:1) */
+  --oxido-medio: #C27650;    /* líneas/cotas decorativas en acento sobre papel (2.9:1: no para texto chico) */
+
+  /* líneas técnicas: siempre derivadas de la tinta, nunca del acento */
+  --linea: rgba(61, 85, 102, .18);
+  --linea-fuerte: rgba(61, 85, 102, .32);
+  --grilla: rgba(61, 85, 102, .07);
+  --grilla-fina: rgba(61, 85, 102, .035);
+
+  /* ---------- alias legacy ----------
+     Los componentes todavía no migrados (prompts 01–05) usan estos nombres. Cada alias
+     mantiene el ROL que tenía el token viejo, no su nombre: --accent se usaba sobre todo
+     como acento sobre fondos oscuros (#26211c, --ink) y como línea/texto decorativo sobre claro.
+     #C27650 mantiene la paridad exacta con el terracota viejo en ambos lados (2.9:1 sobre papel,
+     igual que antes; 4.6–5.0:1 sobre los oscuros legacy). No usar sobre --madera (4.49:1): ahí va
+     --oxido-claro. El texto en acento sobre fondo claro usa --accent-contrast (= --oxido).
+     Al migrar una página, reemplazar el alias por el token semántico. */
+  --ink: var(--texto);
+  --ink-soft: #2E2C29;
+  --bg: var(--papel);
+  --bg-alt: var(--papel-2);
+  --accent: var(--oxido-medio);
+  --accent-dark: #B9714D;
+  --accent-contrast: var(--oxido);
+  --accent-contrast-dark: var(--oxido-hover);
+  --border: #D6D2C8;
+  --border-2: #CFCABE;
+  --border-3: #D9D5CB;
+  --muted: var(--texto-suave);
+  --muted-2: #66625A;        /* texto secundario chico: 5.0:1 sobre papel, 4.5:1 sobre papel-2 */
+  --whatsapp: #25D366;       /* SOLO el botón flotante: convención reconocible */
+  --danger: #B23B3B;
+  --danger-dark: #992f2f;
+  --success: #3F7D58;        /* estados "activo" del admin (antes usaban --whatsapp) */
+
+  /* ---------- tipografía ---------- */
+  --font-serif: 'Newsreader Variable', Georgia, serif;
+  --font-sans: 'DM Sans Variable', system-ui, sans-serif;
+
+  --fs-display: clamp(3rem, 1.6rem + 6vw, 8rem);
+  --fs-h1: clamp(2.5rem, 1.8rem + 3.4vw, 4.5rem);
+  --fs-h2: clamp(2rem, 1.5rem + 2.2vw, 3.375rem);
+  --fs-h3: clamp(1.375rem, 1.2rem + .8vw, 1.75rem);
+  --fs-body-lg: clamp(1.0625rem, 1rem + .3vw, 1.25rem);
+  --fs-body: 1rem;
+  --fs-small: .875rem;
+  --fs-label: .75rem;
+
+  --lh-tight: 1.02;
+  --lh-heading: 1.1;
+  --lh-body: 1.6;          /* serif en párrafo: subir a 1.65 */
+
+  /* ---------- espaciado (base 4) ---------- */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+  --s-10: 128px;
+  --gutter: clamp(16px, 5vw, 72px);
+  --container: 1300px;
+
+  /* ---------- radios: solo dos ---------- */
+  --r-taller: 2px;    /* imágenes, paneles, inputs: casi recto */
+  --r-pill: 999px;    /* chips y botones */
+
+  /* ---------- motion (espejo CSS de src/lib/motion.js) ---------- */
+  --ease-soft-close: cubic-bezier(.16, 1, .3, 1);
+  --ease-door: cubic-bezier(.65, 0, .35, 1);
+  --ease-settle: cubic-bezier(.33, 1, .68, 1);
+  --dur-xs: .18s;
+  --dur-sm: .32s;
+  --dur-md: .5s;
+
+  /* altura real del header: la publica Navbar.jsx en runtime; este es el fallback */
+  --header-h: 72px;
+}

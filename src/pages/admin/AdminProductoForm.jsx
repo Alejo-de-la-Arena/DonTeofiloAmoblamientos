@@ -10,6 +10,17 @@ import {
 import { CATEGORIAS } from '../../data/productCategories';
 import './AdminProductoForm.css';
 
+// Medidas en milímetros: enteros positivos o vacío (= null en la base). Son las que dibuja el
+// panel de detalle del catálogo como cotas.
+const MM_FIELDS = [
+  ['ancho_mm', 'Ancho (mm)', 'Ej: 2400'],
+  ['alto_mm', 'Alto (mm)', 'Ej: 2100'],
+  ['profundidad_mm', 'Profundidad (mm)', 'Ej: 600'],
+];
+const mmToForm = (v) => (v != null ? String(v) : '');
+const mmToPayload = (v) => (String(v).trim() === '' ? null : Number(v));
+const isValidMm = (v) => String(v).trim() === '' || (/^\d+$/.test(String(v).trim()) && Number(v) > 0);
+
 const EMPTY_FORM = {
   nombre: '',
   categoria: '',
@@ -18,6 +29,9 @@ const EMPTY_FORM = {
   mostrar_precio: true,
   descripcion: '',
   medidas: '',
+  ancho_mm: '',
+  alto_mm: '',
+  profundidad_mm: '',
   destacado: false,
   publicado: false,
 };
@@ -50,6 +64,9 @@ export default function AdminProductoForm() {
           mostrar_precio: p.mostrar_precio,
           descripcion: p.descripcion || '',
           medidas: p.medidas || '',
+          ancho_mm: mmToForm(p.ancho_mm),
+          alto_mm: mmToForm(p.alto_mm),
+          profundidad_mm: mmToForm(p.profundidad_mm),
           destacado: p.destacado,
           publicado: p.publicado,
         });
@@ -70,6 +87,9 @@ export default function AdminProductoForm() {
     const next = {};
     if (!form.nombre.trim()) next.nombre = 'Requerido';
     if (!form.categoria) next.categoria = 'Requerido';
+    MM_FIELDS.forEach(([key]) => {
+      if (!isValidMm(form[key])) next[key] = 'Número entero de milímetros';
+    });
     setErrors(next);
     return Object.keys(next).length === 0;
   }
@@ -88,6 +108,9 @@ export default function AdminProductoForm() {
       mostrar_precio: form.mostrar_precio,
       descripcion: form.descripcion || null,
       medidas: form.medidas || null,
+      ancho_mm: mmToPayload(form.ancho_mm),
+      alto_mm: mmToPayload(form.alto_mm),
+      profundidad_mm: mmToPayload(form.profundidad_mm),
       destacado: form.destacado,
       publicado: form.publicado,
     };
@@ -190,6 +213,31 @@ export default function AdminProductoForm() {
               placeholder="Ej: 180cm x 60cm x 90cm"
             />
           </label>
+        </div>
+
+        <div className="admin-form-section">
+          <span className="admin-form-section-label">Medidas en milímetros</span>
+          <p className="admin-hint">
+            Opcionales. Con ancho o alto cargados, el detalle del catálogo dibuja las cotas sobre la
+            imagen; si están, reemplazan a las medidas de texto en la ficha.
+          </p>
+          <div className="admin-form-grid admin-form-grid--3">
+            {MM_FIELDS.map(([key, label, placeholder]) => (
+              <label key={key} className="admin-field">
+                <span>{label}</span>
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min="1"
+                  step="1"
+                  value={form[key]}
+                  onChange={(e) => setField(key, e.target.value)}
+                  placeholder={placeholder}
+                />
+                {errors[key] && <em className="admin-field-error">{errors[key]}</em>}
+              </label>
+            ))}
+          </div>
         </div>
 
         <label className="admin-field">

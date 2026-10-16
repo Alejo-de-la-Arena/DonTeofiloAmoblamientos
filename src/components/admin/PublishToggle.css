@@ -2,7 +2,7 @@
   position:relative;width:42px;height:24px;border-radius:20px;border:none;cursor:pointer;
   background:var(--border-2);transition:background .2s ease;padding:0;flex:none;
 }
-.publish-toggle.on{background:var(--whatsapp)}
+.publish-toggle.on{background:var(--success)}
 .publish-toggle:disabled{opacity:.6;cursor:not-allowed}
 .publish-toggle-knob{
   position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;

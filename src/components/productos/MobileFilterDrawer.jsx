@@ -13,6 +13,7 @@ export default function MobileFilterDrawer({
   materials,
   activeMaterial,
   onMaterialChange,
+  showPrice,
   maxPrice,
   maxPriceLabel,
   onMaxPriceChange,
@@ -93,6 +94,7 @@ export default function MobileFilterDrawer({
                     value={search}
                     onChange={(e) => onSearchChange(e.target.value)}
                     placeholder="Buscar producto…"
+                    aria-label="Buscar producto"
                   />
                 </div>
               </div>
@@ -105,6 +107,7 @@ export default function MobileFilterDrawer({
                       key={cat}
                       type="button"
                       className={`catalog-filter-pill${cat === activeCategory ? ' active' : ''}`}
+                      aria-pressed={cat === activeCategory}
                       onClick={() => onCategoryChange(cat)}
                     >
                       {cat}
@@ -113,36 +116,42 @@ export default function MobileFilterDrawer({
                 </div>
               </div>
 
-              <div className="filter-drawer-group">
-                <span className="filter-drawer-label">Material</span>
-                <div className="filter-drawer-pills">
-                  {materials.map((mat) => (
-                    <button
-                      key={mat}
-                      type="button"
-                      className={`catalog-material-pill${mat === activeMaterial ? ' active' : ''}`}
-                      onClick={() => onMaterialChange(mat)}
-                    >
-                      {mat}
-                    </button>
-                  ))}
+              {materials && (
+                <div className="filter-drawer-group">
+                  <span className="filter-drawer-label">Material</span>
+                  <div className="filter-drawer-pills">
+                    {[{ value: null, label: 'Todos' }, ...materials].map((mat) => (
+                      <button
+                        key={mat.label}
+                        type="button"
+                        className={`catalog-material-pill${mat.value === activeMaterial ? ' active' : ''}`}
+                        aria-pressed={mat.value === activeMaterial}
+                        onClick={() => onMaterialChange(mat.value)}
+                      >
+                        {mat.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className="filter-drawer-group">
-                <span className="filter-drawer-label">Precio hasta</span>
-                <div className="filter-drawer-price">
-                  <input
-                    type="range"
-                    min={200000}
-                    max={3000000}
-                    step={50000}
-                    value={maxPrice}
-                    onChange={(e) => onMaxPriceChange(Number(e.target.value))}
-                  />
-                  <span className="filter-drawer-price-val">{maxPriceLabel}</span>
+              {showPrice && (
+                <div className="filter-drawer-group">
+                  <span className="filter-drawer-label">Precio hasta</span>
+                  <div className="filter-drawer-price">
+                    <input
+                      type="range"
+                      min={200000}
+                      max={3000000}
+                      step={50000}
+                      value={maxPrice}
+                      aria-label="Precio máximo"
+                      onChange={(e) => onMaxPriceChange(Number(e.target.value))}
+                    />
+                    <span className="filter-drawer-price-val">{maxPriceLabel}</span>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             <div className="filter-drawer-footer">

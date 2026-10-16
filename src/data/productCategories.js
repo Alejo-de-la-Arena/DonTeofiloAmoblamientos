@@ -10,3 +10,34 @@ export const CATEGORIAS = [
   'Alacenas',
   'Diseño integral',
 ];
+
+// Slug de URL de una categoría: "Diseño integral" → "diseno-integral". Es el valor de
+// ?categoria= en /productos (Home → índice de servicios). Productos lo resuelve de vuelta
+// a la categoría con categoriaFromSlug.
+export function slugifyCategoria(categoria) {
+  return categoria
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+export function categoriaFromSlug(slug) {
+  return CATEGORIAS.find((c) => slugifyCategoria(c) === slug) ?? null;
+}
+
+// "Placards" → "un placard": para armar mensajes en primera persona ("Hola, busco un placard…").
+const CATEGORIA_SINGULAR = {
+  Cocinas: 'una cocina',
+  Placards: 'un placard',
+  Vanitorys: 'un vanitory',
+  Aberturas: 'una abertura',
+  Alacenas: 'una alacena',
+  'Diseño integral': 'un diseño integral',
+};
+
+export function categoriaEnSingular(categoria) {
+  return CATEGORIA_SINGULAR[categoria] ?? null;
+}

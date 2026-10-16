@@ -1,0 +1,213 @@
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: clip;
+  background: var(--madera);
+}
+
+/* Sin pin (reduced motion) no hay 100svh que llenar: el escenario toma una proporción fija. */
+.static {
+  height: auto;
+  aspect-ratio: 4 / 5;
+  max-height: 100svh;
+}
+
+@media (min-width: 768px) {
+  .static {
+    aspect-ratio: 3 / 2;
+  }
+}
+
+.img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.after {
+  position: absolute;
+  inset: 0;
+  will-change: clip-path;
+}
+
+/* ---------- divisor ---------- */
+.divider {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.dividerLine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -.5px;
+  width: 1px;
+  background: var(--sobre-madera);
+  box-shadow: 0 0 0 .5px color-mix(in srgb, var(--madera) 25%, transparent);
+}
+
+.dividerCota {
+  position: absolute;
+  top: 18%;
+  bottom: 18%;
+  left: 10px;
+  width: 24px;
+  filter: drop-shadow(0 0 2px color-mix(in srgb, var(--madera) 60%, transparent));
+}
+
+/* ---------- labels ---------- */
+.tag {
+  position: absolute;
+  top: calc(var(--header-h) + var(--s-4));
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--madera) 72%, transparent);
+  color: var(--sobre-madera);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  backdrop-filter: blur(6px);
+}
+
+.tagAntes {
+  left: var(--gutter);
+}
+
+.tagDespues {
+  right: var(--gutter);
+}
+
+.toggle {
+  position: absolute;
+  right: var(--gutter);
+  top: calc(var(--s-4));
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 1px solid color-mix(in srgb, var(--sobre-madera) 50%, transparent);
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--madera) 72%, transparent);
+  color: var(--sobre-madera);
+  font: 500 var(--fs-small) / 1 var(--font-sans);
+  cursor: pointer;
+}
+
+/* El escenario "full" vive debajo del header fijo (igual que la versión pineada): el tag y el
+   botón arrancan debajo del nav. */
+.static .tagAntes,
+.static .toggle {
+  top: calc(var(--header-h) + var(--s-4));
+}
+
+/* ---------- slot de info ---------- */
+.info {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: calc(var(--s-6) + env(safe-area-inset-bottom, 0px));
+  color: var(--sobre-madera);
+}
+
+/* ==========================================================================
+   layout="lamina": la imagen como lámina con márgenes (no full-bleed) + info aparte.
+   ========================================================================== */
+.lamina {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  align-content: start;
+  gap: var(--s-4);
+  /* El encabezado arranca debajo del header fijo, con aire: nunca pegado al borde. */
+  padding: calc(var(--header-h) + var(--s-4)) var(--gutter) var(--s-5);
+  background: var(--madera);
+  color: var(--sobre-madera);
+}
+
+/* La lámina misma: recibe las capas del wipe. En mobile es 4:5 a todo el ancho; en viewports
+   bajos (≤700px de alto) pasa a 5:4 para que encabezado + lámina + info entren en 100svh. */
+.plate {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--r-taller);
+  overflow: clip;
+  background: color-mix(in srgb, var(--madera), black 25%);
+}
+
+.lamina .tag {
+  top: var(--s-3);
+}
+
+.lamina .tagAntes {
+  left: var(--s-3);
+}
+
+.lamina .tagDespues {
+  right: var(--s-3);
+}
+
+.lamina .toggle {
+  top: var(--s-3);
+  right: var(--s-3);
+}
+
+.laminaHead,
+.laminaInfo {
+  min-width: 0;
+}
+
+@media (max-width: 1023px) and (max-height: 700px) {
+  .plate {
+    aspect-ratio: 5 / 4;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* ~85% del ancho: márgenes laterales de 7.5vw para que se lea como lámina. */
+  .lamina {
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
+    align-content: stretch;
+    align-items: end;
+    gap: var(--s-5) var(--s-7);
+    padding: calc(var(--header-h) + var(--s-5)) max(var(--gutter), 7.5vw) var(--s-7);
+  }
+
+  .laminaHead {
+    grid-column: 1 / -1;
+  }
+
+  .plate {
+    height: 100%;
+    aspect-ratio: auto;
+    align-self: stretch;
+  }
+}
+
+/* Reduced motion: sin sticky que llenar, la lámina toma una proporción fija. */
+.laminaStatic {
+  height: auto;
+  padding-top: var(--s-8);
+}
+
+.laminaStatic .plate {
+  height: auto;
+  aspect-ratio: 4 / 5;
+}
+
+@media (min-width: 1024px) {
+  .laminaStatic .plate {
+    aspect-ratio: 3 / 2;
+  }
+}
+
+/* layout="full": capa superior del escenario (slot `head`), a lo ancho y sin capturar eventos. */
+.head {
+  position: absolute;
+  inset: 0 0 auto;
+  pointer-events: none;
+}

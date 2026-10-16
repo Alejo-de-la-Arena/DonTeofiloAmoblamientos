@@ -29,7 +29,7 @@ export default function Footer() {
             <a
               href={INSTAGRAM_URL}
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
               className="footer-social-btn footer-social-btn--ig"
               aria-label="Instagram"
             >
@@ -38,7 +38,7 @@ export default function Footer() {
             <a
               href={WHATSAPP_URL}
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
               className="footer-social-btn footer-social-btn--wa"
               aria-label="WhatsApp"
             >

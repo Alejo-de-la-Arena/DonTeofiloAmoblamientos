@@ -1,0 +1,189 @@
+.section {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: var(--s-9) var(--gutter);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h2);
+  font-weight: 600;
+  line-height: var(--lh-heading);
+  letter-spacing: -.01em;
+  margin: 0 0 var(--s-7);
+}
+
+/* ---------- cinta (SVG) ---------- */
+.svg {
+  display: block;
+  overflow: visible;
+}
+
+.base,
+.menor,
+.mayor {
+  fill: none;
+  stroke: var(--tinta);
+  stroke-linecap: butt;
+}
+
+.base {
+  stroke-width: 1.5;
+}
+
+.menor {
+  stroke-width: 1;
+  stroke-opacity: .55;
+}
+
+.mayor {
+  stroke-width: 1.25;
+}
+
+.num {
+  fill: var(--tinta);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+
+.parada {
+  fill: var(--oxido);
+}
+
+.on,
+.off {
+  transition: opacity var(--dur-xs) var(--ease-settle);
+}
+
+.off {
+  opacity: 0;
+}
+
+/* ---------- pasos ---------- */
+.steps {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.step {
+  position: absolute;
+}
+
+.stepTitle {
+  margin: 0 0 var(--s-2);
+  font-family: var(--font-serif);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--texto);
+}
+
+.stepText {
+  margin: 0;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--texto-suave);
+}
+
+/* horizontal (≥768): la cinta a todo el ancho y los pasos colgando de su parada */
+.horizontal .ruler {
+  height: 52px;
+}
+
+.horizontal .steps {
+  height: 9rem;
+  margin-top: var(--s-5);
+}
+
+.horizontal .step {
+  top: 0;
+  width: 22%;
+}
+
+.horizontal .stepLast {
+  transform: translateX(-100%);
+  text-align: right;
+}
+
+/* vertical (mobile): filas equiespaciadas de altura natural. Cada fila lleva su tramo de cinta
+   (parada arriba + marcas menores hasta la fila siguiente). La cinta completa se ve siempre en
+   tono tenue; la línea fuerte se dibuja hasta la última parada revelada. */
+.vertical {
+  --stop-y: calc(var(--fs-h3) * .575); /* centro de la primera línea del título */
+  position: relative;
+}
+
+.filas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.fila {
+  position: relative;
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr);
+  gap: var(--s-3);
+  padding-bottom: var(--s-7);
+}
+
+.fila:last-child {
+  padding-bottom: 0;
+}
+
+.tramo {
+  position: absolute;
+  left: 0;
+  top: var(--stop-y);
+  width: 80px;
+  height: 100%;
+  overflow: visible;
+}
+
+.filaBody {
+  grid-column: 2;
+}
+
+.tenue,
+.tenueOn {
+  transition: opacity var(--dur-sm) var(--ease-settle);
+}
+
+.tenue {
+  opacity: .3;
+}
+
+.linea {
+  position: absolute;
+  left: 5.25px;
+  width: 1.5px;
+  margin-top: var(--stop-y);
+  background: var(--linea-fuerte);
+}
+
+.lineaOn {
+  display: block;
+  height: 100%;
+  background: var(--tinta);
+  transform-origin: top;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: var(--s-7);
+  color: var(--oxido);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-color: rgba(140, 59, 34, .4);
+}
+
+.link:hover {
+  text-decoration-color: currentColor;
+}

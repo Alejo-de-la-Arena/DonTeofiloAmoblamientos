@@ -1,29 +1,46 @@
-import { useEffect, useMemo, useState } from 'react';
-import ProductosHero from '../components/productos/ProductosHero';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import CatalogHero from '../components/productos/CatalogHero';
 import ProductFilterBar from '../components/productos/ProductFilterBar';
 import ProductGrid from '../components/productos/ProductGrid';
-import ProductEmptyState from '../components/productos/ProductEmptyState';
 import ProductDetailPanel from '../components/productos/ProductDetailPanel';
 import { fetchProductosPublicos } from '../lib/productosApi';
-import { CATEGORIAS } from '../data/productCategories';
+import { usePageMeta } from '../hooks/usePageMeta';
+import { fold, materialOptions, splitMateriales, tienePrecioVisible } from '../lib/catalogo';
+import { CATEGORIAS, categoriaFromSlug, slugifyCategoria } from '../data/productCategories';
 import './Productos.css';
 
 const MAX_PRICE_DEFAULT = 3000000;
+const TODOS = 'Todos';
+
+const META_TITLE = 'Muebles a medida: cocinas, placards, vanitorys y más | Don Teófilo Amoblamientos';
+const META_DESCRIPTION =
+  'Muebles a medida: cocinas, placards, vanitorys, aberturas, alacenas y diseño integral. Fabricados a la medida de tu espacio en Buenos Aires y Tandil.';
 
 function money(n) {
   return '$' + n.toLocaleString('es-AR');
 }
 
+/* La URL es la fuente de verdad de lo compartible:
+   ?categoria=<slug>  ?q=<búsqueda>  → se escriben con replace (no llenan el historial)
+   ?producto=<slug>                   → abrir el panel hace PUSH, así "atrás" lo cierra
+   Material y precio son estado local: dependen de los datos y no tienen valor como link.
+   RouteTransition no anima cambios de solo search (mismo pathname → swap inmediato). */
 export default function Productos() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  usePageMeta(META_TITLE, META_DESCRIPTION);
+
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
-
-  const [categoria, setCategoria] = useState('Todos');
-  const [material, setMaterial] = useState('Todos');
+  const [material, setMaterial] = useState(null); // clave normalizada, null = todos
   const [maxPrice, setMaxPrice] = useState(MAX_PRICE_DEFAULT);
-  const [search, setSearch] = useState('');
-  const [detailId, setDetailId] = useState(null);
+
+  const categoria = categoriaFromSlug(searchParams.get('categoria')) ?? TODOS;
+  const search = searchParams.get('q') ?? '';
+  const productoSlug = searchParams.get('producto');
 
   useEffect(() => {
     let cancelled = false;
@@ -42,58 +59,97 @@ export default function Productos() {
     };
   }, []);
 
-  // Material es texto libre en el admin — las opciones del filtro se generan a partir de
-  // los valores distintos que efectivamente existan entre los productos publicados.
-  const materiales = useMemo(() => {
-    const distintos = [...new Set(productos.map((p) => p.material).filter(Boolean))].sort((a, b) =>
-      a.localeCompare(b, 'es')
-    );
-    return ['Todos', ...distintos];
-  }, [productos]);
+  const updateParams = useCallback(
+    (mutate, options = { replace: true }) =>
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        mutate(next);
+        return next;
+      }, options),
+    [setSearchParams]
+  );
+
+  const setCategoria = useCallback(
+    (cat) =>
+      updateParams((p) => {
+        if (cat === TODOS) p.delete('categoria');
+        else p.set('categoria', slugifyCategoria(cat));
+      }),
+    [updateParams]
+  );
+
+  const setSearch = useCallback(
+    (q) =>
+      updateParams((p) => {
+        if (q) p.set('q', q);
+        else p.delete('q');
+      }),
+    [updateParams]
+  );
+
+  // Material es texto libre en el admin: las opciones salen de los valores reales. Con menos de
+  // dos no hay nada que filtrar y el grupo no se muestra; lo mismo con el precio.
+  const materiales = useMemo(() => materialOptions(productos), [productos]);
+  const showMaterial = materiales.length >= 2;
+  const showPrice = useMemo(() => productos.filter(tienePrecioVisible).length >= 2, [productos]);
+  const activeMaterial = showMaterial ? material : null;
+  const activeMaxPrice = showPrice ? maxPrice : MAX_PRICE_DEFAULT;
 
   const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
+    const q = fold(search);
     return productos.filter((p) => {
-      const priceOk = !p.mostrar_precio || p.precio == null || p.precio <= maxPrice;
-      return (
-        (categoria === 'Todos' || p.categoria === categoria) &&
-        (material === 'Todos' || p.material === material) &&
-        priceOk &&
-        (!q || p.nombre.toLowerCase().includes(q) || p.categoria.toLowerCase().includes(q))
-      );
+      const priceOk = !tienePrecioVisible(p) || p.precio <= activeMaxPrice;
+      const materialOk =
+        !activeMaterial || splitMateriales(p.material).some((m) => fold(m) === activeMaterial);
+      const searchOk =
+        !q || [p.nombre, p.categoria, p.material].some((field) => fold(field).includes(q));
+      return (categoria === TODOS || p.categoria === categoria) && materialOk && priceOk && searchOk;
     });
-  }, [productos, categoria, material, maxPrice, search]);
+  }, [productos, categoria, activeMaterial, activeMaxPrice, search]);
 
   const hasFilters =
-    categoria !== 'Todos' ||
-    material !== 'Todos' ||
-    maxPrice < MAX_PRICE_DEFAULT ||
-    search.trim() !== '';
-
-  const detailProduct = productos.find((p) => p.id === detailId) || null;
+    categoria !== TODOS || !!activeMaterial || activeMaxPrice < MAX_PRICE_DEFAULT || search.trim() !== '';
 
   function clearAll() {
-    setCategoria('Todos');
-    setMaterial('Todos');
+    setMaterial(null);
     setMaxPrice(MAX_PRICE_DEFAULT);
-    setSearch('');
+    updateParams((p) => {
+      p.delete('categoria');
+      p.delete('q');
+    });
   }
 
-  function handleHeroCategorySelect(categoria) {
-    setCategoria(categoria);
-    document.getElementById('catalogo')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // ---------- panel de detalle ----------
+  const detailProduct = productoSlug ? productos.find((p) => p.slug === productoSlug) ?? null : null;
+
+  // Link con un slug que no existe (o despublicado): no se abre nada y se limpia el param.
+  useEffect(() => {
+    if (!loading && productoSlug && !detailProduct) updateParams((p) => p.delete('producto'));
+  }, [loading, productoSlug, detailProduct, updateParams]);
+
+  function openDetail(product) {
+    updateParams((p) => p.set('producto', product.slug), { state: { panel: true } });
   }
+
+  // Si el panel se abrió desde la página, cerrar = volver a la entrada anterior (la misma URL
+  // sin el param), así el historial no acumula entradas. Si se entró con el link directo, no
+  // hay entrada propia a la que volver: se saca el param con replace.
+  const closeDetail = useCallback(() => {
+    if (location.state?.panel) navigate(-1);
+    else updateParams((p) => p.delete('producto'));
+  }, [location.state, navigate, updateParams]);
 
   return (
     <>
-      <ProductosHero onCategorySelect={handleHeroCategorySelect} />
+      <CatalogHero />
       <ProductFilterBar
-        categories={['Todos', ...CATEGORIAS]}
+        categories={[TODOS, ...CATEGORIAS]}
         activeCategory={categoria}
         onCategoryChange={setCategoria}
-        materials={materiales}
-        activeMaterial={material}
+        materials={showMaterial ? materiales : null}
+        activeMaterial={activeMaterial}
         onMaterialChange={setMaterial}
+        showPrice={showPrice}
         maxPrice={maxPrice}
         maxPriceLabel={money(maxPrice)}
         onMaxPriceChange={setMaxPrice}
@@ -107,18 +163,21 @@ export default function Productos() {
         <main className="catalog-main">
           {loading && <p className="catalog-status">Cargando catálogo…</p>}
           {!loading && loadError && <p className="catalog-status catalog-status--error">{loadError}</p>}
-          {!loading && !loadError && productos.length === 0 && (
-            <p className="catalog-status">Todavía no hay productos cargados. ¡Volvé pronto!</p>
-          )}
-          {!loading && !loadError && productos.length > 0 && filtered.length > 0 && (
-            <ProductGrid products={filtered} onOpen={setDetailId} />
-          )}
-          {!loading && !loadError && productos.length > 0 && filtered.length === 0 && (
-            <ProductEmptyState />
+          {!loading && !loadError && (
+            <ProductGrid
+              products={filtered}
+              materialOptions={materiales}
+              showCategory={categoria === TODOS}
+              activeCategory={categoria}
+              search={search}
+              hasFilters={hasFilters}
+              onClearAll={clearAll}
+              onOpen={openDetail}
+            />
           )}
         </main>
       </div>
-      <ProductDetailPanel product={detailProduct} onClose={() => setDetailId(null)} />
+      <ProductDetailPanel product={detailProduct} materialOptions={materiales} onClose={closeDetail} />
     </>
   );
 }

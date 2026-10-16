@@ -1,0 +1,98 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 8px 26px 8px 8px; /* la ficha del ícono va casi al ras del borde izquierdo */
+  border: 1px solid transparent;
+  border-radius: var(--r-pill);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  line-height: 1.2;
+  text-decoration: none;
+  transition:
+    background-color var(--dur-sm) var(--ease-settle),
+    border-color var(--dur-sm) var(--ease-settle),
+    color var(--dur-sm) var(--ease-settle);
+}
+
+.icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #F4F1EB;
+  color: #1FA855; /* verde WhatsApp un punto más oscuro: 3:1 sobre la ficha clara */
+  transition: transform var(--dur-sm) var(--ease-settle);
+}
+
+.btn:hover .icon {
+  transform: rotate(-8deg);
+}
+
+/* ---------- variantes ---------- */
+.primary {
+  background: var(--oxido);
+  color: #fff;
+}
+
+.primary:hover {
+  background: var(--oxido-hover);
+  color: #fff;
+}
+
+.dark {
+  background: var(--madera);
+  color: var(--sobre-madera);
+}
+
+.dark:hover {
+  background: #3A2D26;
+  color: var(--sobre-madera);
+}
+
+/* Sobre fondos de color (cianotipo), donde el óxido no se despega del fondo. */
+.paper {
+  background: var(--papel);
+  color: var(--tinta);
+}
+
+.paper:hover {
+  background: #fff;
+  color: var(--tinta);
+}
+
+.ghost {
+  background: transparent;
+  color: inherit;
+  border-color: color-mix(in srgb, currentColor 45%, transparent);
+}
+
+.ghost:hover {
+  border-color: currentColor;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+/* ---------- tamaños ---------- */
+.sm {
+  min-height: 44px;
+  gap: 10px;
+  padding: 6px 20px 6px 6px;
+  font-size: 14px;
+}
+
+.sm .icon {
+  width: 32px;
+  height: 32px;
+}
+
+.block {
+  display: flex;
+  width: 100%;
+}

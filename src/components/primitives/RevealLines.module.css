@@ -1,0 +1,17 @@
+:where(.root) {
+  margin: 0;
+}
+
+.line {
+  display: block;
+  overflow: clip;
+  /* Aire para descendentes (j, g, p) que con line-height ajustado quedarían cortados por la
+     máscara; el margen negativo lo devuelve para no alterar el interlineado. */
+  padding-bottom: .14em;
+  margin-bottom: -.14em;
+}
+
+.inner {
+  display: block;
+  will-change: transform;
+}
