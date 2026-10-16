@@ -1,43 +1,87 @@
-import { useEffect, useRef } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import './BeforeAfterSlider.css';
 
 const STEP = 4;
 // Movimiento mínimo antes de decidir si un toque sobre la imagen es drag (horizontal) o scroll.
 const LOCK_PX = 8;
+// Con `fadeTags`, cada tag se apaga cuando el tirador queda a menos de esta distancia (px):
+// así nunca rotula la foto equivocada ni lo cruza la línea durante un wipe por scroll.
+const TAG_GAP_PX = 26;
 
-export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt = '' }) {
+/**
+ * Comparador antes/después arrastrable (mouse, touch con bloqueo por dirección, teclado).
+ *
+ * Opcional, para controlarlo desde afuera (listado de proyectos, wipe por scroll):
+ * - ref → { setPosition(pct) }: mueve sin límites (0–100); el arrastre manual sigue en 2–98.
+ * - onUserInput(): se llama cuando el usuario lo mueve (drag o teclado).
+ * - initial: posición inicial (default 50).
+ * - overlay: nodo encima de las imágenes y debajo del tirador (ej. el link de la imagen).
+ * - fadeTags: apaga cada tag cuando el tirador llega a él (el tag ya no rotularía su foto).
+ * - direction: de qué lado está el "después". 'rtl' (default): antes a la izquierda del tirador,
+ *   después a la derecha (un wipe 100 → 0 lo hace entrar desde la derecha). 'ltr': al revés, antes
+ *   a la derecha y después a la izquierda (un wipe 0 → 100 lo hace entrar desde la izquierda).
+ * Sin estas props se comporta como siempre (detalle de proyecto).
+ */
+const BeforeAfterSlider = forwardRef(function BeforeAfterSlider(
+  { beforeSrc, afterSrc, alt = '', initial = 50, onUserInput, overlay, fadeTags = false, direction = 'rtl' },
+  ref
+) {
   const sliderRef = useRef(null);
   const beforeWrapRef = useRef(null);
+  const beforeTagRef = useRef(null);
+  const afterTagRef = useRef(null);
   const handleRef = useRef(null);
   const draggingRef = useRef(false);
-  const posRef = useRef(50);
+  const posRef = useRef(initial);
+  const setPosRef = useRef(null);
+  const onUserInputRef = useRef(onUserInput);
+  onUserInputRef.current = onUserInput;
   // Toque en curso: { x, y, mode: 'pending' | 'drag' | 'scroll' }. La dirección se decide una
   // vez por gesto y no cambia hasta el touchend.
   const touchRef = useRef(null);
+
+  useImperativeHandle(ref, () => ({ setPosition: (pct) => setPosRef.current?.(pct, 0, 100) }), []);
 
   useEffect(() => {
     const slider = sliderRef.current;
     const beforeWrap = beforeWrapRef.current;
     const handle = handleRef.current;
+    const ltr = direction === 'ltr';
 
-    // El wrap de "antes" se recorta desde la derecha, así lo que queda visible es siempre
+    // 'rtl': el wrap de "antes" se recorta desde la derecha, así lo que queda visible es siempre
     // el tramo IZQUIERDO (0% → handle) — coincide con el tag "Antes" que vive a la izquierda.
-    // El lado "después" es la capa de fondo sin recortar, siempre visible a la derecha del handle.
+    // 'ltr': se recorta desde la izquierda y queda el tramo DERECHO (handle → 100%).
+    // El "después" es la capa de fondo sin recortar, visible del otro lado del handle.
     // Muta el DOM directo (no vía React state) para que el drag/teclado no dispare un
     // re-render por frame — mismo criterio que ya usaba el drag.
-    function setPos(pos) {
-      const clamped = Math.max(2, Math.min(98, pos));
+    function setPos(pos, min = 2, max = 98) {
+      const clamped = Math.max(min, Math.min(max, pos));
       posRef.current = clamped;
-      beforeWrap.style.clipPath = `inset(0 ${100 - clamped}% 0 0)`;
+      beforeWrap.style.clipPath = ltr ? `inset(0 0 0 ${clamped}%)` : `inset(0 ${100 - clamped}% 0 0)`;
       handle.style.left = clamped + '%';
+      if (fadeTags) {
+        const x = (clamped / 100) * slider.clientWidth;
+        const izq = ltr ? afterTagRef.current : beforeTagRef.current;
+        const der = ltr ? beforeTagRef.current : afterTagRef.current;
+        izq.style.opacity = x < izq.offsetLeft + izq.offsetWidth + TAG_GAP_PX ? '0' : '1';
+        der.style.opacity = x > der.offsetLeft - TAG_GAP_PX ? '0' : '1';
+      }
       const rounded = Math.round(clamped);
       handle.setAttribute('aria-valuenow', rounded);
       handle.setAttribute('aria-valuetext', `${rounded}%`);
     }
+    setPosRef.current = setPos;
+    setPos(posRef.current, 0, 100);
+
+    // Movimiento iniciado por el usuario (drag o teclado): avisa afuera.
+    function userPos(pos) {
+      setPos(pos);
+      onUserInputRef.current?.();
+    }
 
     function moveTo(clientX) {
       const r = slider.getBoundingClientRect();
-      setPos(((clientX - r.left) / r.width) * 100);
+      userPos(((clientX - r.left) / r.width) * 100);
     }
 
     function onMouseMove(ev) {
@@ -79,20 +123,20 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt = '' }) {
       switch (ev.key) {
         case 'ArrowLeft':
         case 'ArrowDown':
-          setPos(posRef.current - STEP);
+          userPos(posRef.current - STEP);
           ev.preventDefault();
           break;
         case 'ArrowRight':
         case 'ArrowUp':
-          setPos(posRef.current + STEP);
+          userPos(posRef.current + STEP);
           ev.preventDefault();
           break;
         case 'Home':
-          setPos(2);
+          userPos(2);
           ev.preventDefault();
           break;
         case 'End':
-          setPos(98);
+          userPos(98);
           ev.preventDefault();
           break;
         default:
@@ -110,6 +154,7 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt = '' }) {
     handle.addEventListener('keydown', onKeyDown);
 
     return () => {
+      setPosRef.current = null;
       slider.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);
@@ -119,16 +164,21 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt = '' }) {
       slider.removeEventListener('touchcancel', onTouchEnd);
       handle.removeEventListener('keydown', onKeyDown);
     };
-  }, []);
+  }, [fadeTags, direction]);
 
   return (
-    <div className="ba-slider" ref={sliderRef}>
-      <img className="ba-after" src={afterSrc} alt={`Después${alt ? `: ${alt}` : ''}`} loading="lazy" />
-      <div className="ba-tag ba-tag--after">Después</div>
-      <div className="ba-before-wrap" ref={beforeWrapRef}>
-        <img className="ba-before" src={beforeSrc} alt={`Antes${alt ? `: ${alt}` : ''}`} loading="lazy" />
+    <div className={`ba-slider${direction === 'ltr' ? ' ba-slider--ltr' : ''}`} ref={sliderRef}>
+      <img className="ba-after" src={afterSrc} alt={`Después${alt ? `: ${alt}` : ''}`} loading="lazy" draggable={false} />
+      <div className="ba-tag ba-tag--after" ref={afterTagRef}>
+        Después
       </div>
-      <div className="ba-tag ba-tag--before">Antes</div>
+      <div className="ba-before-wrap" ref={beforeWrapRef}>
+        <img className="ba-before" src={beforeSrc} alt={`Antes${alt ? `: ${alt}` : ''}`} loading="lazy" draggable={false} />
+      </div>
+      <div className="ba-tag ba-tag--before" ref={beforeTagRef}>
+        Antes
+      </div>
+      {overlay}
       <div
         className="ba-handle"
         ref={handleRef}
@@ -137,8 +187,8 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt = '' }) {
         aria-label={`Comparar antes y después${alt ? `: ${alt}` : ''}`}
         aria-valuemin={0}
         aria-valuemax={100}
-        aria-valuenow={50}
-        aria-valuetext="50%"
+        aria-valuenow={Math.round(initial)}
+        aria-valuetext={`${Math.round(initial)}%`}
       >
         <div className="ba-handle-btn">
           <svg
@@ -157,4 +207,6 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt = '' }) {
       </div>
     </div>
   );
-}
+});
+
+export default BeforeAfterSlider;

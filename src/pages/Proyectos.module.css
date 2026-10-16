@@ -17,13 +17,14 @@
   color: var(--danger);
 }
 
-/* Lista ordenada: el número de cada caso lo dibuja el propio caso (tabular, en tinta). */
+/* Lista ordenada: el número de cada caso lo dibuja el propio caso (tabular, en tinta). La pista
+   de cada caso ya deja aire debajo de su card: el gap entre casos es corto. */
 .lista {
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--s-9);
+  gap: var(--s-6);
 }
 
 .more {
@@ -68,6 +69,6 @@
   }
 
   .lista {
-    gap: var(--s-10);
+    gap: var(--s-7);
   }
 }

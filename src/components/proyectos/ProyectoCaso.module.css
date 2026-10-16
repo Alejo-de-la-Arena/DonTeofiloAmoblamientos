@@ -1,217 +1,120 @@
 /* ==========================================================================
-   Caso del listado. Mobile: una columna, imagen 4:5 e info debajo (los pares con sangría).
-   ≥768px: tres layouts que rotan — lámina 16:9 / imagen a la izquierda / a la derecha.
+   Caso del listado: una sola card para todos.
+   Mobile / tablet: imagen arriba, info abajo. ≥1024px: imagen 60% a la izquierda, info 40%.
+   La card tiene alto fijo (cabe entera debajo del nav) para poder quedar fijada en su pista.
    ========================================================================== */
 .caso {
-  position: relative; /* ancla del ::after estirado del título */
   list-style: none;
-  --caso-ratio: 4 / 5;
+  --pin-gap: var(--s-3);
+  --card-max: 100svh;
+  /* alto disponible debajo del nav, con aire arriba y abajo */
+  --card-h: min(var(--card-max), calc(100vh - var(--header-h) - 2 * var(--pin-gap)));
+  --card-h: min(var(--card-max), calc(100svh - var(--header-h) - 2 * var(--pin-gap)));
 }
 
-.article {
+/* Pista: alto de la card + RUNWAY; la card queda sticky mientras se recorre. El RUNWAY es un
+   bloque (::after) y no un padding: sticky no puede entrar en el padding de su contenedor. */
+.pista {
+  --runway: var(--runway-mobile);
+}
+
+.pista::after {
+  content: "";
+  display: block;
+  height: var(--runway);
+}
+
+.card {
+  position: relative; /* ancla del ::after estirado del título */
   display: flex;
   flex-direction: column;
-  gap: var(--s-5);
+  height: var(--card-h);
+  overflow: clip;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-taller);
+  background: var(--papel-2);
+  color: var(--texto);
 }
 
-/* ---------- imagen ----------
-   En el DOM va después de la info (orden de tab); acá se dibuja arriba. */
+.fijable {
+  position: sticky;
+  top: calc(var(--header-h) + var(--pin-gap));
+}
+
+/* ---------- imagen ---------- */
 .media {
   position: relative;
-  order: -1;
+  z-index: 2; /* por encima del ::after del título: el slider se arrastra y su link navega */
+  order: -1; /* en el DOM va después de la info (orden de tab); se dibuja primero */
+  flex: 1 1 auto;
+  min-height: 0;
+  background: var(--papel);
+}
+
+.media:empty {
+  display: none;
 }
 
 .mediaLink {
-  position: relative;
-  display: block;
-  overflow: clip;
-  border-radius: var(--r-taller);
-}
-
-.frame {
-  background: var(--papel-2);
-}
-
-/* Con puntero fino la imagen se eleva sobre el ::after del título para recibir el hover;
-   su propio <a> (mismo destino) resuelve el click, el click medio y Ctrl/Cmd+click. */
-@media (hover: hover) and (pointer: fine) {
-  .mediaLink {
-    z-index: 2;
-  }
-}
-
-/* ---------- asomar el antes ---------- */
-.peek {
   position: absolute;
   inset: 0;
-  overflow: clip;
-  background: var(--papel-2);
-  /* touch: crossfade con el botón */
-  opacity: 0;
-  transition: opacity var(--dur-sm) linear;
+  z-index: 1; /* sobre las imágenes del slider, debajo del tirador */
+  display: block;
+  -webkit-user-drag: none;
 }
 
-.peekShown {
-  opacity: 1;
-}
-
-.peekImg {
+.img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.peekLabel {
-  position: absolute;
-  top: var(--s-3);
-  left: var(--s-3);
-  padding: 6px 12px;
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--madera) 72%, transparent);
-  color: var(--sobre-madera);
-  font-size: var(--fs-small);
-  font-weight: 500;
-  line-height: 1.2;
-  backdrop-filter: blur(6px);
-}
-
-/* Línea divisoria: capa del ancho de la imagen con el trazo en su borde derecho; se traslada
-   entera (solo transform) hasta dejar el borde en el 40%. */
-.peekLine {
-  position: absolute;
-  inset: 0;
-  border-right: 1px solid var(--sobre-madera);
-  transform: translateX(-100%);
-  pointer-events: none;
-  display: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .peek {
-    opacity: 1;
-    clip-path: inset(0 100% 0 0);
-    transition: clip-path var(--dur-md) var(--ease-soft-close);
-  }
-
-  .peekLine {
-    display: block;
-    transition: transform var(--dur-md) var(--ease-soft-close);
-  }
-
-  .mediaLink:hover .peek {
-    clip-path: inset(0 60% 0 0);
-  }
-
-  .mediaLink:hover .peekLine {
-    transform: translateX(-60%);
-  }
-
-  .toggle {
-    display: none;
-  }
-}
-
-/* Reduced motion: sin recorte animado; el antes aparece ya al 40% con un crossfade corto. */
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
-  .peek {
-    clip-path: inset(0 60% 0 0);
-    opacity: 0;
-    transition: opacity .2s linear;
-  }
-
-  .mediaLink:hover .peek {
-    opacity: 1;
-  }
-
-  .peekLine {
-    transform: translateX(-60%);
-    opacity: 0;
-    transition: opacity .2s linear;
-  }
-
-  .mediaLink:hover .peekLine {
-    opacity: 1;
-  }
-}
-
-/* Botón "Ver antes" (touch): por encima del ::after del título y de la imagen. */
-.toggle {
-  position: absolute;
-  z-index: 3;
-  right: var(--s-3);
-  bottom: var(--s-3);
-  min-height: 44px;
-  padding: 10px 18px;
-  border: 1px solid color-mix(in srgb, var(--sobre-madera) 50%, transparent);
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--madera) 72%, transparent);
-  color: var(--sobre-madera);
-  font: 500 var(--fs-small) / 1 var(--font-sans);
-  backdrop-filter: blur(6px);
-  cursor: pointer;
-}
-
-.toggle[aria-pressed="true"] {
-  background: var(--papel);
-  border-color: var(--papel);
-  color: var(--texto);
-}
-
-.toggle:focus-visible {
-  outline: 2px solid var(--sobre-madera);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 5px var(--tinta);
-}
-
 /* ---------- info ---------- */
 .info {
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-4);
-  min-width: 0;
-}
-
-.caso:nth-child(even) .info {
-  padding-left: 16%;
-}
-
-.lead {
-  display: flex;
-  align-items: baseline;
-  gap: var(--s-3);
-}
-
-.num {
-  font-size: var(--fs-small);
-  font-weight: 500;
-  color: var(--tinta);
-}
-
-.cat {
-  margin: 0;
-  font-size: var(--fs-small);
-  color: var(--texto-suave);
-}
-
-.body {
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--s-2);
   min-width: 0;
+  padding: var(--s-4);
+}
+
+.lead {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  font-size: var(--fs-small);
+}
+
+.num {
+  font-weight: 500;
+  color: var(--tinta);
+}
+
+.cat {
+  color: var(--texto-suave);
 }
 
 .title {
   margin: 0;
+  max-width: 100%;
   font-family: var(--font-serif);
-  font-size: var(--fs-h2);
+  font-size: var(--fs-h3);
   font-weight: 500;
   line-height: var(--lh-heading);
-  letter-spacing: -.015em;
+  letter-spacing: -.01em;
   color: var(--texto);
   overflow-wrap: break-word;
-  max-width: 100%;
+  /* la card tiene alto fijo: un título muy largo se corta en 2 líneas (el nombre completo
+     sigue en el link y en el detalle) */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 
 .titleLink {
@@ -224,12 +127,11 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  border-radius: var(--r-taller);
 }
 
 .titleLink:focus-visible::after {
   outline: 2px solid var(--tinta);
-  outline-offset: 6px;
+  outline-offset: -4px;
 }
 
 /* El lugar va como anotación de plano: chico y en tinta. */
@@ -240,10 +142,10 @@
 }
 
 .desc {
-  margin: var(--s-2) 0 0;
+  margin: 0;
   max-width: 52ch;
-  font-size: var(--fs-body);
-  line-height: var(--lh-body);
+  font-size: var(--fs-small);
+  line-height: 1.55;
   color: var(--texto-suave);
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -253,7 +155,6 @@
 }
 
 .action {
-  margin-top: var(--s-2);
   font-size: var(--fs-small);
   font-weight: 600;
   color: var(--texto);
@@ -263,17 +164,17 @@
   transition: text-decoration-color var(--dur-sm) var(--ease-settle);
 }
 
-.caso:hover .action,
-.caso:focus-within .action {
+.card:hover .action,
+.card:focus-within .action {
   text-decoration-color: var(--oxido);
 }
 
-/* ---------- metadata ---------- */
 .meta {
-  margin: 0;
+  align-self: stretch;
+  margin: var(--s-1) 0 0;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--s-3) var(--s-6);
+  gap: var(--s-2) var(--s-6);
   padding-top: var(--s-3);
   border-top: 1px solid var(--linea);
 }
@@ -293,95 +194,66 @@
   color: var(--texto);
 }
 
-/* ==========================================================================
-   ≥768px: grilla de 12 columnas y rotación de layouts
-   ========================================================================== */
+/* Pantallas bajas (375×667): la descripción se corta antes para que la imagen no se achique. */
+@media (max-height: 700px) and (max-width: 1023px) {
+  .desc {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+}
+
+/* ---------- tablet: mismo patrón que mobile, con más aire ---------- */
 @media (min-width: 768px) {
-  .article {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: var(--s-5);
-    row-gap: var(--s-5);
+  .caso {
+    --pin-gap: var(--s-5);
+    --card-max: 860px;
   }
 
-  .caso:nth-child(even) .info {
-    padding-left: 0;
+  .pista {
+    --runway: var(--runway-desktop);
   }
 
-  /* A · lámina: imagen 16:9 a lo ancho y debajo una fila 3 / 6 / 3 */
-  .lamina {
-    --caso-ratio: 16 / 9;
-  }
-
-  .lamina .media,
-  .lamina .info {
-    grid-column: 1 / -1;
-  }
-
-  .lamina .media {
-    grid-row: 1;
-  }
-
-  .lamina .info {
-    grid-row: 2;
-  }
-
-  .lamina .info {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: var(--s-5);
-    align-items: start;
-  }
-
-  .lamina .lead {
-    grid-column: 1 / 4;
-    flex-direction: column;
-    gap: var(--s-1);
-  }
-
-  .lamina .body {
-    grid-column: 4 / 10;
-  }
-
-  .lamina .meta {
-    grid-column: 10 / 13;
-    flex-direction: column;
+  .info {
+    padding: var(--s-5) var(--s-6) var(--s-6);
     gap: var(--s-3);
-    padding-top: 0;
-    border-top: 0;
-    border-left: 1px solid var(--linea);
-    padding-left: var(--s-4);
   }
 
-  /* B · izquierda: imagen 4:5 en 7/12, info en 5/12 alineada abajo */
-  .izquierda .media {
-    grid-column: 1 / 8;
+  .title {
+    font-size: clamp(1.75rem, 1.2rem + 1.2vw, 2.25rem);
+  }
+
+  .desc {
+    font-size: var(--fs-body);
+  }
+}
+
+/* ---------- desktop: imagen 60% a la izquierda, info 40% centrada en vertical ---------- */
+@media (min-width: 1024px) {
+  .caso {
+    --card-max: 640px;
+  }
+
+  .card {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+
+  .media {
+    grid-column: 1;
     grid-row: 1;
   }
 
-  .izquierda .info {
-    grid-column: 8 / 13;
+  .info {
+    grid-column: 2;
     grid-row: 1;
-    align-self: end;
-    padding-left: var(--s-5);
+    align-self: center;
+    padding: var(--s-7);
+    gap: var(--s-3);
   }
 
-  /* C · derecha: espejo de B, con la info corrida hacia abajo desde arriba (rompe la simetría) */
-  .derecha .media {
-    grid-column: 6 / 13;
-    grid-row: 1;
-  }
-
-  .derecha .info {
-    grid-column: 1 / 6;
-    grid-row: 1;
-    align-self: start;
-    margin-top: var(--s-9);
-    padding-right: var(--s-5);
-  }
-
-  .izquierda .title,
-  .derecha .title {
-    font-size: clamp(1.75rem, 1.2rem + 1.5vw, 2.75rem);
+  .title {
+    font-size: clamp(2rem, 1.2rem + 1.4vw, 2.75rem);
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
   }
 }
