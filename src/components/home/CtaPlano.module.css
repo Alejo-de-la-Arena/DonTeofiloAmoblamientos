@@ -1,4 +1,4 @@
-/* Hoja de plano en cianotipo: azul de plano con grilla y reglas CAD en blanco a baja opacidad.
+/* Hoja de plano en madera clara: nogal cálido con grilla y reglas CAD en blanco a baja opacidad.
    Escala de la hoja: 1px = 2 mm; el origen (0, 0) es la esquina interior de las reglas.
    Capas: grilla < velo (dibujo de la grilla en touch) < reglas < cursor < contenido. */
 .section {
@@ -6,7 +6,7 @@
   --focus-ring: var(--papel);
   position: relative;
   overflow: clip;
-  background: var(--cianotipo);
+  background: var(--madera-clara);
   color: var(--sobre-madera);
   padding: var(--s-9) var(--gutter) var(--s-7) calc(var(--regla) + var(--s-3));
 }
@@ -35,7 +35,7 @@
 
 /* Touch: un velo del color de fondo se retira hacia la derecha y "dibuja" la grilla. */
 .velo {
-  background: var(--cianotipo);
+  background: var(--madera-clara);
   transform-origin: right;
 }
 
@@ -43,7 +43,7 @@
 .regla {
   position: absolute;
   z-index: 2;
-  background: color-mix(in srgb, var(--cianotipo), black 18%);
+  background: color-mix(in srgb, var(--madera-clara), black 18%);
 }
 
 .reglaTop {
@@ -104,7 +104,7 @@
   left: 0;
   width: var(--regla);
   height: var(--regla);
-  background: color-mix(in srgb, var(--cianotipo), black 18%);
+  background: color-mix(in srgb, var(--madera-clara), black 18%);
   border-right: 1px solid rgba(255, 255, 255, .28);
   border-bottom: 1px solid rgba(255, 255, 255, .28);
 }
@@ -259,7 +259,7 @@
   border-color: var(--sobre-madera);
 }
 
-/* Elegido: papel con texto tinta (el óxido no se despega del cianotipo: 1.3:1). */
+/* Elegido: papel con texto tinta, con contraste sobre la madera clara. */
 .radio:checked + .chipFace {
   background: var(--papel);
   border-color: var(--papel);

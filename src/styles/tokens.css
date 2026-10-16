@@ -16,6 +16,7 @@
   --tinta: #3D5566;          /* "tinta de plano": exclusiva de cotas, grilla, foco y anotaciones */
   --tinta-clara: #A9B8C4;    /* tinta sobre fondos oscuros (madera / fotos) */
   --madera: #2B211C;         /* wengué: secciones oscuras, en lugar del casi negro */
+  --madera-clara: #57463C;   /* nogal cálido: fondo del CTA de contacto, más claro que madera */
   --sobre-madera: #ECE4D8;   /* texto sobre madera */
   --cianotipo: #2B4557;      /* azul de plano (tinta oscurecida): CTA "Hoja de plano"; 1.56:1 vs madera */
   --oxido: #8C3B22;          /* acento — usar con restricción: CTA principal, un detalle por vista */
