@@ -335,11 +335,3 @@
   color: #fff;
   text-decoration-color: currentColor;
 }
-
-/* ---------- fin de la hoja: separador con el footer ---------- */
-.fin {
-  position: relative;
-  z-index: 4;
-  max-width: 760px;
-  margin: var(--s-8) auto 0;
-}

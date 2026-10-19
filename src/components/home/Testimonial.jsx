@@ -93,6 +93,12 @@ export default function Testimonial() {
 
   return (
     <section className={styles.section} aria-labelledby="testimonio-title" aria-roledescription="carrusel">
+      <div className={styles.head}>
+        <h2 id="testimonio-title" className={styles.title}>
+          Lo que dicen nuestros clientes
+        </h2>
+      </div>
+
       <motion.div className={styles.grid} style={{ touchAction: 'pan-y' }} {...dragProps}>
         <div className={styles.media}>
           <RevealImage src={img.src} srcSet={img.srcSet} sizes="(min-width: 1024px) 40vw, 100vw" alt={img.alt} aspectRatio="4 / 5" direction="up" />
@@ -102,10 +108,6 @@ export default function Testimonial() {
         </div>
 
         <div className={styles.body}>
-          <h2 id="testimonio-title" className={styles.title}>
-            Lo que dicen nuestros clientes
-          </h2>
-
           <AnimatePresence mode="wait" initial={false} custom={dir}>
             <motion.figure key={t.id} className={styles.figure} variants={safe(citaV)} custom={dir} initial="hidden" animate="show" exit="exit">
               <blockquote className={styles.quote}>

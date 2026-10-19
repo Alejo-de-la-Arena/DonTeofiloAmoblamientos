@@ -208,7 +208,7 @@
   display: none;
   align-items: center;
   gap: 9px;
-  margin: 20px 0px 10px clamp(20px, 5vw, 72px);
+  margin: 10px 0px 10px clamp(10px, 5vw, 72px);
   padding: 11px 18px;
   border-radius: 40px;
   border: 1px solid var(--border-2);

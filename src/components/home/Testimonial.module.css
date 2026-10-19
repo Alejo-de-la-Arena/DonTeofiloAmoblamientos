@@ -2,10 +2,26 @@
   background: var(--papel-2);
 }
 
+/* Título de sección a todo el ancho del contenedor, arriba de imagen + cita. */
+.head {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: var(--s-9) var(--gutter) 0;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-h2);
+  font-weight: 600;
+  line-height: var(--lh-heading);
+  letter-spacing: -.01em;
+}
+
 .grid {
   max-width: var(--container);
   margin: 0 auto;
-  padding: var(--s-9) var(--gutter);
+  padding: var(--s-7) var(--gutter) var(--s-9);
   display: grid;
   gap: var(--s-6);
 }
@@ -22,13 +38,6 @@
   position: relative;
   border-radius: var(--r-taller);
   overflow: clip;
-}
-
-.title {
-  margin: 0 0 var(--s-6);
-  font-size: var(--fs-small);
-  font-weight: 600;
-  color: var(--texto-suave);
 }
 
 .figure {

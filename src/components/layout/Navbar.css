@@ -20,6 +20,14 @@
   box-shadow: 0 1px 0 rgba(0, 0, 0, .06);
 }
 
+/* Sólido forzado por el menú abierto sobre un hero oscuro: colores de sólido, alto de
+   transparente (el cajón cuelga del header y no tiene que moverse mientras baja). */
+.nav.solid.forced,
+.nav-burger-wrap.solid.forced {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
 .nav-brand {
   display: flex;
   flex-direction: column;
@@ -95,7 +103,7 @@
 }
 
 /* ---------- mobile burger (independent from .nav's stacking context on purpose,
-   so it can stay above .nav-mobile even though .nav itself sits below it) ---------- */
+   so it can stay above the drawer and the route doors) ---------- */
 .nav-burger-wrap {
   display: none;
   position: fixed;
@@ -149,13 +157,6 @@
   background: var(--ink-soft)
 }
 
-/* Selector con la misma especificidad que ".nav-burger-wrap.solid .nav-burger span" (3
-   clases + 1 elemento) para que, con el nav en estado solid, el abierto siga ganando por
-   orden de aparición — si no, el ícono quedaría oscuro sobre el panel oscuro. */
-.nav-burger-wrap .nav-burger.open span {
-  background: var(--bg)
-}
-
 .nav-burger.open span:nth-child(1) {
   top: 7px;
   transform: rotate(45deg)
@@ -170,182 +171,132 @@
   transform: rotate(-45deg)
 }
 
-.nav-mobile-backdrop {
+/* ---------- menú mobile: "el cajón" ----------
+   Contenedor fijo debajo del header que recorta al panel: así, al bajar, el panel nunca pasa
+   por encima del header. Queda arriba del botón flotante de WhatsApp (110) y debajo del header.
+   Cerrado: visibility hidden, retrasada lo que dura la subida (--drawer-out). */
+.nav-drawer {
+  display: none;
   position: fixed;
-  inset: 0;
-  z-index: 190;
-  background: rgba(15, 13, 11, .55);
-  backdrop-filter: blur(3px);
-  border: none;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.nav-mobile {
-  position: fixed;
-  top: 0;
+  top: var(--header-h);
+  left: 0;
   right: 0;
-  bottom: 0;
-  width: min(420px, 88vw);
-  z-index: 200;
-  height: 100vh;
-  height: 100dvh;
-  display: flex;
-  overflow: hidden;
-  outline: none;
-  background: linear-gradient(165deg, #241e18 0%, #1A1A1A 55%);
-  box-shadow: -20px 0 60px rgba(0, 0, 0, .35);
-}
-
-.nav-mobile::before {
-  content: '';
-  position: absolute;
-  top: -16%;
-  right: -22%;
-  width: 70%;
-  height: 52%;
-  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-  opacity: .22;
-  filter: blur(70px);
+  z-index: 115;
+  height: calc(100svh - var(--header-h));
+  overflow: clip;
+  visibility: hidden;
   pointer-events: none;
+  transition: visibility 0s linear var(--drawer-out, .32s);
 }
 
-/* Riel tipo cinta métrica — la marca distintiva del panel, evoca el oficio sin usar fotos */
-.nav-mobile-rail {
-  flex: 0 0 16px;
+.nav-drawer.open {
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.nav-drawer-panel {
   position: relative;
-  background-image:
-    repeating-linear-gradient(to bottom, rgba(250, 250, 248, .16) 0 1px, transparent 1px 10px),
-    repeating-linear-gradient(to bottom, rgba(196, 131, 106, .55) 0 1.5px, transparent 1.5px 50px);
-}
-
-.nav-mobile-content {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  padding: 20px 26px 28px clamp(14px, 4vw, 26px);
+  height: 100%;
   overflow-y: auto;
-  position: relative;
+  overscroll-behavior: contain;
+  background-color: var(--papel);
+  background-image:
+    linear-gradient(to right, var(--grilla) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grilla) 1px, transparent 1px),
+    linear-gradient(to right, var(--grilla-fina) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grilla-fina) 1px, transparent 1px);
+  background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
+  border-top: 1px solid var(--linea);
 }
 
-.nav-mobile-brand {
+.nav-drawer-inner {
   display: flex;
   flex-direction: column;
-  line-height: 1;
-  margin-bottom: 44px;
-  color: var(--bg)
+  min-height: 100%;
+  max-width: 560px;
+  padding: var(--s-6) clamp(24px, 5vw, 72px) var(--s-6);
 }
 
-.nav-mobile-brand-name {
-  font-family: 'Newsreader Variable', serif;
-  font-weight: 700;
-  font-size: 17px;
-  letter-spacing: .22em
+.nav-drawer-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.nav-mobile-brand-sub {
-  font-size: 9px;
-  letter-spacing: .36em;
-  margin-top: 6px;
-  font-weight: 500;
-  color: rgba(250, 250, 248, .5)
+.nav-drawer-row {
+  border-bottom: 1px solid var(--linea-fuerte);
 }
 
-.nav-mobile-links {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  justify-content: center;
-  gap: 0
+.nav-drawer-row:first-child {
+  border-top: 1px solid var(--linea-fuerte);
 }
 
-.nav-mobile-row-wrap {
-  border-bottom: 1px solid rgba(250, 250, 248, .12)
-}
-
-.nav-mobile-row-wrap:first-child {
-  border-top: 1px solid rgba(250, 250, 248, .12)
-}
-
-.nav-mobile-link {
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  padding: 15px 2px;
+.nav-drawer-link {
+  display: block;
+  padding: 14px 0 16px;
   -webkit-tap-highlight-color: transparent;
 }
 
-.nav-mobile-link:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 6px;
-  border-radius: 2px
+.nav-drawer-link:focus-visible {
+  outline: 2px solid var(--tinta);
+  outline-offset: 2px;
+  border-radius: var(--r-taller);
 }
 
-.nav-mobile-row-index {
-  font-family: 'DM Sans Variable', sans-serif;
-  font-size: 12px;
+.nav-drawer-label {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-serif);
   font-weight: 600;
-  letter-spacing: .06em;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-  transition: color .25s ease;
-}
-
-.nav-mobile-row-label {
-  font-family: 'Newsreader Variable', serif;
-  font-weight: 600;
-  font-size: clamp(25px, 7.2vw, 32px);
+  font-size: clamp(1.625rem, 1.2rem + 2vw, 2.125rem);
+  line-height: 1.15;
   letter-spacing: -.01em;
-  color: var(--bg);
-  transition: color .25s ease, transform .25s ease;
+  color: var(--texto);
 }
 
-.nav-mobile-link:hover .nav-mobile-row-label,
-.nav-mobile-link.active .nav-mobile-row-label {
-  color: var(--accent);
-  transform: translateX(4px);
+.nav-drawer-foot {
+  margin-top: auto;
+  padding-top: var(--s-6);
 }
 
-.nav-mobile-link:hover .nav-mobile-row-index,
-.nav-mobile-link.active .nav-mobile-row-index {
-  color: var(--bg)
-}
-
-.nav-mobile-bottom {
-  margin-top: 28px;
-  padding-top: 22px;
-  border-top: 1px solid rgba(250, 250, 248, .14);
+.nav-drawer-actions {
   display: flex;
-  align-items: center;
-  gap: 14px;
   flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
 }
 
-.nav-mobile-ig {
+/* Instagram: secundario ghost en tinta, a la altura del botón de WhatsApp. */
+.nav-drawer-ig {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border: 1px solid rgba(250, 250, 248, .25);
-  border-radius: 50%;
-  transition: border-color .2s ease, transform .2s ease;
+  gap: var(--s-2);
+  min-height: 52px;
+  padding: 0 var(--s-5);
+  border: 1px solid color-mix(in srgb, var(--tinta) 45%, transparent);
+  border-radius: var(--r-pill);
+  color: var(--tinta);
+  font-size: 15px;
+  font-weight: 600;
+  transition: border-color var(--dur-sm) var(--ease-settle), background-color var(--dur-sm) var(--ease-settle);
 }
 
-.nav-mobile-ig:hover {
-  border-color: var(--accent);
-  transform: scale(1.06)
+.nav-drawer-ig:hover {
+  border-color: var(--tinta);
+  background: color-mix(in srgb, var(--tinta) 8%, transparent);
 }
 
-.nav-mobile-cities {
-  width: 100%;
-  font-size: 12px;
-  letter-spacing: .04em;
-  color: rgba(250, 250, 248, .55);
-  margin-top: 4px;
+.nav-drawer-ig:focus-visible {
+  outline: 2px solid var(--tinta);
+  outline-offset: 3px;
+}
+
+.nav-drawer-cities {
+  margin: var(--s-4) 0 0;
+  font-size: var(--fs-small);
+  letter-spacing: .02em;
+  color: var(--muted);
 }
 
 @media (max-width:980px) {
@@ -356,10 +307,8 @@
   .nav-burger-wrap {
     display: flex
   }
-}
 
-@media (max-width:400px) {
-  .nav-mobile-content {
-    padding-top: 88px
+  .nav-drawer {
+    display: block
   }
 }

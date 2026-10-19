@@ -40,14 +40,6 @@
   stroke-width: 1.25;
 }
 
-.num {
-  fill: var(--tinta);
-  font-family: var(--font-sans);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .02em;
-}
-
 .parada {
   fill: var(--oxido);
 }
@@ -63,14 +55,9 @@
 
 /* ---------- pasos ---------- */
 .steps {
-  position: relative;
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-.step {
-  position: absolute;
 }
 
 .stepTitle {
@@ -89,24 +76,20 @@
   color: var(--texto-suave);
 }
 
-/* horizontal (≥768): la cinta a todo el ancho y los pasos colgando de su parada */
+/* horizontal (≥768): la cinta a todo el ancho y 4 columnas iguales; cada paso arranca justo
+   debajo de su parada (el centro del punto es el borde izquierdo de la columna). */
 .horizontal .ruler {
-  height: 52px;
+  height: 24px;
 }
 
 .horizontal .steps {
-  height: 9rem;
-  margin-top: var(--s-5);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: var(--s-4);
 }
 
 .horizontal .step {
-  top: 0;
-  width: 22%;
-}
-
-.horizontal .stepLast {
-  transform: translateX(-100%);
-  text-align: right;
+  padding-right: var(--s-6);
 }
 
 /* vertical (mobile): filas equiespaciadas de altura natural. Cada fila lleva su tramo de cinta
@@ -126,7 +109,7 @@
 .fila {
   position: relative;
   display: grid;
-  grid-template-columns: 80px minmax(0, 1fr);
+  grid-template-columns: 32px minmax(0, 1fr);
   gap: var(--s-3);
   padding-bottom: var(--s-7);
 }
@@ -139,7 +122,7 @@
   position: absolute;
   left: 0;
   top: var(--stop-y);
-  width: 80px;
+  width: 32px;
   height: 100%;
   overflow: visible;
 }

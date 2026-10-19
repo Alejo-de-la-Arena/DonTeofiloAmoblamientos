@@ -4,7 +4,7 @@ import CornerMarks from '../primitives/CornerMarks';
 import { useElementSize } from '../primitives/useElementSize';
 import Alzado, { DRAW_S } from './Alzado';
 import LaminaIndex from './LaminaIndex';
-import PencilMark from './PencilMark';
+import PencilMark from '../primitives/PencilMark';
 import Rotulo from './Rotulo';
 import { LAMINAS } from '../../data/alzados';
 import { buildWhatsAppUrl } from '../../lib/whatsapp';

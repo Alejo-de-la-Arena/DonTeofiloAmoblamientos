@@ -45,6 +45,16 @@ export const drawerIn = {
   },
 };
 
+/** Cajón vertical: baja desde arriba con cierre suave (ítems del menú mobile). */
+export const drawerInY = {
+  hidden: { opacity: 0, y: -16 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: dur.md, ease: ease.softClose },
+  },
+};
+
 /** Panel de puerta corrediza: 'closed' tapa, 'open' se recoge sobre su transform-origin.
  *  `custom` = { i (orden en la secuencia), axis: 'x' | 'y', duration, step }.
  *  Escalona `step` por panel (default 60ms). */

@@ -302,11 +302,6 @@ export default function CtaPlano({
           </Link>
         </div>
       </div>
-
-      {/* Fin de la hoja: separa el CTA del footer (los dos son oscuros). */}
-      <div className={styles.fin} aria-hidden="true">
-        <Cota tone="light" draw={reduce ? 'none' : 'view'} label="fin de la hoja" ticks="both" />
-      </div>
     </section>
   );
 }
